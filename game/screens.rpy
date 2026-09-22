@@ -427,7 +427,12 @@ screen app_grid():
 
                 action Show("profile_app")
             
-            add "gui/placeholders/grid_icon_placeholder.svg"
+            # Chat App 
+            imagebutton: 
+                idle "gui/placeholders/grid_icon_placeholder.svg"
+
+                action Show("chat_app")
+
             add "gui/placeholders/grid_icon_placeholder.svg"
             add "gui/placeholders/grid_icon_placeholder.svg"
             add "gui/placeholders/grid_icon_placeholder.svg"
@@ -454,11 +459,36 @@ screen app_grid():
 ## 
 ## For Design consistency
 
-screen app_screen(): 
+screen app_screen(window_width, window_height, content_width, content_height, screen_title): 
     
     tag app
 
     key "game_menu" action Hide()
+
+    window id "app": 
+
+        xysize (window_width, window_height)
+        style "app_window"
+
+        fixed: 
+            xysize (window_width, window_height)
+            clipping True
+
+            add "#000000":
+                xysize (window_width, window_height)
+
+            # Title Bar 
+            use app_header(window_width, screen_title)
+
+            # Main Content Area
+            frame: 
+                style "app_main_content"
+                at app_main_content(content_width, content_height)
+                
+                add "#C8C8C8": 
+                    xysize(content_width, content_height)
+
+                transclude
 
 style app_window: 
     xalign 0.5
@@ -466,11 +496,13 @@ style app_window:
     background None 
     clipping True 
 
-screen app_header(window_width, header_height, screen_title): 
+define app_header_height = 35
+
+screen app_header(window_width, screen_title): 
 
     frame: 
 
-        xysize(window_width, header_height)
+        xysize(window_width, app_header_height)
         background None 
         padding (0, 0)
         margin (0, 0)
@@ -478,11 +510,11 @@ screen app_header(window_width, header_height, screen_title):
         clipping True 
 
         add "gui/placeholders/App Title Bar Placeholder.svg": 
-            xysize(config.screen_width, header_height)
+            xysize(config.screen_width, app_header_height)
 
         fixed: 
 
-            xysize(window_width, header_height)
+            xysize(window_width, app_header_height)
 
             clipping True 
 
@@ -506,10 +538,10 @@ transform app_exit_button:
     ypos 4
 
 # App Main Content Frame Transform & Style 
-transform app_main_content(content_width, content_height, header_height): 
+transform app_main_content(content_width, content_height): 
     xysize(content_width, content_height)
     xalign 0.5
-    ypos header_height + 20 
+    ypos app_header_height + 20 
 
 style app_main_content:
     background None
@@ -517,7 +549,6 @@ style app_main_content:
     margin(0, 0)
 
     clipping True 
-
 
 ## Main Menu screen ############################################################
 ##
@@ -617,6 +648,44 @@ screen computer_ui():
         use app_grid
         use navigation_dock
 
+## Scrollable Content 
+screen scrollable_content(scroll=None, yinitial=0.0, spacing=0): 
+    # Content with scroll support
+    if scroll == "viewport":
+        viewport:
+            xfill True
+            yfill True
+            yinitial yinitial
+            scrollbars "vertical"
+            vscrollbar_unscrollable "hide"
+            mousewheel True
+            draggable True
+            pagekeys True
+                        
+
+            vbox:
+                spacing spacing
+                xfill True
+                transclude
+
+    elif scroll == "vpgrid":
+        vpgrid:
+            xfill True
+            yfill True
+            cols 1
+            yinitial yinitial
+            scrollbars "vertical"
+            vscrollbar_unscrollable "hide"
+            mousewheel True
+            draggable True
+            pagekeys True
+            side_yfill True
+            spacing spacing
+            transclude
+
+    else:
+        transclude
+
 ## Meta Screen Template ########################################################
 ## Template for all meta screens 
 ## (About, Save & Load, History, Preferences, Help, Endings)
@@ -631,7 +700,7 @@ screen meta_screen(title, scroll=None, yinitial=0.0, spacing=0):
     # Meta Screen Dimensions 
     $ button_width = 56 
     $ button_height = 48
-    $ header_height = 58
+    $ meta_header_height = 58
     $ content_width = 1240
     $ content_height = 640
 
@@ -647,12 +716,12 @@ screen meta_screen(title, scroll=None, yinitial=0.0, spacing=0):
         # Header Bar
         fixed: 
 
-            at fill_width(header_height)
+            at fill_width(meta_header_height)
 
             clipping True 
 
             add "gui/placeholders/meta_screen_header.svg": 
-                at fill_width(header_height)
+                at fill_width(meta_header_height)
                 
             # Header Title 
             text title: 
@@ -686,40 +755,7 @@ screen meta_screen(title, scroll=None, yinitial=0.0, spacing=0):
                 background None 
                 padding (20, 20, 20, 20)
 
-                # Content with scroll support
-                if scroll == "viewport":
-                    viewport:
-                        xfill True
-                        yfill True
-                        yinitial yinitial
-                        scrollbars "vertical"
-                        vscrollbar_unscrollable "hide"
-                        mousewheel True
-                        draggable True
-                        pagekeys True
-                        
-
-                        vbox:
-                            spacing spacing
-                            xfill True
-                            transclude
-
-                elif scroll == "vpgrid":
-                    vpgrid:
-                        xfill True
-                        yfill True
-                        cols 1
-                        yinitial yinitial
-                        scrollbars "vertical"
-                        vscrollbar_unscrollable "hide"
-                        mousewheel True
-                        draggable True
-                        pagekeys True
-                        side_yfill True
-                        spacing spacing
-                        transclude
-
-                else:
+                use scrollable_content(scroll, yinitial, spacing): 
                     transclude
 
 transform meta_close_button: 
@@ -1382,133 +1418,167 @@ screen ending_gallery():
 ## Special Gameplay screens
 ################################################################################
 
-## Profile App Screen 
+## Profile App Screen ##########################################################
 ## 
-## The
+## A screen that gives information about the player's current Player Name, 
+## Wallet Location, as well as Rapport & Suspicion Stats
 
 screen profile_app(): 
 
     tag app
-
     zorder 10
     modal True
 
-    # Meta Screen Dimensions 
+    # App Screen Dimensions 
     $ window_width = 700
     $ window_height = 600
-    $ header_height = 35
     $ content_width = 650
     $ content_height = 525
     
-    window id "profile": 
-
-        xysize(window_width, window_height)
-        style "app_window"
-
-        fixed:
-
-            xysize(window_width, window_height)
+    use app_screen(window_width, window_height, content_width, content_height, "Profile"):
+                
+        # Profile Info
+        fixed: 
+            xysize(620, 280)
+            xalign 0.5
+            ypos 13
 
             clipping True
 
-            add "gui/placeholders/Profile App Background Placeholder.svg": 
-                xysize(window_width, window_height)
+            # Info Content Area
+            add "gui/placeholders/Profile App Info Backdrop 1.svg":
+                xysize(620, 280)
 
-            # Title Bar 
-            use app_header(window_width, header_height, "Profile")
-                    
-            # Main Content Area
-            frame: 
-                style "app_main_content"
-                at app_main_content(content_width, content_height, header_height)
-                
-                add "gui/placeholders/Profile App Main Content Area Placeholder.svg": 
-                    xysize(content_width, content_height)
-                
-                # Profile Info
-                fixed: 
-                    xysize(620, 280)
-                    xalign 0.5
-                    ypos 13
+            add "gui/placeholders/Profile App Info Backdrop 2.svg": 
+                xysize(620, 120)
+                ypos 160 
 
-                    clipping True
+            # Profile Pic
+            add "gui/placeholders/Profile App Profile Pic Placeholder.svg":
+                xysize(100, 100)
+                xpos 55
+                ypos 95
 
-                    # Info Content Area
-                    add "gui/placeholders/Profile App Info Backdrop 1.svg":
-                        xysize(620, 280)
+            # Profile ID
+            vbox: 
+                xpos 55
+                ypos 195
+                spacing 10
 
-                    add "gui/placeholders/Profile App Info Backdrop 2.svg": 
-                        xysize(620, 120)
-                        ypos 160 
+                # Player Name 
+                text "[player_name]": 
+                    size 20
+                    bold True
 
-                    # Profile Pic
-                    add "gui/placeholders/Profile App Profile Pic Placeholder.svg":
-                        xysize(100, 100)
-                        xpos 55
-                        ypos 95
+                # Profile Name
+                text "The Abyss Stares Back": 
+                    size 18
 
-                    # Profile ID
-                    vbox: 
-                        xpos 55
-                        ypos 195
-                        spacing 10
+            # Deadline Reminder Widget
+            fixed: 
 
-                        # Player Name 
-                        text "[player_name]": 
-                            size 20
-                            bold True
-
-                        # Profile Name
-                        text "The Abyss Stares Back": 
-                            size 18
-
-                    # Deadline Reminder Widget
-                    fixed: 
-
-                        xysize(210, 75)
-                        xpos 365
-                        ypos 30
+                xysize(210, 75)
+                xpos 365
+                ypos 30
                             
-                        clipping True
+                clipping True
 
-                        add "gui/placeholders/Profile App Deadline Widget Placeholder.svg":
-                            xysize(210, 75)
+                add "gui/placeholders/Profile App Deadline Widget Placeholder.svg":
+                    xysize(210, 75)
 
-                # Trackers
-                fixed: 
+        # Trackers
+        fixed: 
+            xysize(620, 200)
+            xpos 15
+            ypos 13 + 280 + 19
 
-                    xysize(620, 200)
-                    xpos 15
-                    ypos 13 + 280 + 19
+            clipping True
 
-                    clipping True
+            # Wallet Tracker 
+            fixed: 
 
-                    # Wallet Tracker 
-                    fixed: 
+                xysize(260, 200)
 
-                        xysize(260, 200)
+                clipping True 
 
-                        clipping True 
+                add "gui/placeholders/Profile App Wallet Tracker Background Placeholder.svg":
+                    xysize(260, 200)                
 
-                        add "gui/placeholders/Profile App Wallet Tracker Background Placeholder.svg":
-                            xysize(260, 200)                        
-
-                    fixed: 
+            # Stat Tracker
+            fixed: 
                         
-                        xysize(340, 200)
-                        xpos 260 + 18
+                xysize(340, 200)
+                xpos 260 + 18
 
-                        clipping True
+                clipping True
 
-                        # Stat Tracker
-                        add "gui/placeholders/Profile App Stat Tracker Background Placeholder.svg":
-                            xysize(340, 200)
+                add "gui/placeholders/Profile App Stat Tracker Background Placeholder.svg":
+                    xysize(340, 200)
+
+## Chat App ####################################################################
+## 
+## A screen that stores away Chats between the Player Character & other 
+## Characters which serve as a part of the narrative
+
+screen chat_app(): 
+
+    tag app 
+    zorder 10 
+    modal True 
+
+    # App Screen Dimensions 
+    $ window_width = 900
+    $ window_height = 600
+    $ content_width = 850
+    $ content_height = 525
+
+    use app_screen(window_width, window_height, content_width, content_height, "Chat"):
+
+        fixed: 
+            xysize(230 + 570 + 20, 500)
+            xpos 15
+            ypos 15
+
+            clipping True 
+
+            # Contact Panel 
+            fixed: 
+                xysize(230, 500)
+                
+                clipping True
+            
+                add "gui/placeholders/Contact Panel Background Placeholder.svg":
+                    xysize(230, 500)
+
+            # Chat Box
+            fixed: 
+                xysize(570, 500)
+                xpos 230 + 20
+
+                clipping True
+
+                add "gui/placeholders/Chat Box Background Placeholder.svg":
+                    xysize(570, 500)
+            
+## Draft App ###################################################################
+## A screen that lets the player view the progress of the Epilogue Draft 
+## the Player Character is writing on throughout the game
+
+screen draft_app(): 
+
+    tag app 
+    zorder 10 
+    modal True 
+
+    # App Screen Dimensions 
+    $ window_width = 900
+    $ window_height = 600
+    $ content_width = 850
+    $ content_height = 525        
     
-transform main_content: 
-    xysize(650, 525)
-        
 
 
+################################################################################
 
 ################################################################################
 ## Additional screens

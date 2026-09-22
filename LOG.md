@@ -86,11 +86,19 @@
 
 - Internal States Initialization
 
-- New Custom Screen
-  - Profile App Screen
-    - Layout 
-      - Using Placeholder UI Elements
-    - Functional Exit Button
+- New Custom Screen(s)
+  - App Screen 
+    - Template Screen 
+    - Sets: 
+      - App Window Background
+      - App Header 
+        - App Title
+        - Functional Exit Button
+      - App Main Content Area
+      
+  - Layout for 2 Other Screens (Using Placeholder UI Elements)
+    - Profile App Screen 
+    - Chat App Screen 
 
 - Formatting Bugs Fix 
   - Transform & Style Dynamic Implementation for Meta Screens & App Screens
