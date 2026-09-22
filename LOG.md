@@ -95,10 +95,12 @@
         - App Title
         - Functional Exit Button
       - App Main Content Area
+      - Optional Toolbars
       
   - Layout for 2 Other Screens (Using Placeholder UI Elements)
     - Profile App Screen 
     - Chat App Screen 
+    - Draft App Screen
 
 - Formatting Bugs Fix 
   - Transform & Style Dynamic Implementation for Meta Screens & App Screens

@@ -433,7 +433,12 @@ screen app_grid():
 
                 action Show("chat_app")
 
-            add "gui/placeholders/grid_icon_placeholder.svg"
+            # Draft App 
+            imagebutton:
+                idle  "gui/placeholders/grid_icon_placeholder.svg"
+
+                action Show("draft_app")
+
             add "gui/placeholders/grid_icon_placeholder.svg"
             add "gui/placeholders/grid_icon_placeholder.svg"
             add "gui/placeholders/grid_icon_placeholder.svg"
@@ -459,7 +464,7 @@ screen app_grid():
 ## 
 ## For Design consistency
 
-screen app_screen(window_width, window_height, content_width, content_height, screen_title): 
+screen app_screen(window_width, window_height, content_width, content_height, screen_title, tool_screen=None): 
     
     tag app
 
@@ -489,6 +494,9 @@ screen app_screen(window_width, window_height, content_width, content_height, sc
                     xysize(content_width, content_height)
 
                 transclude
+
+            if tool_screen != None: 
+                use expression tool_screen
 
 style app_window: 
     xalign 0.5
@@ -1571,12 +1579,46 @@ screen draft_app():
     modal True 
 
     # App Screen Dimensions 
-    $ window_width = 900
-    $ window_height = 600
-    $ content_width = 850
-    $ content_height = 525        
-    
+    $ window_width = 700
+    $ window_height = 650
+    $ content_width = 670
+    $ content_height = 575
 
+    use app_screen(window_width, window_height, content_width, content_height, "Draft", "draft_tools"): 
+
+        frame: 
+            xysize(650, 515)
+            background None 
+            padding (10, 9, 10, 9)
+            
+            clipping True
+
+            text "Text Here": 
+                color "#000"
+    
+screen draft_tools(): 
+
+    tag tools
+
+    fixed: 
+
+        fixed: 
+            xysize (700, 30)
+            ypos 35
+
+            clipping True 
+
+            add "gui/placeholders/Draft Toolbar Placeholder.svg": 
+                xysize (700, 30)
+
+        fixed: 
+            xysize (700, 50)
+            ypos 700 - 100
+
+            clipping True
+
+            add "gui/placeholders/Draft Settings Bar Placeholder.svg": 
+                xysize (700, 50)
 
 ################################################################################
 
