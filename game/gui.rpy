@@ -18,6 +18,13 @@ init python:
 ## Enable checks for invalid or unstable properties in screens or transforms
 define config.check_conflicting_properties = True
 
+init python:
+    config.gl_resize = True
+    
+    def adjust_view_size(width, height):
+        return width, height
+    
+    config.adjust_view_size = adjust_view_size
 
 ################################################################################
 ## GUI Configuration Variables
@@ -62,12 +69,18 @@ define gui.interface_text_color = '#ffffff'
 
 ## The font used for in-game text.
 define gui.text_font = "fonts/PT_Mono/PTMono-Regular.ttf"
+define gui.text_font_bold = "fonts/PT_Mono/PTMono-Bold.ttf"
 
 ## The font used for character names.
 define gui.name_text_font = "fonts/PT_Mono/PTMono-Regular.ttf"
 
 ## The font used for out-of-game text.
 define gui.interface_text_font = "fonts/PT_Mono/PTMono-Regular.ttf"
+
+## The bold version of font.
+init python:
+    # When bold is requested on the regular font, use the bold font file.
+    config.font_replacement_map[("fonts/PT_Mono/PTMono-Regular.ttf", True, False)] = ("fonts/PT_Mono/PTMono-Bold.ttf", False, False)
 
 ## The size of normal dialogue text.
 define gui.text_size = 22

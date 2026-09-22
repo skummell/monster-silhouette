@@ -256,12 +256,14 @@ screen quick_menu():
             textbutton _("Prefs") action ShowMenu('preferences')
 
 
-## This code ensures that the quick_menu screen is displayed in-game, whenever
+## This code ensures that the quick_menu (& status_bar) screen(s) is displayed in-game, whenever
 ## the player has not explicitly hidden the interface.
 init python:
     config.overlay_screens.append("quick_menu")
+    config.overlay_screens.append("status_bar")
 
 default quick_menu = True
+default status_bar = False
 
 style quick_menu is hbox
 style quick_button is default
@@ -287,16 +289,60 @@ style quick_button_text:
 ## in-game date and time
 screen status_bar(): 
 
-    frame: 
-        at fill_width(38)
-        background None
-        padding(0, 0)
-        margin(0, 0)
+    zorder 100
 
-        clipping True
-
-        add "gui/placeholders/status_bar_placeholder.svg": 
+    if status_bar or renpy.get_screen("computer_ui_menu"): 
+        frame: 
             at fill_width(38)
+            background None
+            padding(0, 0)
+            margin(0, 0)
+
+            clipping True
+
+            add "gui/placeholders/status_bar_placeholder.svg": 
+                at fill_width(38)
+            
+            add "#000": 
+                xysize(35, 20)
+                yalign 0.5
+                xpos 20
+
+            hbox: 
+                xpos int(config.screen_width * 2 / 3) - 40
+                xsize int(config.screen_width / 3) + 30
+                yalign 0.5 
+                spacing 30
+
+                if renpy.get_screen("computer_ui") or renpy.get_screen("computer_ui_menu"): 
+                    # Battery
+                    add "#000": 
+                        xysize(40, 20)
+
+                    # WiFi 
+                    add "#000":
+                        xysize(40, 20)
+
+                    # Spotlight
+                    add "#000":
+                        xysize(40, 20)
+
+                else: # Placeholder space for layout consistency 
+
+                    null width 40 height 20
+                    null width 40 height 20
+                    null width 40 height 20
+
+                text abyss_date: 
+                    size 20
+
+                textbutton (abyss_time): 
+                    style "default"
+                    text_size 20
+
+                    action If(renpy.get_screen("computer_ui_menu"), Return(), None)
+
+
 
 # Fill Screen Transform
 transform fill_screen: 
@@ -791,13 +837,17 @@ screen about():
         vbox:
 
             label "[config.name!t]"
-            text _("Version [config.version!t]\n")
+            # text _("Version [config.version!t]\n")
+            text _("by {b}SkumMell{/b}\n")
+            
 
             ## gui.about is usually set in options.rpy.
             if gui.about:
                 text "[gui.about!t]\n"
 
-            text _("Made with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n\n[renpy.license!t]")
+            add Solid("#000000") xysize (1280, 2)
+
+            text _("\nMade with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n\n[renpy.license!t]")
 
 
 style about_label is gui_label

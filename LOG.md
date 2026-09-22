@@ -106,3 +106,16 @@
   - Transform & Style Dynamic Implementation for Meta Screens & App Screens
 
 - Project Proposal Presentation Slides
+
+## Sep 22, 2026
+
+- Status Bar Update 
+  - Inner Layout
+  - Display Date & Time
+    - Time functions as textbutton to return to game when inside computer_ui_menu
+  - Set as Overlay Screen
+- Dynamic Scaling of Window & Elements
+  - Stretches Elements
+  - Needs modifications when certain elements are added
+
+- Project Proposal Report 

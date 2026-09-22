@@ -5,22 +5,22 @@
 
 # Internal States 
 # Hidden Flags 
-default true_name = False
-default early_day = False
-default suck_up = False 
-default theo_chat_volume = False 
-default wallet_on_person = False 
-default semiformal_top = False
-default contour_top = False 
-default many_pockets = False 
+default true_name = False # Affects Player Character POV narration, Dialogue options and more
+default early_day = False # Affects time you arrive in Victor's lounge
+default suck_up = False # Unlocks and locks dialogue options in chat with Theo
+default theo_chat_volume = False # Affects how often Theo sends you messages without being prompted
+default wallet_on_person = False # Affects some scenes and narration in the lounge
+default semiformal_top = False # Extra Character Dialogue
+default contour_top = False # Extra Character Dialogue
+default many_pockets = False # Extra scenes
 # Stats
-default rapport = None
-default suspicion = None
-default deadline = 7 
+default rapport = None # Affects Mephisto's attitude towards you 
+default suspicion = None # Affects Player's attitude towards Mephisto 
+default deadline = 7 # Progresses to next game day 
 # Visible Flags 
 default player_name = ""
-default date = "Sep 26"
-default time = "3:00 AM"
+default abyss_date = "Fri Sep 26"
+default abyss_time = "3:00 AM"
 default day = 1
 
 # Declare characters used by this game. The color argument colorizes the
@@ -52,8 +52,6 @@ label start:
     # directory.
 
     show mephisto happy
-
-    c "hey"
 
     # These display lines of dialogue.
 

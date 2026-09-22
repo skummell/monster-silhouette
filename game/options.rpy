@@ -40,6 +40,9 @@ Perhaps a source inspiration will come along to help you out.
 
 Writing / UI Design / Art / Coding by Mel (skummell).
 
+{size=30}{b}Official Sources{/b}{/size}
+
+{a=https://github.com/skummell/monster-silhouette}GitHub (Source Code){/a}
 """) # Changed
 
 
