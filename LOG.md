@@ -97,7 +97,7 @@
       - App Main Content Area
       - Optional Toolbars
       
-  - Layout for 2 Other Screens (Using Placeholder UI Elements)
+  - Layout for 3 Other Screens (Using Placeholder UI Elements)
     - Profile App Screen 
     - Chat App Screen 
     - Draft App Screen
@@ -107,7 +107,26 @@
 
 - Project Proposal Presentation Slides
 
-## Sep 22, 2026
+## Sep 22-23, 2026
+
+- Update Meta Screens 
+  - Ending Gallery Screen 
+    - Locked Endings Version
+
+- New Custom Screen(s)
+  - Computer UI Lock Screen (computer_ui_locked)
+
+- Bugs & Fixes 
+  - Status Bar Elements & Navigation Dock - Hide & Show Fix
+  - Show screens on scene layer during script (show_scene)
+
+- Narrative Script Progression
+  - Day 1 - Introduction 
+    - In Progress 
+
+- Project Proposal Report 
+
+### Sep 22, 2026
 
 - Status Bar Update 
   - Inner Layout
@@ -118,4 +137,10 @@
   - Stretches Elements
   - Needs modifications when certain elements are added
 
-- Project Proposal Report 
+### Sep 23, 2026
+
+- Layout of Computer UI Locked 
+  - Using Placeholder UI Elements
+  - Display Date & Time 
+  - Display Player Name
+

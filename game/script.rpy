@@ -3,6 +3,17 @@
 
 # The script of the game goes in this file.
 
+# Imports
+init python: 
+    import datetime
+
+# Utility Functions
+init python: 
+
+    def show_scene(screen_name):     
+        renpy.scene(layer="master") # Clear Layer
+        renpy.show_screen(screen_name, _layer="master") # Call Screen on Master (Scene) Layer
+
 # Internal States 
 # Hidden Flags 
 default true_name = False # Affects Player Character POV narration, Dialogue options and more
@@ -19,7 +30,7 @@ default suspicion = None # Affects Player's attitude towards Mephisto
 default deadline = 7 # Progresses to next game day 
 # Visible Flags 
 default player_name = ""
-default abyss_date = "Fri Sep 26"
+default abyss_date = datetime.date(2025, 9, 26) # (Fri) Sep 26
 default abyss_time = "3:00 AM"
 default day = 1
 
@@ -35,6 +46,7 @@ define chat_t = Character("And", color="#890095", kind=nvl)
 define chat_c = Character("The Abyss Stares Back", color="#950000", kind=nvl)
 define chat_l = Character("Golden Manager", color="#ffb700", kind=nvl)
 
+
 # The game starts here.
 
 label start:
@@ -44,100 +56,6 @@ label start:
     # images directory to show it.
 
     call demo_intro
-
-    scene bg room
-
-    # This shows a character sprite. A placeholder is used, but you can
-    # replace it by adding a file named "mephisto happy.png" to the images
-    # directory.
-
-    show mephisto happy
-
-    # These display lines of dialogue.
-
-    m "You've created a new Ren'Py game."
-
-    m "Once you add a story, pictures, and music, you can release it to the world!"
-
-    m "shdkshds"
-
-    m "dsbmdbs"
-
-    m "hdkshkdsha"
-
-    m "dksahkkdshads"
-
-    m " dhskadk"
-
-    m "dhskadhs"
-
-    m "hkashdksjhfkahfkshfkhdkjfdhs"
-
-    m "dhskadskua d"
-
-    m "shdkshds"
-
-    m "dsbmdbs"
-
-    m "hdkshkdsha"
-
-    m "dksahkkdshads"
-
-    m " dhskadk"
-
-    m "dhskadhs"
-
-    m "hkashdksjhfkahfkshfkhdkjfdhs"
-
-    m "dhskadskua d"
-
-    m "shdkshds"
-
-    m "dsbmdbs"
-
-    m "hdkshkdsha"
-
-    m "dksahkkdshads"
-
-    m " dhskadk"
-
-    m "dhskadhs"
-
-    m "hkashdksjhfkahfkshfkhdkjfdhs"
-
-    m "dhskadskua d"
-
-    m "shdkshds"
-
-    m "dsbmdbs"
-
-    m "hdkshkdsha"
-
-    m "dksahkkdshads"
-
-    m " dhskadk"
-
-    m "dhskadhs"
-
-    m "hkashdksjhfkahfkshfkhdkjfdhs"
-
-    m "dhskadskua d"
-
-    m "shdkshds"
-
-    m "dsbmdbs"
-
-    m "hdkshkdsha"
-
-    m "dksahkkdshads"
-
-    m " dhskadk"
-
-    m "dhskadhs"
-
-    m "hkashdksjhfkahfkshfkhdkjfdhs"
-
-    m "dhskadskua d"
 
     # This ends the game.
 

@@ -6,6 +6,8 @@
 ################################################################################
 
 init offset = -1
+default player_endings = 0
+default total_endings = 0
 
 ################################################################################
 ## Styles
@@ -303,10 +305,12 @@ screen status_bar():
             add "gui/placeholders/status_bar_placeholder.svg": 
                 at fill_width(38)
             
-            add "#000": 
-                xysize(35, 20)
-                yalign 0.5
-                xpos 20
+            if renpy.get_screen("computer_ui") or renpy.get_screen("computer_ui_menu") or renpy.get_screen("computer_ui", "master"): 
+                # Logo 
+                add "#000": 
+                    xysize(35, 20)
+                    yalign 0.5
+                    xpos 20
 
             hbox: 
                 xpos int(config.screen_width * 2 / 3) - 40
@@ -314,7 +318,7 @@ screen status_bar():
                 yalign 0.5 
                 spacing 30
 
-                if renpy.get_screen("computer_ui") or renpy.get_screen("computer_ui_menu"): 
+                if renpy.get_screen("computer_ui") or renpy.get_screen("computer_ui_menu") or renpy.get_screen("computer_ui", "master"): 
                     # Battery
                     add "#000": 
                         xysize(40, 20)
@@ -333,11 +337,12 @@ screen status_bar():
                     null width 40 height 20
                     null width 40 height 20
 
-                text abyss_date: 
+                text _(abyss_date.strftime("%a %b %d")): 
                     size 20
 
                 textbutton (abyss_time): 
                     style "default"
+                    text_hover_color gui.hover_color
                     text_size 20
 
                     action If(renpy.get_screen("computer_ui_menu"), Return(), None)
@@ -421,7 +426,7 @@ screen navigation_dock():
 
             action ShowMenu("preferences")
 
-        # Endings - Icon Button 
+        # Ending Gallery - Icon Button 
         imagebutton: 
             idle "gui/placeholders/dock_icon_placeholder.svg"
 
@@ -674,7 +679,11 @@ style main_menu_version:
 ## This screen is intended to be used with one or more children, which are
 ## transcluded (placed) inside it.
 
-## Computer UI - Call as Menu
+## Computer UI - Call as Menu ##################################################
+##
+## A version of Computer UI that can be called on at any time in point as
+## the primary game menu
+
 screen computer_ui_menu(): 
 
     tag menu
@@ -683,7 +692,11 @@ screen computer_ui_menu():
     
     use computer_ui
 
-## Computer UI screen (Custom Game Screen)
+## Computer UI screen (Custom Game Screen) #####################################
+##
+## A screen that serves as a menu center from which the player can access
+## meta screens and special gameplay screens
+
 screen computer_ui(): 
 
     tag game
@@ -699,8 +712,9 @@ screen computer_ui():
             at fill_screen
 
         use status_bar
-        use app_grid
-        use navigation_dock
+        use app_grid  
+        if not renpy.get_screen("quick_menu"): # Only when Quick Menu is not Available
+            use navigation_dock 
 
 ## Scrollable Content 
 screen scrollable_content(scroll=None, yinitial=0.0, spacing=0): 
@@ -1459,18 +1473,46 @@ style help_label_text:
     xalign 1.0
     textalign 1.0
 
-## Endings Screen ##############################################################
-## This screen serves as a gallery for endings the Player has played through.
+## Ending Gallery Screen #######################################################
+## 
+## This screen serves as a gallery for endings the Player has achieved. 
 
 screen ending_gallery(): 
 
     tag menu 
     zorder 2
 
-    use meta_screen(_("Endings")): 
-        vbox: 
-            text "Endings Gallery" style "game_menu_label"
-            text "Coming soon..." style "game_menu_label"
+    $ screen_name = "Ending Gallery"
+
+    if player_endings == 0: # Zero Endings Unlcoked
+        use meta_screen(_(screen_name)): 
+
+            fixed:
+                clipping True
+
+                vbox: 
+                    xysize(655, 415)
+                    xalign 0.5
+                    ypos 120
+                    spacing 40 
+
+                    clipping True
+
+                    add "#000": 
+                        xysize(300, 350)
+                        xalign 0.5
+
+                    text "Currently no Available Endings": 
+                        bold True
+                        color "#000"
+                        size 30
+                        xalign 0.5
+
+    else: # At Least One Ending Unlocked 
+        
+        use meta_screen(_(screen_name), "vpgrid")
+            
+
 
 ################################################################################
 ## Special Gameplay screens
@@ -1560,7 +1602,7 @@ screen profile_app():
                 clipping True 
 
                 add "gui/placeholders/Profile App Wallet Tracker Background Placeholder.svg":
-                    xysize(260, 200)                
+                    xysize(260, 200)              
 
             # Stat Tracker
             fixed: 
@@ -1619,6 +1661,7 @@ screen chat_app():
                     xysize(570, 500)
             
 ## Draft App ###################################################################
+## 
 ## A screen that lets the player view the progress of the Epilogue Draft 
 ## the Player Character is writing on throughout the game
 
@@ -1671,6 +1714,109 @@ screen draft_tools():
                 xysize (700, 50)
 
 ################################################################################
+## Cosmetic Screens
+################################################################################
+
+## Computer UI - Lock Screen ###################################################
+##
+## A screen that displays in-game date & in-game time a step before the 
+## Computer UI (Main Screen) within game narrative. 
+
+screen computer_ui_locked(): 
+
+    tag cosmetic 
+
+    fixed: 
+
+        xysize(1280, 820)
+
+        clipping True 
+
+        add "#797979"
+
+        # Screen Content
+        vbox: 
+
+            xysize(430, 600)
+            xalign 0.5
+            spacing 120
+
+            
+            ypos 95
+
+            clipping True
+
+            # Date & Time
+            fixed:
+
+                xysize(430, 160)
+
+                clipping True 
+
+                add "#C8C8C8": 
+                    xysize(430, 160)
+
+                vbox: 
+                    xalign 0.5
+                    yalign 0.5
+                    spacing 10
+
+                    clipping True
+
+                    text abyss_date.strftime("%A, %B %d"): 
+                        color "#000"
+                        size 30
+                        
+                    text abyss_time: 
+                        color "#000"
+                        size 60 
+                        xalign 0.5
+                        
+
+            # Profile & Lock
+            fixed: 
+                xysize(270, 270)
+                xalign 0.5
+
+                clipping True 
+
+                # For Enquadrating 
+                # add "#fff": 
+                #    xysize(270, 270)
+
+                vbox: 
+
+                    xysize(270, 270)
+                    spacing 30
+
+                    clipping True
+
+                    # Profile
+                    vbox: 
+
+                        xysize(275, 205)
+                        spacing 10
+
+                        clipping True
+
+                        # Profile Pic
+                        add "#000":
+                            xysize(160, 160)
+                            xalign 0.5
+                            
+
+                        text "[player_name]":
+                            color "#000"
+                            size 30
+                            xalign 0.5
+                            
+                    # Lock
+                    add "#000": 
+                        xysize(30, 35)
+                        xalign 0.5
+                        
+
+
 
 ################################################################################
 ## Additional screens
@@ -1732,6 +1878,7 @@ style confirm_frame:
 style confirm_prompt_text:
     textalign 0.5
     layout "subtitle"
+    color "#C8C8C8"
 
 style confirm_button:
     properties gui.button_properties("confirm_button")
