@@ -119,10 +119,24 @@
 - Bugs & Fixes 
   - Status Bar Elements & Navigation Dock - Hide & Show Fix
   - Show screens on scene layer during script (show_scene)
+  - Intermidant Save_Load Screenshot when called through Computer UI Menu - Prevented
+    - Engine File Modified: 00action_file.rpy 
 
 - Narrative Script Progression
   - Day 1 - Introduction 
     - In Progress 
+
+- Usable Bedroom Background Progression 
+  - 1 Point Perspective
+  - Completed: 
+    - Desk Set Up 
+  - In Progress: 
+    - Bookshelf
+
+- Technical Additions 
+  - Tooltips Added 
+  - Player Name Validation Added 
+  
 
 - Project Proposal Report 
 

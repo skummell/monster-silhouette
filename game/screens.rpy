@@ -79,6 +79,17 @@ style frame:
     padding gui.frame_borders.padding
     background Frame("gui/frame.png", gui.frame_borders, tile=gui.frame_tile)
 
+style tooltip_frame: 
+    background "#5E5E5E"
+    xpadding 12 
+    ypadding 4
+
+style tooltip_text: 
+    size 14 
+    color "#C8C8C8"
+    xalign 0.5
+    textalign 0.5
+
 ################################################################################
 ## In-game screens
 ################################################################################
@@ -347,6 +358,8 @@ screen status_bar():
 
                     action If(renpy.get_screen("computer_ui_menu"), Return(), None)
 
+                    tooltip "Return"
+
 
 
 # Fill Screen Transform
@@ -400,51 +413,66 @@ style navigation_button_text:
 screen navigation_dock(): 
 
     zorder 2
+
+    fixed: 
     
-    # Dock Icons (6 icons)
-    grid 6 1: 
-        xalign 0.5
-        ypos 640
-        spacing 30 
+        # Dock Icons (6 icons)
+        grid 6 1: 
+            xalign 0.5
+            ypos 640
+            spacing 30 
 
-        # History - Icon Button 
-        imagebutton:
-            idle "gui/placeholders/dock_icon_placeholder.svg"
+            # History - Icon Button 
+            imagebutton:
+                idle "gui/placeholders/dock_icon_placeholder.svg"
 
-            action ShowMenu("history")
+                action ShowMenu("history")
 
-        # Save & Load - Icon Button
-        imagebutton: 
-            idle "gui/placeholders/dock_icon_placeholder.svg"
+                tooltip "History"
+                    
 
-            action ShowMenu("save_load")
-            
-
-        # Preferences - Icon Button 
-        imagebutton: 
-            idle "gui/placeholders/dock_icon_placeholder.svg"
-
-            action ShowMenu("preferences")
-
-        # Ending Gallery - Icon Button 
-        imagebutton: 
-            idle "gui/placeholders/dock_icon_placeholder.svg"
-
-            action ShowMenu("ending_gallery")
-
-        # About - Icon Button 
-        imagebutton: 
-            idle "gui/placeholders/dock_icon_placeholder.svg"
-
-            action ShowMenu("about")
-
-        # Help - Icon Button 
-        if renpy.variant("pc") or renpy.variant("web") and not renpy.variant("mobile"): 
-            ## Help isn't necessary or relevant to mobile devices. 
+            # Save & Load - Icon Button
             imagebutton: 
                 idle "gui/placeholders/dock_icon_placeholder.svg"
 
-                action ShowMenu("help")
+                action ShowMenu("save_load")
+
+                tooltip "Save & Load"
+                
+
+            # Preferences - Icon Button 
+            imagebutton: 
+                idle "gui/placeholders/dock_icon_placeholder.svg"
+
+                action ShowMenu("preferences")
+
+                tooltip "Preferences"
+
+            # Ending Gallery - Icon Button 
+            imagebutton: 
+                idle "gui/placeholders/dock_icon_placeholder.svg"
+
+                action ShowMenu("ending_gallery")
+
+                tooltip "Endings"
+
+            # About - Icon Button 
+            imagebutton: 
+                idle "gui/placeholders/dock_icon_placeholder.svg"
+
+                action ShowMenu("about")
+
+                tooltip "About"
+
+            # Help - Icon Button 
+            if renpy.variant("pc") or renpy.variant("web") and not renpy.variant("mobile"): 
+                ## Help isn't necessary or relevant to mobile devices. 
+                imagebutton: 
+                    idle "gui/placeholders/dock_icon_placeholder.svg"
+
+                    action ShowMenu("help")
+
+                    tooltip "Help"
     
     if _in_replay: 
         
@@ -459,12 +487,15 @@ screen navigation_dock():
 
             action MainMenu()
 
+            tooltip "Start Screen"
+
 ## App Grid Screen #############################################################
 ## This screen display in-game apps inside the Computer UI 
 
 screen app_grid():
 
-    # Grid Icons (6 columns x 3 rows) 
+    fixed: 
+        # Grid Icons (6 columns x 3 rows) 
         grid 6 3: 
             xalign 0.5
             ypos 150
@@ -477,18 +508,24 @@ screen app_grid():
                 idle "gui/placeholders/grid_icon_placeholder.svg"
 
                 action Show("profile_app")
-            
+
+                tooltip "Profile"
+                
             # Chat App 
             imagebutton: 
                 idle "gui/placeholders/grid_icon_placeholder.svg"
 
                 action Show("chat_app")
 
+                tooltip "Chat"
+
             # Draft App 
             imagebutton:
                 idle  "gui/placeholders/grid_icon_placeholder.svg"
 
                 action Show("draft_app")
+
+                tooltip "Draft"
 
             add "gui/placeholders/grid_icon_placeholder.svg"
             add "gui/placeholders/grid_icon_placeholder.svg"
@@ -509,6 +546,24 @@ screen app_grid():
             add "gui/placeholders/grid_icon_placeholder.svg"
             add "gui/placeholders/grid_icon_placeholder.svg"
             add "gui/placeholders/grid_icon_placeholder.svg"
+
+        
+    # Tooltip
+    $ tooltip = GetTooltip()
+    
+    if tooltip: 
+
+        nearrect:
+            focus "tooltip"
+            prefer_top True
+
+            frame:
+                style "tooltip_frame"
+                xalign 0.5
+                ysize 45
+                ymargin 10
+                    
+                text tooltip style "tooltip_text"
 
 ## App Screen Template #########################################################
 ## Template for app screens
@@ -715,6 +770,7 @@ screen computer_ui():
         use app_grid  
         if not renpy.get_screen("quick_menu"): # Only when Quick Menu is not Available
             use navigation_dock 
+    
 
 ## Scrollable Content 
 screen scrollable_content(scroll=None, yinitial=0.0, spacing=0): 
@@ -1686,7 +1742,7 @@ screen draft_app():
             
             clipping True
 
-            text "Text Here": 
+            text "Draft Text Here": 
                 color "#000"
     
 screen draft_tools(): 
@@ -1814,9 +1870,23 @@ screen computer_ui_locked():
                     add "#000": 
                         xysize(30, 35)
                         xalign 0.5
-                        
+
+################################################################################
+## Meta Tooltips ###############################################################
+##
+## A Screen that displays tooltips (hover text) for Buttons leading to 
+## Meta Screens 
 
 
+## App Tooltips ################################################################
+## 
+## A Screen that displays tooltips (hover text) for buttons leading to 
+## in-game menus (apps)
+
+## Misc Tooltips ################################################################
+## 
+## A Screen that displays tooltips (hover text) for buttons leading miscellanous
+## screens such as Return buttons
 
 ################################################################################
 ## Additional screens

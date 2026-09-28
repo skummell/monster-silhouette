@@ -8,11 +8,25 @@ init python:
     import datetime
 
 # Utility Functions
-init python: 
+init python: # Call Screen on Master (Scene) Layer
 
     def show_scene(screen_name):     
         renpy.scene(layer="master") # Clear Layer
-        renpy.show_screen(screen_name, _layer="master") # Call Screen on Master (Scene) Layer
+        renpy.show_screen(screen_name, _layer="master") 
+
+    def show_app(screen_name): 
+        renpy.show_screen(screen_name, _layer="master") 
+
+    def hide_app(screen_name): 
+        renpy.hide_screen(screen_name, layer="master")
+
+init python: # Format Player Name (First Letter Upper + Following Letters Lower)
+    def format_player_name(raw): 
+        raw = raw.strip()
+        if not raw: 
+            return ""
+        return raw[0].upper() + raw[1:].lower()
+    
 
 # Internal States 
 # Hidden Flags 
