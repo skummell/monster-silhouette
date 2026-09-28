@@ -107,7 +107,7 @@
 
 - Project Proposal Presentation Slides
 
-## Sep 22-23, 2026
+## Sep 22-27, 2026
 
 - Update Meta Screens 
   - Ending Gallery Screen 
@@ -119,12 +119,13 @@
 - Bugs & Fixes 
   - Status Bar Elements & Navigation Dock - Hide & Show Fix
   - Show screens on scene layer during script (show_scene)
+  - Show app screens (modal) on scene layer during script (show_app)
   - Intermidant Save_Load Screenshot when called through Computer UI Menu - Prevented
     - Engine File Modified: 00action_file.rpy 
 
 - Narrative Script Progression
   - Day 1 - Introduction 
-    - In Progress 
+    - In Progress (Just Before First Chat Interaction)
 
 - Usable Bedroom Background Progression 
   - 1 Point Perspective
@@ -136,7 +137,6 @@
 - Technical Additions 
   - Tooltips Added 
   - Player Name Validation Added 
-  
 
 - Project Proposal Report 
 
