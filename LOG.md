@@ -107,7 +107,7 @@
 
 - Project Proposal Presentation Slides
 
-## Sep 22-27, 2026
+## Sep 22-28, 2026
 
 - Update Meta Screens 
   - Ending Gallery Screen 
