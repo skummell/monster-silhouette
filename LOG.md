@@ -121,7 +121,7 @@
   - Show screens on scene layer during script (show_scene)
   - Show app screens (modal) on scene layer during script (show_app)
   - Intermidant Save_Load Screenshot when called through Computer UI Menu - Prevented
-    - Engine File Modified: 00action_file.rpy 
+    - Engine File Modified: 00gamemenu.rpy
 
 - Narrative Script Progression
   - Day 1 - Introduction 
@@ -137,6 +137,7 @@
 - Technical Additions 
   - Tooltips Added 
   - Player Name Validation Added 
+  - Key Binding for QuickSave and QuickLoad
 
 - Project Proposal Report 
 

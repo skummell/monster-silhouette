@@ -110,6 +110,9 @@ style tooltip_text:
 
 screen say(who, what):
 
+    key "K_F5" action QuickSave()
+    key "K_F6" action QuickLoad()
+
     window:
         id "window"
 
@@ -574,7 +577,10 @@ screen app_screen(window_width, window_height, content_width, content_height, sc
     
     tag app
 
-    key "game_menu" action Hide()
+    if renpy.get_screen("app", "master"):
+        key "game_menu" action config.game_menu_action
+    else: 
+        key "game_menu" action Hide()
 
     window id "app": 
 

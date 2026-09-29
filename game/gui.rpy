@@ -64,7 +64,6 @@ define gui.hover_muted_color = '#005b7a'
 define gui.text_color = '#C8C8C8'
 define gui.interface_text_color = '#000'
 
-
 ## Fonts and Font Sizes ########################################################
 
 ## The font used for in-game text.
