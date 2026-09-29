@@ -122,6 +122,9 @@
   - Show app screens (modal) on scene layer during script (show_app)
   - Intermidant Save_Load Screenshot when called through Computer UI Menu - Prevented
     - Engine File Modified: 00gamemenu.rpy
+  - Fix ESC shortcut when App called in Master Scene 
+    - Prevent it from hiding App 
+    - Let it function like a normal Game Menu Action
 
 - Narrative Script Progression
   - Day 1 - Introduction 
