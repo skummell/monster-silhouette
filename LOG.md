@@ -162,3 +162,81 @@
   - Display Date & Time 
   - Display Player Name
 
+## Sep 29-30, 2026 
+
+- New File: `custom_systems.rpy`
+  - Custom Statements & Utility Functions to work with Game Systems 
+  - Current Statements: 
+    - Utility Functions Transfered into Statements
+      - `show_scene "screen"`
+      - `show_app "screen"` - App Exit Button Functionality Blocked By Default 
+        - `show_app_e "screen"` - New! (Enabled App Exit Button Functionality)
+      - `hide_app "screen"`
+    - New Statements:
+      - `chat_start "contact"`
+      - `chat_end "contact"`
+  - Current Functions: 
+    - `show_scene(screen)`
+    - `show_app(screen, disabled)`
+    - `hide_app(screen)`
+    - `get_chat_entries(contact)`
+
+- Chat App Functionality 
+  - Contact Panel
+    - Scrollable
+    - Contact Item Buttons
+      - Set Active Contact 
+  - Active Chat Box 
+    - Scrollable
+    - Activates Chat Box linked to Active Contact 
+    - Chat Log 
+      - Chat System
+        - Store Script lines that correspond to Chat conversation 
+          - Custom Statements: `chat_start "contact_name"` & `chat_end "contact_name"` 
+            - Track Beginning and End of Chat Conversation inside of Script through Rollback History point ranges (length at start & end)
+            - Store History Ranges inside of a List of Chat Ranges linked to a Contact (contact_name)
+        - Read Chat History: `get_chat_entries(contact_name)` 
+          - Pull from Roll History 
+          - Filter by recorded ranges & NVL
+      - Display NVL Lines in Chat Box 
+    - Chat Bubbles 
+      - Display NVL Lines in Chat Bubbles
+        - Chat History
+        - Live Script 
+      - Chat Bubble Background: 
+        - Sent Chat Bubbles for Player Character (Right Aligned)
+        - Receive Chat Bubbles for other characters (Left Aligned)
+
+### Sep 30, 2026 
+
+- Project Proposal Presentation
+
+- Chat App Bugs & Fixes
+  - Bubble Padding & Text Container
+  - Scrollable Fixes
+    - Auto Scrolls with Script Progression
+    - Opens scrolled to the end
+  - Seamless switch between Live Script & Updated Chat History Rendering
+    - Render Live Chat if NVL Script not Empty 
+    - Clear NVL Script 
+      - When: 
+        - Chat Box is activated again 
+        - Or on Chat App Hide 
+      - If: 
+        - No longer in Chat Block
+
+## Oct 1, 2026
+
+- Narrative Script Progression
+  - Script Files (not included in Repo) - `script/demo/`
+    - `demo_intro.rpy`
+    - `demo_choices/demo_intro.rpy` - New File!
+    - `demo_interludes/demo_interlude1.rpy` - New File!
+  - Completed Script Dialogue Implementation
+    - Day 1 - Introduction
+    - Day 1 - First Choice 
+  - Not Completed: 
+    - Game System Implementations Within Script
+    - Day 1 - First Interlude 
+      - Stopped Before Prep Phase
+    

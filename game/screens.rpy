@@ -6,8 +6,9 @@
 ################################################################################
 
 init offset = -1
-default player_endings = 0
-default total_endings = 0
+default player_endings = 0 # Track How Many Endings Have Been Reached By The Player
+default total_endings = 0 # Number Of Endings Currently Available 
+default active_contact = None # Track which Chat Contact is Open / Active
 
 ################################################################################
 ## Styles
@@ -300,7 +301,7 @@ style quick_button_text:
 ## Main and Game Menu Screens
 ################################################################################
 
-## Status Bar (Custom Screen) ##################################################
+## Status Bar screen ###########################################################
 ## This screen is only included in-game and provides you with the
 ## in-game date and time
 screen status_bar(): 
@@ -363,8 +364,6 @@ screen status_bar():
 
                     tooltip "Return"
 
-
-
 # Fill Screen Transform
 transform fill_screen: 
     xysize (config.screen_width, config.screen_height)
@@ -409,7 +408,7 @@ style navigation_button:
 style navigation_button_text:
     properties gui.text_properties("navigation_button")
 
-## Navigation Dock - Custom In-Game Navigation Screen ##########################
+## Navigation Dock screen ######################################################
 ## Similar to the Navigation Screen, this screen provides navigation
 ## to other menus.
 
@@ -492,13 +491,18 @@ screen navigation_dock():
 
             tooltip "Start Screen"
 
-## App Grid Screen #############################################################
+## App Grid screen #############################################################
 ## This screen display in-game apps inside the Computer UI 
 
 screen app_grid():
 
+    $ in_scene = False
+
+    if not renpy.get_screen("computer_ui_menu") and renpy.get_screen("computer_ui", layer="master"): 
+        $ in_scene = True
+
     fixed: 
-        # Grid Icons (6 columns x 3 rows) 
+        # Grid Icons (6 columns x 3 rows)  
         grid 6 3: 
             xalign 0.5
             ypos 150
@@ -509,8 +513,8 @@ screen app_grid():
             # Profile App
             imagebutton: 
                 idle "gui/placeholders/grid_icon_placeholder.svg"
-
-                action Show("profile_app")
+                
+                action If(in_scene, Function(show_app, "profile_app"), Show("profile_app"))
 
                 tooltip "Profile"
                 
@@ -518,7 +522,7 @@ screen app_grid():
             imagebutton: 
                 idle "gui/placeholders/grid_icon_placeholder.svg"
 
-                action Show("chat_app")
+                action If(in_scene, Function(show_app, "chat_app"), Show("chat_app"))
 
                 tooltip "Chat"
 
@@ -526,7 +530,7 @@ screen app_grid():
             imagebutton:
                 idle  "gui/placeholders/grid_icon_placeholder.svg"
 
-                action Show("draft_app")
+                action If(in_scene, Function(show_app, "draft_app"), Show("draft_app"))
 
                 tooltip "Draft"
 
@@ -570,10 +574,10 @@ screen app_grid():
 
 ## App Screen Template #########################################################
 ## Template for app screens
-## 
+## (Profile, Chat, Draft)
 ## For Design consistency
 
-screen app_screen(window_width, window_height, content_width, content_height, screen_title, tool_screen=None): 
+screen app_screen(window_width, window_height, content_width, content_height, screen_title, tool_screen=None, disable=None): 
     
     tag app
 
@@ -595,7 +599,7 @@ screen app_screen(window_width, window_height, content_width, content_height, sc
                 xysize (window_width, window_height)
 
             # Title Bar 
-            use app_header(window_width, screen_title)
+            use app_header(window_width, screen_title, disable)
 
             # Main Content Area
             frame: 
@@ -618,16 +622,18 @@ style app_window:
 
 define app_header_height = 35
 
-screen app_header(window_width, screen_title): 
+## App Header screen ###########################################################
+##
+## Displays App Header with App Name and the closing button inside of 
+## App Screens
+
+screen app_header(window_width, screen_title, disable=False): 
 
     frame: 
 
         xysize(window_width, app_header_height)
-        background None 
-        padding (0, 0)
-        margin (0, 0)
-
-        clipping True 
+        
+        style "app_header_frame"
 
         add "gui/placeholders/App Title Bar Placeholder.svg": 
             xysize(config.screen_width, app_header_height)
@@ -643,15 +649,17 @@ screen app_header(window_width, screen_title):
                 idle "gui/placeholders/App Exit Button Placeholder.svg"
                 at app_exit_button
 
-                action Hide()
+                if disable: 
+                    action NullAction()
+                else: 
+                    action Hide()
 
             # Title Text 
             text screen_title: 
                 xalign 0.5
                 ypos 4
                 bold True
-            
-    
+
 transform app_exit_button: 
     xysize(60, 25)
     xpos 10
@@ -662,6 +670,13 @@ transform app_main_content(content_width, content_height):
     xysize(content_width, content_height)
     xalign 0.5
     ypos app_header_height + 20 
+
+style app_header_frame: 
+    background None 
+    padding (0, 0)
+    margin (0, 0)
+
+    clipping True 
 
 style app_main_content:
     background None
@@ -740,7 +755,7 @@ style main_menu_version:
 ## This screen is intended to be used with one or more children, which are
 ## transcluded (placed) inside it.
 
-## Computer UI - Call as Menu ##################################################
+## Computer UI Menu screen #####################################################
 ##
 ## A version of Computer UI that can be called on at any time in point as
 ## the primary game menu
@@ -776,27 +791,38 @@ screen computer_ui():
         use app_grid  
         if not renpy.get_screen("quick_menu"): # Only when Quick Menu is not Available
             use navigation_dock 
-    
 
-## Scrollable Content 
-screen scrollable_content(scroll=None, yinitial=0.0, spacing=0): 
+## Scrollable Content screen ###################################################
+##
+## A screen that provides scroll support depending on the scroll type
+
+screen scrollable_content(scroll=None, yinitial=0.0, spacing=0, scrollbars="vertical", left_pad=0, top_pad=0, right_pad=0, bottom_pad=0, yadjustment=None): 
+
     # Content with scroll support
     if scroll == "viewport":
         viewport:
             xfill True
             yfill True
             yinitial yinitial
-            scrollbars "vertical"
+            yadjustment yadjustment
+            scrollbars scrollbars
             vscrollbar_unscrollable "hide"
             mousewheel True
             draggable True
             pagekeys True
-                        
 
-            vbox:
-                spacing spacing
-                xfill True
-                transclude
+            frame: 
+                background None 
+
+                padding (left_pad, top_pad, right_pad, bottom_pad)
+
+                
+                vbox:
+
+                    spacing spacing
+                    xfill True
+
+                    transclude
 
     elif scroll == "vpgrid":
         vpgrid:
@@ -804,7 +830,7 @@ screen scrollable_content(scroll=None, yinitial=0.0, spacing=0):
             yfill True
             cols 1
             yinitial yinitial
-            scrollbars "vertical"
+            scrollbars scrollbars
             vscrollbar_unscrollable "hide"
             mousewheel True
             draggable True
@@ -816,9 +842,17 @@ screen scrollable_content(scroll=None, yinitial=0.0, spacing=0):
     else:
         transclude
 
+init python:
+    adj = ui.adjustment() 
+
+    def auto_scroll_bottom(): 
+        if adj.value == adj.range: 
+            adj.value = float('inf')
+
 ## Meta Screen Template ########################################################
+## 
 ## Template for all meta screens 
-## (About, Save & Load, History, Preferences, Help, Endings)
+## (About, Save & Load, History, Preferences, Help, Ending Gallery)
 ## For Design consistency
 
 screen meta_screen(title, scroll=None, yinitial=0.0, spacing=0): 
@@ -1535,7 +1569,7 @@ style help_label_text:
     xalign 1.0
     textalign 1.0
 
-## Ending Gallery Screen #######################################################
+## Ending Gallery screen #######################################################
 ## 
 ## This screen serves as a gallery for endings the Player has achieved. 
 
@@ -1580,12 +1614,12 @@ screen ending_gallery():
 ## Special Gameplay screens
 ################################################################################
 
-## Profile App Screen ##########################################################
+## Profile App screen ##########################################################
 ## 
 ## A screen that gives information about the player's current Player Name, 
 ## Wallet Location, as well as Rapport & Suspicion Stats
 
-screen profile_app(): 
+screen profile_app(disable=None): 
 
     tag app
     zorder 10
@@ -1597,7 +1631,7 @@ screen profile_app():
     $ content_width = 650
     $ content_height = 525
     
-    use app_screen(window_width, window_height, content_width, content_height, "Profile"):
+    use app_screen(window_width, window_height, content_width, content_height, "Profile", disable=disable):
                 
         # Profile Info
         fixed: 
@@ -1677,16 +1711,18 @@ screen profile_app():
                 add "gui/placeholders/Profile App Stat Tracker Background Placeholder.svg":
                     xysize(340, 200)
 
-## Chat App ####################################################################
+## Chat App screen ####################################################################
 ## 
 ## A screen that stores away Chats between the Player Character & other 
 ## Characters which serve as a part of the narrative
 
-screen chat_app(): 
+screen chat_app(disable=None): 
 
     tag app 
     zorder 10 
     modal True 
+
+    on "hide" action SetVariable("active_contact", None), If(_in_chat_block, false=Function(nvl_clear))
 
     # App Screen Dimensions 
     $ window_width = 900
@@ -1694,7 +1730,7 @@ screen chat_app():
     $ content_width = 850
     $ content_height = 525
 
-    use app_screen(window_width, window_height, content_width, content_height, "Chat"):
+    use app_screen(window_width, window_height, content_width, content_height, "Chat", disable=disable):
 
         fixed: 
             xysize(230 + 570 + 20, 500)
@@ -1712,6 +1748,12 @@ screen chat_app():
                 add "gui/placeholders/Contact Panel Background Placeholder.svg":
                     xysize(230, 500)
 
+                # Contact List
+                use scrollable_content("viewport", spacing=20, top_pad=10, bottom_pad=10): 
+
+                    # And (Theo) - Contact Item Button 
+                    use contact_item("And")
+
             # Chat Box
             fixed: 
                 xysize(570, 500)
@@ -1721,13 +1763,157 @@ screen chat_app():
 
                 add "gui/placeholders/Chat Box Background Placeholder.svg":
                     xysize(570, 500)
+
+                if active_contact: 
+                    use chat_box(active_contact)
+
+## Contact Item Template ##############################################################
+## 
+## A template screen for contact item buttons, which will active the chat box contact
+
+screen contact_item(name, avatar="#808080"): 
+
+    button: 
+
+        xysize(200, 90)
+        xalign 0.5 
+
+        clipping True 
+
+        action SetVariable("active_contact", name), If(_in_chat_block, false=Function(nvl_clear))
+
+        add "gui/placeholders/Contact Item Background.svg": 
+            xysize(200, 90)
+
+        # Contact Button Content 
+        hbox: 
+            style "chat_contact"
+
+            # Contact Profile
+            add avatar: 
+                ypos 10
+                xysize(50, 50)
+
+            # Contact Name
+            fixed: 
+                xysize (100, 60)
+
+                clipping True 
+
+                text name style "chat_contact_text"
+
+style chat_contact: 
+    xpos 15
+    yalign 0.5 
+    spacing 15
+
+    clipping True
+
+style chat_contact_text: 
+    bold True
+    xalign 0.5
+    size 18
+    color "#000"
+    textalign 0.5
+
+## Chat Box Template ###########################################################
+##
+## Screen Template for an active Chat Box inside Chat App. 
+
+screen chat_box(contact): 
+
+    ## Chat Box Header 
+    fixed: 
+
+        xysize(570, 40)
+        
+        clipping True
+
+        add "gui/placeholders/Chat Box Header.svg": 
+            xysize(570, 40)
+
+        text contact: 
+            xalign 0.5 
+            yalign 0.5 
+            bold True 
+            size 25
+
+    ## Main Content Area
+    fixed: 
+
+        xysize(570, 410)
+        ypos 40
+
+        clipping True
+
+        add "#9b1c1c" # Get Rid of Later
+
+        # Chat Content 
+        use scrollable_content("viewport", spacing=15, scrollbars=None, yinitial=1.0, top_pad=20, bottom_pad=20, left_pad=25, right_pad=25, yadjustment=adj): 
             
-## Draft App ###################################################################
+            # Chat Buffer ? 
+
+            # Chat History 
+            for entry in get_chat_entries(contact): 
+                
+                use chat_bubble(entry.who, entry.what)
+
+            # Live Chat
+            if nvl_list:
+                for entry in nvl_list: 
+                    use chat_bubble(entry[0], entry[1])
+                    $ auto_scroll_bottom()
+                
+    # Keyboard Field
+    fixed: 
+        xysize(500, 40)
+        xalign 0.5
+        ypos 410 + 40 
+        clipping True
+
+        add "gui/placeholders/Keyboard Bubble.svg":
+            xysize(500, 30)
+
+## Chat Bubble screen ##########################################################
+##
+## A screen that displays a script line tied to a nvl type character 
+
+screen chat_bubble(who, what): 
+
+    $ is_sent = (who == chat_c.name)
+    $ bubble = "gui/placeholders/Chat Bubble (Sent).svg" if is_sent else "gui/placeholders/Chat Bubble (Receive).svg"
+    $ bubble_text_color = "#000" if is_sent else "#C8C8C8"
+    $ xalign = 1.0 if is_sent else 0
+
+    frame: 
+
+        xsize 240
+        xalign xalign
+        padding (20, 10, 20, 10)
+
+        clipping True
+
+        background Frame(bubble, 4, 4, 4, 4)
+
+        # Chat Bubble Text Container
+        fixed: 
+
+            xsize 200
+            yfit True
+
+            clipping True
+
+            text what: 
+                xsize 200
+                size 16 
+                color bubble_text_color
+
+## Draft App screen ############################################################
 ## 
 ## A screen that lets the player view the progress of the Epilogue Draft 
 ## the Player Character is writing on throughout the game
 
-screen draft_app(): 
+screen draft_app(disable=None): 
 
     tag app 
     zorder 10 
@@ -1739,7 +1925,7 @@ screen draft_app():
     $ content_width = 670
     $ content_height = 575
 
-    use app_screen(window_width, window_height, content_width, content_height, "Draft", "draft_tools"): 
+    use app_screen(window_width, window_height, content_width, content_height, "Draft", "draft_tools", disable=disable): 
 
         frame: 
             xysize(650, 515)
@@ -1750,7 +1936,11 @@ screen draft_app():
 
             text "Draft Text Here": 
                 color "#000"
-    
+
+## Draft Tools screen ##########################################################
+## 
+## A screen that displays Draft App Tools
+
 screen draft_tools(): 
 
     tag tools
@@ -1779,7 +1969,7 @@ screen draft_tools():
 ## Cosmetic Screens
 ################################################################################
 
-## Computer UI - Lock Screen ###################################################
+## Computer UI - Lock screen ###################################################
 ##
 ## A screen that displays in-game date & in-game time a step before the 
 ## Computer UI (Main Screen) within game narrative. 
@@ -1790,7 +1980,7 @@ screen computer_ui_locked():
 
     fixed: 
 
-        xysize(1280, 820)
+        xysize(1280, 720)
 
         clipping True 
 
@@ -1876,23 +2066,6 @@ screen computer_ui_locked():
                     add "#000": 
                         xysize(30, 35)
                         xalign 0.5
-
-################################################################################
-## Meta Tooltips ###############################################################
-##
-## A Screen that displays tooltips (hover text) for Buttons leading to 
-## Meta Screens 
-
-
-## App Tooltips ################################################################
-## 
-## A Screen that displays tooltips (hover text) for buttons leading to 
-## in-game menus (apps)
-
-## Misc Tooltips ################################################################
-## 
-## A Screen that displays tooltips (hover text) for buttons leading miscellanous
-## screens such as Return buttons
 
 ################################################################################
 ## Additional screens
@@ -2064,38 +2237,25 @@ style notify_text:
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#nvl
 
+## NVL is used exclusively for Chat in this project. 
+## Visually Hidden with nvl_dialogue kept for required Text object by Ren'Py
 
 screen nvl(dialogue, items=None):
 
+
     window:
         style "nvl_window"
+        at transparent
+        background None
+        
 
-        has vbox:
-            spacing gui.nvl_spacing
+        has vbox: 
+            spacing gui.nvl_spacing 
 
-        ## Displays dialogue in either a vpgrid or the vbox.
-        if gui.nvl_height:
+        use nvl_dialogue(dialogue)
 
-            vpgrid:
-                cols 1
-                yinitial 1.0
-
-                use nvl_dialogue(dialogue)
-
-        else:
-
-            use nvl_dialogue(dialogue)
-
-        ## Displays the menu, if given. The menu may be displayed incorrectly if
-        ## config.narrator_menu is set to True.
-        for i in items:
-
-            textbutton i.caption:
-                action i.action
-                style "nvl_button"
-
-    add SideImage() xalign 0.0 yalign 1.0
-
+transform transparent: 
+    alpha 0.0
 
 screen nvl_dialogue(dialogue):
 

@@ -7,26 +7,18 @@
 init python: 
     import datetime
 
-# Utility Functions
-init python: # Call Screen on Master (Scene) Layer
-
-    def show_scene(screen_name):     
-        renpy.scene(layer="master") # Clear Layer
-        renpy.show_screen(screen_name, _layer="master") 
-
-    def show_app(screen_name): 
-        renpy.show_screen(screen_name, _layer="master") 
-
-    def hide_app(screen_name): 
-        renpy.hide_screen(screen_name, layer="master")
-
-init python: # Format Player Name (First Letter Upper + Following Letters Lower)
+# Routine Functions
+init python: 
+    # Format Player Name (First Letter Upper + Following Letters Lower)
     def format_player_name(raw): 
         raw = raw.strip()
         if not raw: 
             return ""
         return raw[0].upper() + raw[1:].lower()
-    
+
+    # NVL Characters 
+    def nvl_char(name, color, **kwargs): 
+        return Character(name, color=color, kind=nvl, **kwargs)
 
 # Internal States 
 # Hidden Flags 
@@ -56,10 +48,9 @@ define t = Character("Theo", color="#890095")
 define v = Character("Victor", color="#009500")
 define c = Character("[player_name]", color="#950000")
 
-define chat_t = Character("And", color="#890095", kind=nvl)
-define chat_c = Character("The Abyss Stares Back", color="#950000", kind=nvl)
-define chat_l = Character("Golden Manager", color="#ffb700", kind=nvl)
-
+define chat_t = nvl_char("And", "#890095")
+define chat_c = nvl_char("The Abyss Stares Back", "#950000")
+define chat_l = nvl_char("Golden Manager", "#ffb700")
 
 # The game starts here.
 
@@ -69,7 +60,17 @@ label start:
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
 
-    call demo_intro
+    # Loading Screen 
+
+    # Warning Screen 
+
+    # Black Screen 
+
+    # Day 1 (Demo) Start
+
+    call demo_intro # script/demo/demo_intro.rpy
+
+    ```W.I.P```
 
     # This ends the game.
 

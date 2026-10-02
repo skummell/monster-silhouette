@@ -236,7 +236,3 @@ init python:
 
 ## Sync Disabled for Demo 
 define config.has_sync = False
-
-## Misc ########################################################################
-
-define config.keep_screenshot_entering_menu = True
