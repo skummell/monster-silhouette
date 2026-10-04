@@ -149,7 +149,7 @@
 - Status Bar Update 
   - Inner Layout
   - Display Date & Time
-    - Time functions as textbutton to return to game when inside computer_ui_menu
+    - Time Display functions as textbutton to return to game when inside computer_ui_menu
   - Set as Overlay Screen
 - Dynamic Scaling of Window & Elements
   - Stretches Elements
@@ -239,4 +239,16 @@
     - Game System Implementations Within Script
     - Day 1 - First Interlude 
       - Stopped Before Prep Phase
-    
+
+# Oct 2-3, 2026 
+
+- Default Scheduled Times of Day Dictionary Variable
+  - Format:
+    - `occasion`: 
+      - default: wake_up, break, lounge_arrival, lounge_closes
+      - early time: wake_up, break, lounge_arrival
+      - special event: lounge_closes
+    - `clock[occasion]` - for default time for `occasion` 
+    - `clock["early"][occasion]` - for early time for `occasion`
+    - `clock["special"][occasion]` - for special event time for `occasions`
+  - Implement clock variable usage to change time during set periods on script instead of manual assignment
