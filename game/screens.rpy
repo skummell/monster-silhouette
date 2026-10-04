@@ -10,6 +10,15 @@ default player_endings = 0 # Track How Many Endings Have Been Reached By The Pla
 default total_endings = 0 # Number Of Endings Currently Available 
 default active_contact = None # Track which Chat Contact is Open / Active
 
+default disabled_buttons = False # Universally disable all buttons that can be disabled
+default apps_disabled = False # Universally disable all app buttons 
+default exit_disabled = False # Universally disable all exit buttons
+default disable_contacts = False # Universally disable all contact buttons
+default profile_disabled = False # Disable profile app button
+default chat_disabled = False # Disable chat app button
+default draft_disabled = False # Disable draft app button
+# Disable button per contact
+
 ################################################################################
 ## Styles
 ################################################################################
@@ -516,6 +525,9 @@ screen app_grid():
                 
                 action If(in_scene, Function(show_app, "profile_app"), Show("profile_app"))
 
+                if profile_disabled || apps_disabled || disabled_buttons: 
+                    sensitive False
+
                 tooltip "Profile"
                 
             # Chat App 
@@ -524,11 +536,17 @@ screen app_grid():
 
                 action If(in_scene, Function(show_app, "chat_app"), Show("chat_app"))
 
+                if chat_disabled || apps_disabled || disabled_buttons: 
+                    sensitive False
+
                 tooltip "Chat"
 
             # Draft App 
             imagebutton:
                 idle  "gui/placeholders/grid_icon_placeholder.svg"
+
+                if draft_disabled || apps_disabled || disabled_buttons: 
+                    sensitive False
 
                 action If(in_scene, Function(show_app, "draft_app"), Show("draft_app"))
 
@@ -649,6 +667,11 @@ screen app_header(window_width, screen_title, disable=False):
                 idle "gui/placeholders/App Exit Button Placeholder.svg"
                 at app_exit_button
 
+                # Button Universally disabled
+                if exit_disabled || disabled_buttons: 
+                    sensitive False 
+
+                # Button Individually disabled per app 
                 if disable: 
                     action NullAction()
                 else: 
@@ -1781,6 +1804,9 @@ screen contact_item(name, avatar="#808080"):
         clipping True 
 
         action SetVariable("active_contact", name), If(_in_chat_block, false=Function(nvl_clear))
+
+        if disable_contacts: 
+            sensitive False
 
         add "gui/placeholders/Contact Item Background.svg": 
             xysize(200, 90)
