@@ -252,3 +252,12 @@
     - `clock["early"][occasion]` - for early time for `occasion`
     - `clock["special"][occasion]` - for special event time for `occasions`
   - Implement clock variable usage to change time during set periods on script instead of manual assignment
+
+- Player Character Mascot Concept Design
+
+- Bug Fixes
+  - Window Hiding Bug on a transparent transform window (nvl_window) 
+    - Get rid of transform 
+    - Overide nvl_window style to be fully transparent & Dialogue + Name to be transparent
+  - Accidental use of `||` in if conditions 
+    - Changed to `or`

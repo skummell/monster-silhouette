@@ -525,7 +525,7 @@ screen app_grid():
                 
                 action If(in_scene, Function(show_app, "profile_app"), Show("profile_app"))
 
-                if profile_disabled || apps_disabled || disabled_buttons: 
+                if profile_disabled or apps_disabled or disabled_buttons: 
                     sensitive False
 
                 tooltip "Profile"
@@ -536,7 +536,7 @@ screen app_grid():
 
                 action If(in_scene, Function(show_app, "chat_app"), Show("chat_app"))
 
-                if chat_disabled || apps_disabled || disabled_buttons: 
+                if chat_disabled or apps_disabled or disabled_buttons: 
                     sensitive False
 
                 tooltip "Chat"
@@ -545,7 +545,7 @@ screen app_grid():
             imagebutton:
                 idle  "gui/placeholders/grid_icon_placeholder.svg"
 
-                if draft_disabled || apps_disabled || disabled_buttons: 
+                if draft_disabled or apps_disabled or disabled_buttons: 
                     sensitive False
 
                 action If(in_scene, Function(show_app, "draft_app"), Show("draft_app"))
@@ -668,7 +668,7 @@ screen app_header(window_width, screen_title, disable=False):
                 at app_exit_button
 
                 # Button Universally disabled
-                if exit_disabled || disabled_buttons: 
+                if exit_disabled or disabled_buttons: 
                     sensitive False 
 
                 # Button Individually disabled per app 
@@ -2271,17 +2271,13 @@ screen nvl(dialogue, items=None):
 
     window:
         style "nvl_window"
-        at transparent
         background None
         
 
         has vbox: 
             spacing gui.nvl_spacing 
 
-        use nvl_dialogue(dialogue)
-
-transform transparent: 
-    alpha 0.0
+        use nvl_dialogue(dialogue) 
 
 screen nvl_dialogue(dialogue):
 
@@ -2319,8 +2315,8 @@ style nvl_window:
     xfill True
     yfill True
 
-    background "gui/nvl.png"
-    padding gui.nvl_borders.padding
+    background None
+    padding (0, 0, 0, 0)
 
 style nvl_entry:
     xfill True
@@ -2336,6 +2332,7 @@ style nvl_label:
     textalign gui.nvl_name_xalign
 
 style nvl_dialogue:
+    color "#00000000"
     xpos gui.nvl_text_xpos
     xanchor gui.nvl_text_xalign
     ypos gui.nvl_text_ypos

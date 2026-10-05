@@ -17,8 +17,9 @@ init python:
         return raw[0].upper() + raw[1:].lower()
 
     # NVL Characters 
-    def nvl_char(name, color, **kwargs): 
-        return Character(name, color=color, kind=nvl, **kwargs)
+    def nvl_char(name, **kwargs): 
+        # Transparent "#00000000" color to avoid it printing out on nvl_window
+        return Character(name, color="#00000000", kind=nvl, **kwargs) 
 
 # Internal States 
 # Hidden Flags 
@@ -67,9 +68,9 @@ define t = Character("Theo", color="#890095")
 define v = Character("Victor", color="#009500")
 define c = Character("[player_name]", color="#950000")
 
-define chat_t = nvl_char("And", "#890095")
-define chat_c = nvl_char("The Abyss Stares Back", "#950000")
-define chat_l = nvl_char("Golden Manager", "#ffb700")
+define chat_t = nvl_char("And")
+define chat_c = nvl_char("The Abyss Stares Back")
+define chat_l = nvl_char("Golden Manager")
 
 # The game starts here.
 
