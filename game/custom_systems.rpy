@@ -41,12 +41,21 @@ init offset = -1
 ## (start_index, end_index)
 default chat_ranges = {}
 
+# Chat Timestamps Storage
+## chat_timestamps = { "And": [(0, "Fri Sep 26", " 3:00 AM"), (12, "", " 5:00 PM")]}
+## (start_index, abyss_date if changed from last date saved otherwise blank, abyss_time)
+default chat_timestamps = {}
+
 ## Temporary state between chat_start and chat_end
 default _chat_start_index = None 
 default _chat_start_contact = None
 
 ## In Chat Flag 
 default _in_chat_block = False
+
+# Chat Timestamp flags
+default _chat_time_change = False
+default _chat_date_change = True
 
 ## Chat System Statements 
 python early: 
@@ -61,6 +70,13 @@ python early:
         store._chat_start_index = len(_history_list)
         store._chat_start_contact = contact 
         store._in_chat_block = True
+
+        # Timestamps
+        existing = store.chat_timestamps.get(contact, [])
+        last_date = next((e[1] for e in reversed(existing) if e[1]), None) # Last non empty date
+
+        store._chat_date_change = (last_date != store.abyss_date)
+        store._chat_time_change = True
 
     renpy.register_statement(
         name = "chat_start",
@@ -86,9 +102,26 @@ python early:
             (store._chat_start_index, len(_history_list))
         )
 
+        if store._chat_date_change:
+            date = date = store.abyss_date.strftime("%a, %b %d")  # "Fri, Sep 26" etc
+        else:
+            date = ""
+
+        if store._chat_time_change:
+
+            time = store.abyss_time
+        else:
+            time = ""
+
+        store.chat_timestamps.setdefault(contact, []).append(
+            (store._chat_start_index, date, time)
+        )
+
         store._chat_start_index = None
         store._chat_start_contact = None
         store._in_chat_block = False
+        store._chat_date_change = False
+        store._chat_time_change = False
 
         if renpy.get_screen("chat_app", layer="master"): 
             # Enable Exit Button
@@ -111,10 +144,20 @@ init python:
 
         result = []
 
-        for (start, end) in chat_ranges.get(contact, []): 
+        for i, (start, end) in enumerate(chat_ranges.get(contact, [])):
+            # Grab corresponding timestamp
+            ts = chat_timestamps.get(contact, [])[i]
+
+            # If timestamp date not empty append date value
+            if ts[1]: 
+                result.append({"type": "date", "value": ts[1]})
+            
+            # Append time value
+            result.append({"type": "time", "value": ts[2]})
+
             for h in _history_list[start:end]: 
                 if h.kind == "nvl": 
-                    result.append(h)
+                    result.append(h) # Flag type message
 
         return result
 

@@ -41,23 +41,23 @@ default abyss_date = datetime.date(2025, 9, 26) # (Fri) Sep 26
 default clock = { # Default Scheduled Times of Day
     # Default
     "wake_up": "11:00 AM",
-    "break": " 5:00 PM", 
-    "lounge_arrival": " 5:20 PM",
-    "lounge_closes": " 9:00 PM",
+    "break": "5:00 PM", 
+    "lounge_arrival": "5:20 PM",
+    "lounge_closes": "9:00 PM",
 
     # Early Day
     "early": { 
         "wake_up": "10:00 AM",
-        "break": " 4:00 PM",
-        "lounge_arrival": " 4:20 PM"
+        "break": "4:00 PM",
+        "lounge_arrival": "4:20 PM"
     },
 
     # Special Occasion
     "special": { 
-        "lounge_closes": " 8:00 PM",
+        "lounge_closes": "8:00 PM",
     }
 }
-default abyss_time = " 3:00 AM"
+default abyss_time = "3:00 AM"
 default day = 1
 
 # Declare characters used by this game. The color argument colorizes the

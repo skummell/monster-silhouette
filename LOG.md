@@ -261,3 +261,13 @@
     - Overide nvl_window style to be fully transparent & Dialogue + Name to be transparent
   - Accidental use of `||` in if conditions 
     - Changed to `or`
+  - New Fix for Pushing Time Left or Right Based on Whether Time is 3 or 4 digits
+    - Text Container with correct sizing and right align
+  - Return Bug on demo_intro after swapping label orders
+  - Chat Contact Panel @ Scrollable Error Formatting Content Style
+    - Viewpoint Height & Width Setting Parameters 
+    - Fix Padding with Test & Try for Height / Width Assignment
+
+- Chat App Polishes 
+  - Chat App Timestamps 
+  - Chat App Online Status

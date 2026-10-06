@@ -340,7 +340,7 @@ screen status_bar():
                 xpos int(config.screen_width * 2 / 3) - 40
                 xsize int(config.screen_width / 3) + 30
                 yalign 0.5 
-                spacing 30
+                spacing 20
 
                 if renpy.get_screen("computer_ui") or renpy.get_screen("computer_ui_menu") or renpy.get_screen("computer_ui", "master"): 
                     # Battery
@@ -364,14 +364,20 @@ screen status_bar():
                 text _(abyss_date.strftime("%a %b %d")): 
                     size 20
 
-                textbutton (abyss_time): 
-                    style "default"
-                    text_hover_color gui.hover_color
-                    text_size 20
+                # Time Text Container 
+                fixed: 
+                    xysize (100, 20)
+                    yalign 0.5
 
-                    action If(renpy.get_screen("computer_ui_menu"), Return(), None)
+                    textbutton (abyss_time): 
+                        style "default"
+                        xalign 1.0
+                        text_hover_color gui.hover_color
+                        text_size 20
 
-                    tooltip "Return"
+                        action If(renpy.get_screen("computer_ui_menu"), Return(), None)
+
+                        tooltip "Return"
 
 # Fill Screen Transform
 transform fill_screen: 
@@ -819,13 +825,20 @@ screen computer_ui():
 ##
 ## A screen that provides scroll support depending on the scroll type
 
-screen scrollable_content(scroll=None, yinitial=0.0, spacing=0, scrollbars="vertical", left_pad=0, top_pad=0, right_pad=0, bottom_pad=0, yadjustment=None): 
+screen scrollable_content(scroll=None, yinitial=0.0, spacing=0, scrollbars="vertical", left_pad=0, top_pad=0, right_pad=0, bottom_pad=0, yadjustment=None, vp_width=0, vp_height=0): 
 
     # Content with scroll support
     if scroll == "viewport":
         viewport:
-            xfill True
-            yfill True
+            if vp_width: 
+                xsize vp_width
+            else: 
+                xfill True
+
+            if vp_height: 
+                ysize vp_height
+            else: 
+                yfill True
             yinitial yinitial
             yadjustment yadjustment
             scrollbars scrollbars
@@ -1772,10 +1785,22 @@ screen chat_app(disable=None):
                     xysize(230, 500)
 
                 # Contact List
-                use scrollable_content("viewport", spacing=20, top_pad=10, bottom_pad=10): 
+                use scrollable_content("viewport", spacing=20, top_pad=10, bottom_pad=10, scrollbars=None, vp_width=230 - 5, vp_height=500 - 15): 
 
                     # And (Theo) - Contact Item Button 
                     use contact_item("And")
+
+                    # At You (Victor) - Contact Item Button 
+                    use contact_item("At You")
+
+                    # Golden Manager - Contact Item Button 
+                    use contact_item("Golden Manager")
+
+                    # The Abyss Stares Back (Player) - Contact Item Button 
+                    use contact_item("The Abyss Stares Back")
+
+                    # Stare Into The Abyss - Contact Item Button
+                    use contact_item("Stare Into The Abyss")
 
             # Chat Box
             fixed: 
@@ -1796,9 +1821,11 @@ screen chat_app(disable=None):
 
 screen contact_item(name, avatar="#808080"): 
 
+    $ online = False # Implement Disabler / Enabler later
+
     button: 
 
-        xysize(200, 90)
+        xysize(200, 110)
         xalign 0.5 
 
         clipping True 
@@ -1809,7 +1836,7 @@ screen contact_item(name, avatar="#808080"):
             sensitive False
 
         add "gui/placeholders/Contact Item Background.svg": 
-            xysize(200, 90)
+            xysize(200, 110)
 
         # Contact Button Content 
         hbox: 
@@ -1817,16 +1844,50 @@ screen contact_item(name, avatar="#808080"):
 
             # Contact Profile
             add avatar: 
-                ypos 10
-                xysize(50, 50)
+                ypos 5
+                xysize(60, 60)
 
             # Contact Name
             fixed: 
-                xysize (100, 60)
+                xysize (100, 70)
 
                 clipping True 
 
                 text name style "chat_contact_text"
+
+        if online: 
+            $ online_status = "online"
+            $ color = gui.accent_color
+        else: 
+            $ online_status = "offline"
+            $ color = gui.idle_color
+
+        # Online Status Text Container 
+        fixed: 
+            style "chat_contact"
+            xysize (60, 15)
+            xalign 1.0
+            yalign 1.0
+            xfill True
+            yfill True 
+
+            clipping True
+
+            add "#000": 
+                xysize (60, 15)
+
+            add "gui/placeholders/Profile App Profile Pic Placeholder.svg": # Make dot color based on 'color' with final asset
+                xysize(6, 6)
+                yalign 0.5
+                xpos 4
+
+            text online_status: 
+                xpos 15
+                yalign 0.5
+                size 10
+                bold True
+                color color
+
 
 style chat_contact: 
     xpos 15
@@ -1872,8 +1933,6 @@ screen chat_box(contact):
 
         clipping True
 
-        add "#9b1c1c" # Get Rid of Later
-
         # Chat Content 
         use scrollable_content("viewport", spacing=15, scrollbars=None, yinitial=1.0, top_pad=20, bottom_pad=20, left_pad=25, right_pad=25, yadjustment=adj): 
             
@@ -1881,23 +1940,44 @@ screen chat_box(contact):
 
             # Chat History 
             for entry in get_chat_entries(contact): 
+
+                # Timestamp marker
+                if isinstance(entry, dict): 
+                    if entry["type"] == "date": 
+                        use chat_date_stamp(entry["value"])
+                    else: 
+                        use chat_time_stamp(entry["value"])
+
+                # Messages
+                else: 
                 
-                use chat_bubble(entry.who, entry.what)
+                    use chat_bubble(entry.who, entry.what)
+
+            # Print Chat Time
 
             # Live Chat
             if nvl_list:
+
+                if _chat_date_change: 
+                    use chat_date_stamp(abyss_date.strftime("%a %b %d"))
+
+                use chat_time_stamp(abyss_time)
+                
                 for entry in nvl_list: 
                     use chat_bubble(entry[0], entry[1])
                     $ auto_scroll_bottom()
                 
     # Keyboard Field
+
     fixed: 
-        xysize(500, 40)
+        xysize(500, 50)
         xalign 0.5
-        ypos 410 + 40 
+        ypos 410 + 40
         clipping True
 
+        
         add "gui/placeholders/Keyboard Bubble.svg":
+            ypos 5
             xysize(500, 30)
 
 ## Chat Bubble screen ##########################################################
@@ -1933,6 +2013,56 @@ screen chat_bubble(who, what):
                 xsize 200
                 size 16 
                 color bubble_text_color
+
+## Chat Timestamp template for chat ############################################
+##
+## A screen that displays a date stamp
+
+screen timestamp_for_chat(stamp): 
+
+    frame: 
+
+        ysize 35 # See how it looks first ? 
+        xalign 0.5
+        yalign 0.5
+        padding (10, 10, 10, 10)
+
+        clipping True
+
+        background "#C8C8C8" 
+
+        # Timestamp Text Container
+        fixed: 
+            ysize 15 # See how it looks first ? 
+            xfit True
+            xalign 0.5
+            yalign 0.5
+            
+            clipping True 
+
+            text stamp: 
+                ysize 15 # See how it looks
+                textalign 0.5
+                size 14 # See how it looks 
+                color "#000" # See how it looks
+                bold True
+
+## Chat Datestamp screen #######################################################
+##
+## A screen that displays a date stamp for chat
+
+screen chat_date_stamp(date): 
+
+    use timestamp_for_chat(date)
+
+## Chat Timestamp screen #######################################################
+## 
+## A screen that displays a time stamp for chat
+
+screen chat_time_stamp(time): 
+
+    use timestamp_for_chat(time)
+
 
 ## Draft App screen ############################################################
 ## 
@@ -2092,6 +2222,7 @@ screen computer_ui_locked():
                     add "#000": 
                         xysize(30, 35)
                         xalign 0.5
+
 
 ################################################################################
 ## Additional screens
