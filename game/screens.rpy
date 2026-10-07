@@ -1960,8 +1960,7 @@ screen chat_box(contact):
         clipping True
 
         # Chat Content 
-        use scrollable_content("viewport", spacing=15, scrollbars=None, yinitial=1.0, top_pad=20, bottom_pad=20, left_pad=25, right_pad=25, yadjustment=adj): 
-
+        use scrollable_content("viewport", spacing=15, scrollbars=None, yinitial=1.0, top_pad=20, bottom_pad=20, left_pad=25, right_pad=25, yadjustment=adj):
             
             # Chat Buffer ? 
 

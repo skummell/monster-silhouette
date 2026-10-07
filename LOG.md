@@ -278,19 +278,11 @@
       - Fix lag with `ranged` `ui.adjustement` assigned to `adj`
 
 - Major File Update: `custom_systems.rpy`
-  - Current Statements: 
-    - `show_scene "screen"`
-    - `show_app "app_screen"` 
-    - `hide_app "app_screen"`
-    - `chat_start "contact"`
-    - `chat_end "contact"`
-    - `placeholder` - New Statement!
-  - Current Functions: 
-    - `show_scene(screen)`
-    - `show_app(a[pscreen)`
-    - `hide_app(screen)`
-    - `get_chat_entries(contact)`
-    - `placeholder` - New Function!
+  - Tweaks to existing functions and statements 
+    - `show_app_e` no longer exists! 
+  - New Functions!
+    - `button_disabled(button=None, report=True)`
+    - `button_disabler_status(global_btn=True, btn_type=True, btn_id=True, disabled=True, enabled=True, inline=False)`
 
 - Button Disabler System
   - Variables: 
@@ -298,8 +290,9 @@
     - `disabled_button_types` - Universal (boolean) disablers per button type
     - `disabled_button_ids` - List of individual disabled buttons
     - `valid_button_ids` - List of all valid button ids that can be disabled
-  - Custom Statements: 
-  - In Progress...
+  - Debug / Helper Functions:
+    - `button_disabled(button=None, report=True)` - boolean check whether a button is current disabled or not
+    - `button_disabler_status` - console function that prints an organized list of button disablers' status
 
 ### Oct 4, 2026 
 
@@ -322,3 +315,4 @@
   - New Occasions added!
     - default: work, mephisto_arrival, mephisto_leaves
     - early time: work
+

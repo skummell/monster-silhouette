@@ -6,18 +6,33 @@
 ## inside of the script
 ## Usage intented for inside labels for script
 ##
+## List of Game Systems currently handled: 
+##      Chat System 
+##      Scene System
+##      Button Disabler System 
+##
 ## List of Statements currently registered: 
 ##      chat_start "contact"    - begin recording chat range 
 ##      chat_end "contact"      - end recording chat range
 ##      show_scene "screen"     - shows a screen on the scene layer (acts exactly like scene "picture.png")
-##      show_app "screen"       - show a app screen on the scene layer (above current scene or show_scene)
-##      hide_app "screen"       - hide app screen on scene layer
+##      show_app "app_screen"   - show a app screen on the scene layer (above current scene or show_scene)
+##      hide_app "app_screen"   - hide app screen on scene layer
 ##
-## List of Game System Utility Functions
-##      get_chat_entries(contact)   - read chat entries / history linked to contact 
+## List of Game System Utility Functions:
 ##      show_scene(screen_name)     - show a screen on scene (master) layer
 ##      show_app(screen_name)       - show a app screen on scene (master layer) on top of current scene
-##      hide_app                    - hide a app screen on scene (master layer)
+##      hide_app(screen_name)       - hide a app screen on scene (master layer)
+##      get_chat_entries(contact)   - read chat entries / history linked to contact 
+##
+## List of Debugger / Helper Functions:
+##      button_disabled
+##        (button=None, report=True)
+##          - Check whether a button is disabled or not 
+##          - (boolean & report on inner flags printed to console)
+##      button_disabler_status
+##        (global_btn=True, btn_type=True, btn_id=True, disabled=True, enabled=True, inline=False)
+##          - Check button disabler status 
+##          - (prints organized list of status of disablers to console)
 
 ################################################################################
 ## Chat System #################################################################
@@ -261,14 +276,256 @@ init python:
 ##      
 
 init python: 
-    def button_disabled(button):
 
-        if disable_buttons: 
-            return True
+    # Helper / Debug Functions 
+    #   button_disabled(button=None, report=True)
+    #   
 
-        else: 
+    # Boolean check whether a button, button type or global disabler is disabled 
+    # leave button parameter empty if you want to check global disabler
+    # report=False if you don't want the report to print on console 
+    def button_disabled(button=None, report=True):
 
-            return False
+        # Searching by button type or button id
+        if button != None:
+
+            # 'button' is a button type - Searching by button type
+            if button in valid_button_ids:
+
+                # Disabled through global disabler
+                if disable_buttons:
+                    msg = f"Buttons of '{button}' type are DISABLED globally.\n\n"
+
+                    msg += "Flags:\n"
+                    msg += "  - global button disabler (True)\n"
+
+                    # AND Disabled through button type
+                    if disabled_button_types[button]:
+                        msg += f"  - {button} type disabler (True)"
+                    else:
+                        msg += f"  - {button} type disabler (False)"
+
+                    if report:
+                        print(msg)
+
+                    return True
+
+                else:
+
+                    # Disabled through button type
+                    if disabled_button_types[button]:
+                        msg = f"Buttons of '{button}' type are DISABLED.\n\n"
+
+                        msg += "Flags:\n"
+                        msg += "  - global button disabler (False)\n"
+                        msg += f"  - {button} type disabler (True)"
+
+                        if report:
+                            print(msg)
+
+                        return True
+
+                    else:
+                        msg = f"Buttons of '{button}' type are ENABLED.\n\n"
+
+                        msg += "Flags:\n"
+                        msg += "  - global button disabler (False)\n"
+                        msg += f"  - {button} type disabler (False)"
+
+                        if report:
+                            print(msg)
+
+                        return False
+
+            # 'button' is a button id
+            elif any(button in valid_button_ids[t] for t in valid_button_ids):
+
+                # Grab button type of button id
+                button_type = next((t for t in valid_button_ids if button in valid_button_ids[t]), None)
+
+                # Disabled through global disabler
+                if disable_buttons:
+                    msg = f"Button '{button}' of '{button_type}' is DISABLED globally.\n\n"
+
+                    msg += "Flags:\n"
+                    msg += "  - global button disabler (True)\n"
+
+                    # AND Disabled through button type disabler
+                    if disabled_button_types[button_type]:
+                        msg += f"  - {button_type} type disabler (True)\n"
+
+                        # AND Disabled through button id disabler
+                        if any(button in disabled_buttons_ids[t] for t in disabled_buttons_ids):
+                            msg += f"  - {button} id disabler (True)"
+                        else:
+                            msg += f"  - {button} id disabler (False)"
+
+                    else:
+                        msg += f"  - {button_type} type disabler (False)\n"
+
+                        if any(button in disabled_buttons_ids[t] for t in disabled_buttons_ids):
+                            msg += f"  - {button} id disabler (True)"
+                        else:
+                            msg += f"  - {button} id disabler (False)"
+
+                    if report:
+                        print(msg)
+
+                    return True
+
+                else:
+                    # Disabled through button type disabler
+                    if disabled_button_types[button_type]:
+                        msg = f"Button '{button}' of '{button_type}' is DISABLED by {button_type} type.\n\n"
+
+                        msg += "Flags:\n"
+                        msg += "  - global button disabler (False)\n"
+                        msg += f"  - {button_type} type disabler (True)\n"
+
+                        if any(button in disabled_buttons_ids[t] for t in disabled_buttons_ids):
+                            msg += f"  - {button} id disabler (True)"
+                        else:
+                            msg += f"  - {button} id disabler (False)"
+
+                        if report:
+                            print(msg)
+
+                        return True
+
+                    else:
+                        # Disabled through button id disabler
+                        if any(button in disabled_buttons_ids[t] for t in disabled_buttons_ids):
+                            msg = f"Button '{button}' of '{button_type}' is individually DISABLED.\n\n"
+
+                            msg += "Flags:\n"
+                            msg += "  - global button disabler (False)\n"
+                            msg += f"  - {button_type} type disabler (False)\n"
+                            msg += f"  - {button} id disabler (True)"
+
+                            if report:
+                                print(msg)
+
+                            return True
+
+                        else:
+                            msg = f"Button '{button}' of '{button_type}' is ENABLED.\n\n"
+                            msg += "Flags:\n"
+                            msg += "  - global button disabler (False)\n"
+                            msg += f"  - {button_type} type disabler (False)\n"
+                            msg += f"  - {button} id disabler (False)"
+
+                            if report:
+                                print(msg)
+
+                            return False
+            
+            # Invalid Parameter
+            else:
+                msg = f"'{button}' is not a valid button type or button id."
+
+                if report:
+                    print(msg)
+
+                return 1
+
+        # Search Global Disabler only
+        else:
+            if disable_buttons:
+                msg = "Buttons are DISABLED globally."
+
+                if report:
+                    print(msg)
+
+                return True
+
+            else:
+                msg = "Buttons are NOT disabled globally."
+
+                if report:
+                    print(msg)
+
+                return False
+
+    # Check for disable status of buttons 
+    # Returns an global button status and a organized list of button types and button ids 
+    # global_btn, btn_type, btn_id = False 
+    #   if you don't the Global, Type, Individual status of buttons respectively
+    # enabled, disabled = False
+    #   if you don't want the enabled or disabled list of button types or button ids 
+    #   If you set both of the to False it will be treated as though disabled is True so don't bother 
+    def button_disabler_status(global_btn=True, btn_type=True, btn_id=True, disabled=True, enabled=True, inline=False):
+
+        report = ""
+
+        if global_btn:
+            if disable_buttons:
+                report += "Buttons are Globally DISABLED."
+            else:
+                report += "Buttons are Globally ENABLED."
+
+            report += "\n\n"
+
+        if btn_type:
+
+            if not disabled and not enabled:
+                disabled = True
+
+            disabled_types = [t for t in disabled_button_types if disabled_button_types[t]]
+            enabled_types = [t for t in disabled_button_types if not disabled_button_types[t]]
+
+            if disabled_types and disabled:
+                report += "The following button types are DISABLED:\n"
+
+                if inline:
+                    report += "    " + ", ".join(f"'{t}'" for t in disabled_types)
+                else:
+                    report += "\n".join(f"    '{t}'" for t in disabled_types)
+
+                report += "\n\n"
+
+            if enabled_types and enabled:
+                report += "The following button types are ENABLED:\n"
+
+                if inline:
+                    report += "    " + ", ".join(f"'{t}'" for t in enabled_types)
+                else:
+                    report += "\n".join(f"    '{t}'" for t in enabled_types)
+
+                report += "\n\n"
+
+        if btn_id:
+
+            if not disabled and not enabled:
+                disabled = True
+
+            disabled_btns = [(t, disabled_buttons_ids[t]) for t in disabled_buttons_ids if disabled_buttons_ids[t]]
+            enabled_btns = [id for t in valid_button_ids for id in valid_button_ids[t] if id not in disabled_buttons_ids[t]]
+
+            if disabled_btns and disabled:
+                report += "The following button ids are DISABLED:\n\n"
+
+                for t, ids in disabled_btns:
+                    if inline:
+                        report += f"    '{t}': " + ", ".join(f"'{id}'" for id in ids) + "\n"
+                    else:
+                        report += f"    '{t}':\n"
+                        report += "\n".join(f"        '{id}'" for id in ids)
+                        report += "\n"
+
+                report += "\n"
+
+            if enabled_btns and enabled:
+                report += "The following button ids are ENABLED:\n\n"
+
+                if inline:
+                    report += "    " + ", ".join(f"'{id}'" for id in enabled_btns)
+                else:
+                    report += "\n".join(f"    '{id}'" for id in enabled_btns)
+
+                report += "\n"
+
+        print(report)
+        
 
     def button_meta(button): 
 
