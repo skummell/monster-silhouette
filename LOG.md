@@ -177,7 +177,7 @@
       - `chat_end "contact"`
   - Current Functions: 
     - `show_scene(screen)`
-    - `show_app(screen, disabled)`
+    - `show_app(screen, disable=False)`
     - `hide_app(screen)`
     - `get_chat_entries(contact)`
 
@@ -240,9 +240,10 @@
     - Day 1 - First Interlude 
       - Stopped Before Prep Phase
 
-# Oct 2-3, 2026 
+## Oct 2-6, 2026 
 
 - Default Scheduled Times of Day Dictionary Variable
+  - `clock` variable
   - Format:
     - `occasion`: 
       - default: wake_up, break, lounge_arrival, lounge_closes
@@ -251,23 +252,73 @@
     - `clock[occasion]` - for default time for `occasion` 
     - `clock["early"][occasion]` - for early time for `occasion`
     - `clock["special"][occasion]` - for special event time for `occasions`
-  - Implement clock variable usage to change time during set periods on script instead of manual assignment
+  - Implemented clock variable usage to change time during set periods on script instead of manual assignment
+
+- Bugs & Fixes
+  - Window Hiding Bug on a transparent transformed window (`nvl_window`) 
+    - Get rid of transform 
+    - Overide nvl_window style to be fully transparent & Dialogue + Name text to be transparent
+      - No Background 
+      - Transparent Text Color (#000000)
+  - Accidental use of `||` in if conditions 
+    - Changed to `or`
+  - New Fix for Date Pushed Left or Right Based on Whether Time is 3 or 4 digits long
+    - Text Container with correct sizing and right align on time
+  - Return Bug on `demo_intro.rpy` after swapping label orders
+    - Add explicit `return` at the end of `demo_intro` label
+  - Chat Contact Panel @ Scrollable Error Formatting Content Style Bug
+    - Viewpoint Height & Width Setting Parameter Implementation
+    - Fix Padding with Test & Try for Height / Width Assignment
+  - Chat Auto Scroll Bugs
+    - Issues: 
+      - Not scrolling past time stamp
+      - Lag after first interactable nvl line
+    - Fixes: 
+      - Assign id to scrollable viewport & let yinitial=1.0 handle the auto scrolling 
+      - Fix lag with `ranged` `ui.adjustement` assigned to `adj`
+
+- Major File Update: `custom_systems.rpy`
+  - Current Statements: 
+    - `show_scene "screen"`
+    - `show_app "app_screen"` 
+    - `hide_app "app_screen"`
+    - `chat_start "contact"`
+    - `chat_end "contact"`
+    - `placeholder` - New Statement!
+  - Current Functions: 
+    - `show_scene(screen)`
+    - `show_app(a[pscreen)`
+    - `hide_app(screen)`
+    - `get_chat_entries(contact)`
+    - `placeholder` - New Function!
+
+- Button Disabler System
+  - Variables: 
+    - `disable_buttons` - Universal (boolean) disabler for all buttons that can be disabled
+    - `disabled_button_types` - Universal (boolean) disablers per button type
+    - `disabled_button_ids` - List of individual disabled buttons
+    - `valid_button_ids` - List of all valid button ids that can be disabled
+  - Custom Statements: 
+  - In Progress...
+
+### Oct 4, 2026 
 
 - Player Character Mascot Concept Design
 
-- Bug Fixes
-  - Window Hiding Bug on a transparent transform window (nvl_window) 
-    - Get rid of transform 
-    - Overide nvl_window style to be fully transparent & Dialogue + Name to be transparent
-  - Accidental use of `||` in if conditions 
-    - Changed to `or`
-  - New Fix for Pushing Time Left or Right Based on Whether Time is 3 or 4 digits
-    - Text Container with correct sizing and right align
-  - Return Bug on demo_intro after swapping label orders
-  - Chat Contact Panel @ Scrollable Error Formatting Content Style
-    - Viewpoint Height & Width Setting Parameters 
-    - Fix Padding with Test & Try for Height / Width Assignment
+### Oct 5, 2026 
 
 - Chat App Polishes 
   - Chat App Timestamps 
   - Chat App Online Status
+
+### Oct 6, 2026 
+
+- Template Screens for all button types that can be disabled
+  - `app_button` - New Template Screen!
+  - `app_exit` - New Template Screen!
+  - `contact_item`
+
+- Clock Dictionary (`clock`) Variable Update
+  - New Occasions added!
+    - default: work, mephisto_arrival, mephisto_leaves
+    - early time: work

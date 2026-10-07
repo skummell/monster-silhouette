@@ -10,14 +10,29 @@ default player_endings = 0 # Track How Many Endings Have Been Reached By The Pla
 default total_endings = 0 # Number Of Endings Currently Available 
 default active_contact = None # Track which Chat Contact is Open / Active
 
-default disabled_buttons = False # Universally disable all buttons that can be disabled
-default apps_disabled = False # Universally disable all app buttons 
-default exit_disabled = False # Universally disable all exit buttons
-default disable_contacts = False # Universally disable all contact buttons
-default profile_disabled = False # Disable profile app button
-default chat_disabled = False # Disable chat app button
-default draft_disabled = False # Disable draft app button
-# Disable button per contact
+# Button Disablers
+default disable_buttons = False # Universally disable all buttons that can be disabled
+default disabled_button_types = { # Universally disable buttons for a specific type
+    "app_exit": False,
+    "app_button": False,
+    "contact_item": False
+}
+default disabled_buttons_ids = { # List of individual disabled buttons
+    "app_exit": set(), # List of Apps with disabled exit button
+    "app_button": set(), # List of disabled Apps
+    "contact_item": set() # List of disabled contacts
+}
+default valid_button_ids = { # Button IDs Roster
+    "app_exit": {
+        "Profile", "Chat", "Draft"
+    },
+    "app_button": {
+        "profile_app", "chat_app", "draft_app"
+    },
+    "contact_item": {
+        "And", "At You", "Golden Manager", "The Abyss Stares Back", "Stare Into The Abyss"
+    }
+}
 
 ################################################################################
 ## Styles
@@ -526,37 +541,13 @@ screen app_grid():
             # Row 1 
 
             # Profile App
-            imagebutton: 
-                idle "gui/placeholders/grid_icon_placeholder.svg"
-                
-                action If(in_scene, Function(show_app, "profile_app"), Show("profile_app"))
-
-                if profile_disabled or apps_disabled or disabled_buttons: 
-                    sensitive False
-
-                tooltip "Profile"
+            use app_button("profile_app", "Profile", in_scene)
                 
             # Chat App 
-            imagebutton: 
-                idle "gui/placeholders/grid_icon_placeholder.svg"
-
-                action If(in_scene, Function(show_app, "chat_app"), Show("chat_app"))
-
-                if chat_disabled or apps_disabled or disabled_buttons: 
-                    sensitive False
-
-                tooltip "Chat"
+            use app_button("chat_app", "Chat", in_scene)
 
             # Draft App 
-            imagebutton:
-                idle  "gui/placeholders/grid_icon_placeholder.svg"
-
-                if draft_disabled or apps_disabled or disabled_buttons: 
-                    sensitive False
-
-                action If(in_scene, Function(show_app, "draft_app"), Show("draft_app"))
-
-                tooltip "Draft"
+            use app_button("draft_app", "Draft", in_scene)
 
             add "gui/placeholders/grid_icon_placeholder.svg"
             add "gui/placeholders/grid_icon_placeholder.svg"
@@ -596,12 +587,35 @@ screen app_grid():
                     
                 text tooltip style "tooltip_text"
 
+## App Open Button Template ####################################################
+##
+## Template for app buttons 
+## Shows app screens through appropriate method
+## (profile_app, chat_app, draft_app)
+
+screen app_button(app_name, tooltip, in_scene=False, app_icon="gui/placeholders/grid_icon_placeholder.svg"): 
+
+    imagebutton: 
+
+        id app_name
+
+        idle app_icon
+                
+        action If(in_scene, Function(show_app, app_name), Show(app_name))
+
+        #if profile_disabled or apps_disabled or disabled_buttons: 
+        #    sensitive False
+
+        tooltip tooltip
+
+
 ## App Screen Template #########################################################
+##
 ## Template for app screens
-## (Profile, Chat, Draft)
+## (Profile App, Chat App, Draft App)
 ## For Design consistency
 
-screen app_screen(window_width, window_height, content_width, content_height, screen_title, tool_screen=None, disable=None): 
+screen app_screen(window_width, window_height, content_width, content_height, screen_title, tool_screen=None): 
     
     tag app
 
@@ -623,7 +637,7 @@ screen app_screen(window_width, window_height, content_width, content_height, sc
                 xysize (window_width, window_height)
 
             # Title Bar 
-            use app_header(window_width, screen_title, disable)
+            use app_header(window_width, screen_title)
 
             # Main Content Area
             frame: 
@@ -651,7 +665,7 @@ define app_header_height = 35
 ## Displays App Header with App Name and the closing button inside of 
 ## App Screens
 
-screen app_header(window_width, screen_title, disable=False): 
+screen app_header(window_width, screen_title): 
 
     frame: 
 
@@ -669,25 +683,32 @@ screen app_header(window_width, screen_title, disable=False):
             clipping True 
 
             # Exit Button - Hides Screen 
-            imagebutton: 
-                idle "gui/placeholders/App Exit Button Placeholder.svg"
-                at app_exit_button
-
-                # Button Universally disabled
-                if exit_disabled or disabled_buttons: 
-                    sensitive False 
-
-                # Button Individually disabled per app 
-                if disable: 
-                    action NullAction()
-                else: 
-                    action Hide()
+            use app_exit(screen_title)
 
             # Title Text 
             text screen_title: 
                 xalign 0.5
                 ypos 4
                 bold True
+
+## App Exit Button #############################################################
+##
+## App Exit Button Screen for reusable purposes 
+## Hides app screens or does nothing if disabled
+## (Profile, Chat, Draft)
+
+screen app_exit(id_name): 
+
+    imagebutton: 
+        id id_name
+
+        idle "gui/placeholders/App Exit Button Placeholder.svg"
+        at app_exit_button
+
+        #if exit_disabled or disabled_buttons: 
+        #    sensitive False 
+        
+        action Hide()
 
 transform app_exit_button: 
     xysize(60, 25)
@@ -827,9 +848,12 @@ screen computer_ui():
 
 screen scrollable_content(scroll=None, yinitial=0.0, spacing=0, scrollbars="vertical", left_pad=0, top_pad=0, right_pad=0, bottom_pad=0, yadjustment=None, vp_width=0, vp_height=0): 
 
+    python:
+        adj.value = float('inf')
+
     # Content with scroll support
     if scroll == "viewport":
-        viewport:
+        viewport id "vp_static":
             if vp_width: 
                 xsize vp_width
             else: 
@@ -879,11 +903,11 @@ screen scrollable_content(scroll=None, yinitial=0.0, spacing=0, scrollbars="vert
         transclude
 
 init python:
-    adj = ui.adjustment() 
 
-    def auto_scroll_bottom(): 
-        if adj.value == adj.range: 
-            adj.value = float('inf')
+    def _on_adj_ranged(adj):
+        adj.value = adj.range
+
+    adj = ui.adjustment(ranged=_on_adj_ranged)
 
 ## Meta Screen Template ########################################################
 ## 
@@ -1655,7 +1679,7 @@ screen ending_gallery():
 ## A screen that gives information about the player's current Player Name, 
 ## Wallet Location, as well as Rapport & Suspicion Stats
 
-screen profile_app(disable=None): 
+screen profile_app(): 
 
     tag app
     zorder 10
@@ -1667,7 +1691,7 @@ screen profile_app(disable=None):
     $ content_width = 650
     $ content_height = 525
     
-    use app_screen(window_width, window_height, content_width, content_height, "Profile", disable=disable):
+    use app_screen(window_width, window_height, content_width, content_height, "Profile"):
                 
         # Profile Info
         fixed: 
@@ -1752,7 +1776,7 @@ screen profile_app(disable=None):
 ## A screen that stores away Chats between the Player Character & other 
 ## Characters which serve as a part of the narrative
 
-screen chat_app(disable=None): 
+screen chat_app(): 
 
     tag app 
     zorder 10 
@@ -1766,7 +1790,7 @@ screen chat_app(disable=None):
     $ content_width = 850
     $ content_height = 525
 
-    use app_screen(window_width, window_height, content_width, content_height, "Chat", disable=disable):
+    use app_screen(window_width, window_height, content_width, content_height, "Chat"):
 
         fixed: 
             xysize(230 + 570 + 20, 500)
@@ -1825,6 +1849,8 @@ screen contact_item(name, avatar="#808080"):
 
     button: 
 
+        id name
+
         xysize(200, 110)
         xalign 0.5 
 
@@ -1832,8 +1858,8 @@ screen contact_item(name, avatar="#808080"):
 
         action SetVariable("active_contact", name), If(_in_chat_block, false=Function(nvl_clear))
 
-        if disable_contacts: 
-            sensitive False
+        #if disable_contacts: 
+        #    sensitive False
 
         add "gui/placeholders/Contact Item Background.svg": 
             xysize(200, 110)
@@ -1935,6 +1961,7 @@ screen chat_box(contact):
 
         # Chat Content 
         use scrollable_content("viewport", spacing=15, scrollbars=None, yinitial=1.0, top_pad=20, bottom_pad=20, left_pad=25, right_pad=25, yadjustment=adj): 
+
             
             # Chat Buffer ? 
 
@@ -1957,7 +1984,7 @@ screen chat_box(contact):
 
             # Live Chat
             if nvl_list:
-
+                
                 if _chat_date_change: 
                     use chat_date_stamp(abyss_date.strftime("%a %b %d"))
 
@@ -1965,7 +1992,7 @@ screen chat_box(contact):
                 
                 for entry in nvl_list: 
                     use chat_bubble(entry[0], entry[1])
-                    $ auto_scroll_bottom()
+                    
                 
     # Keyboard Field
 
@@ -2069,7 +2096,7 @@ screen chat_time_stamp(time):
 ## A screen that lets the player view the progress of the Epilogue Draft 
 ## the Player Character is writing on throughout the game
 
-screen draft_app(disable=None): 
+screen draft_app(): 
 
     tag app 
     zorder 10 
@@ -2081,7 +2108,7 @@ screen draft_app(disable=None):
     $ content_width = 670
     $ content_height = 575
 
-    use app_screen(window_width, window_height, content_width, content_height, "Draft", "draft_tools", disable=disable): 
+    use app_screen(window_width, window_height, content_width, content_height, "Draft", "draft_tools"): 
 
         frame: 
             xysize(650, 515)

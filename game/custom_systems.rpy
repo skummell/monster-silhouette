@@ -4,20 +4,20 @@
 ## This file contains Custom Statements for Game Systems used in this project
 ## Mainly to interact with different systems through easy to use statements 
 ## inside of the script
+## Usage intented for inside labels for script
 ##
 ## List of Statements currently registered: 
 ##      chat_start "contact"    - begin recording chat range 
 ##      chat_end "contact"      - end recording chat range
 ##      show_scene "screen"     - shows a screen on the scene layer (acts exactly like scene "picture.png")
 ##      show_app "screen"       - show a app screen on the scene layer (above current scene or show_scene)
-##      show_app_e "screen"     - same as above but enables app screen exit button 
 ##      hide_app "screen"       - hide app screen on scene layer
 ##
 ## List of Game System Utility Functions
 ##      get_chat_entries(contact)   - read chat entries / history linked to contact 
-##      show_scene                  - show a screen on scene (master) layer
-##      show_app
-##      hide_app
+##      show_scene(screen_name)     - show a screen on scene (master) layer
+##      show_app(screen_name)       - show a app screen on scene (master layer) on top of current scene
+##      hide_app                    - hide a app screen on scene (master layer)
 
 ################################################################################
 ## Chat System #################################################################
@@ -29,9 +29,9 @@
 ##      chat_start "contact"
 ##      nvl_character "message 1" (records)
 ##      nvl_character "message 2" (records)
-##      no_character "narration 1"
+##      "narration 1"
 ##      nvl_character "message 3" (records)
-##      no_character "narration 1"
+##      "narration 2"
 ##      chat_end "contact"
 
 init offset = -1 
@@ -166,6 +166,19 @@ init python:
 ##
 ## Allows Screens to be treated the same way as Scenes by putting them in the 
 ## Master (Scene) Layer 
+##
+## Usage format: 
+##      show_scene "screen"     # Show screen as scene 
+##      character "line 1"
+##      "narration 1"
+##      character "line 2"
+##      "narration 2"
+##      "narration 3"
+##      show_app "app_screen"   # Shows app_screen on top of scene (below dialogue)
+##      "narration 4"
+##      "narration 5"
+##      hide_app "app_screen"   # Hides app_screen on top of scene
+##
 
 ## Scene System Statements 
 python early: 
@@ -185,18 +198,14 @@ python early:
         execute = execute_show_scene,
     )
 
-    ## show_app "screen"
-    ## show_app_e "screen"
+    ## show_app "app_screen"
     def parse_show_app(lex): 
         screen = lex.string()
         lex.eol()
         return screen
 
-    def execute_show_app(screen): # Disabled Exit Button
-        show_app(screen, True) 
-
-    def execute_show_app_e(screen): # Enabled Exit Button
-        show_app(screen)
+    def execute_show_app(app_screen):
+        show_app(app_screen) 
 
     renpy.register_statement(
         name = "show_app", 
@@ -204,20 +213,14 @@ python early:
         execute = execute_show_app,
     )
 
-    renpy.register_statement(
-        name = "show_app_e", 
-        parse = parse_show_app,
-        execute = execute_show_app_e,
-    )
-
-    ## hide_app "screen"
+    ## hide_app "app_screen"
     def parse_hide_app(lex): 
         screen = lex.string()
         lex.eol()
         return screen
 
-    def execute_hide_app(screen): 
-        hide_app(screen)
+    def execute_hide_app(app_screen): 
+        hide_app(app_screen)
 
     renpy.register_statement(
         name = "hide_app",
@@ -237,15 +240,42 @@ init python:
         renpy.show_screen(screen_name, _layer="master") 
 
     # Show a screen above the current scene on the scene (master) layer
+    # and below the dialogue (say screen, which is on a layer above scene)
     # Intended for modal screens (specifically app screens)
-    # Enables app screen exit button by default 
-    # Use disabled=True to disable the exit button 
-    def show_app(screen_name, disabled=False): 
-        renpy.show_screen(screen_name, _layer="master", disable=disabled) 
+    def show_app(screen_name): 
+        renpy.show_screen(screen_name, _layer="master") 
 
     # Hide a screen on the scene (master) layer 
-    # Intended for intended for screens shown through show_app
+    # Intended for screens shown through show_app
     # As those shown with show_scene will get replaced by any new scene 
     # shown automatically
     def hide_app(screen_name): 
         renpy.hide_screen(screen_name, layer="master")
+
+################################################################################
+## Button Disabler System ######################################################
+##
+## Tracks, disables and enables buttons that can be disabled
+##
+## Usage format: 
+##      
+
+init python: 
+    def button_disabled(button):
+
+        if disable_buttons: 
+            return True
+
+        else: 
+
+            return False
+
+    def button_meta(button): 
+
+        button_meta = renpy.ui.stack[-1]
+
+        button_type = button_meta.screen_name
+
+        button_id = button_meta.id
+
+        return button_id

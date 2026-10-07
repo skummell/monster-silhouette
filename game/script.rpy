@@ -21,6 +21,10 @@ init python:
         # Transparent "#00000000" color to avoid it printing out on nvl_window
         return Character(name, color="#00000000", kind=nvl, **kwargs) 
 
+    def send_chat(who, what): 
+        who(what, interact=False)
+        renpy.restart_interaction()
+
 # Internal States 
 # Hidden Flags 
 default true_name = False # Affects Player Character POV narration, Dialogue options and more
@@ -41,13 +45,17 @@ default abyss_date = datetime.date(2025, 9, 26) # (Fri) Sep 26
 default clock = { # Default Scheduled Times of Day
     # Default
     "wake_up": "11:00 AM",
-    "break": "5:00 PM", 
+    "work": "11:15 AM",
+    "break": "5:00 PM",
     "lounge_arrival": "5:20 PM",
+    "mephisto_arrival": "5:30 PM",
+    "mephisto_leaves": "8:30 PM",
     "lounge_closes": "9:00 PM",
 
     # Early Day
     "early": { 
         "wake_up": "10:00 AM",
+        "work": "10:15 AM",
         "break": "4:00 PM",
         "lounge_arrival": "4:20 PM"
     },
