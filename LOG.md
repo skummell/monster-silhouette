@@ -240,7 +240,7 @@
     - Day 1 - First Interlude 
       - Stopped Before Prep Phase
 
-## Oct 2-6, 2026 
+## Oct 2-7, 2026 
 
 - Default Scheduled Times of Day Dictionary Variable
   - `clock` variable
@@ -289,10 +289,21 @@
     - `disable_buttons` - Universal (boolean) disabler for all buttons that can be disabled
     - `disabled_button_types` - Universal (boolean) disablers per button type
     - `disabled_button_ids` - List of individual disabled buttons
-    - `valid_button_ids` - List of all valid button ids that can be disabled
+    - `valid_button_ids` - List of all valid button ids, linked to their button types that can be disabled
   - Debug / Helper Functions:
-    - `button_disabled(button=None, report=True)` - boolean check whether a button is current disabled or not
-    - `button_disabler_status` - console function that prints an organized list of button disablers' status
+    - `button_disabled()` - boolean check whether a disabler currently on or not, receive a report in console from where it's disabled by default
+    - `button_disabler_status()` - console function that prints an organized list of button disablers' status
+    - Extensive documentation on comments above functions for their usage and optional parameters!
+  - Disabler functions added!
+
+- Usable Bedroom Background Progression 
+  - Concept Art 2.0 Completed!
+    - Closed: 
+      - Position of all elements
+      - All props / elements included in background
+    - For next Concept Art: 
+      - Perspective Fix
+      - Settle on a Color Palette
 
 ### Oct 4, 2026 
 
@@ -309,7 +320,7 @@
 - Template Screens for all button types that can be disabled
   - `app_button` - New Template Screen!
   - `app_exit` - New Template Screen!
-  - `contact_item`
+  - `contact_button` - Name changed! (From contact_item to contact_button)
 
 - Clock Dictionary (`clock`) Variable Update
   - New Occasions added!

@@ -15,12 +15,12 @@ default disable_buttons = False # Universally disable all buttons that can be di
 default disabled_button_types = { # Universally disable buttons for a specific type
     "app_exit": False,
     "app_button": False,
-    "contact_item": False
+    "contact_button": False
 }
-default disabled_buttons_ids = { # List of individual disabled buttons
+default disabled_button_ids = { # List of individual disabled buttons
     "app_exit": set(), # List of Apps with disabled exit button
     "app_button": set(), # List of disabled Apps
-    "contact_item": set() # List of disabled contacts
+    "contact_button": set() # List of disabled contacts
 }
 default valid_button_ids = { # Button IDs Roster
     "app_exit": {
@@ -29,7 +29,7 @@ default valid_button_ids = { # Button IDs Roster
     "app_button": {
         "profile_app", "chat_app", "draft_app"
     },
-    "contact_item": {
+    "contact_button": {
         "And", "At You", "Golden Manager", "The Abyss Stares Back", "Stare Into The Abyss"
     }
 }
@@ -1811,20 +1811,20 @@ screen chat_app():
                 # Contact List
                 use scrollable_content("viewport", spacing=20, top_pad=10, bottom_pad=10, scrollbars=None, vp_width=230 - 5, vp_height=500 - 15): 
 
-                    # And (Theo) - Contact Item Button 
-                    use contact_item("And")
+                    # And (Theo) - Contact Button 
+                    use contact_button("And")
 
-                    # At You (Victor) - Contact Item Button 
-                    use contact_item("At You")
+                    # At You (Victor) - Contact Button 
+                    use contact_button("At You")
 
-                    # Golden Manager - Contact Item Button 
-                    use contact_item("Golden Manager")
+                    # Golden Manager - Contact Button 
+                    use contact_button("Golden Manager")
 
-                    # The Abyss Stares Back (Player) - Contact Item Button 
-                    use contact_item("The Abyss Stares Back")
+                    # The Abyss Stares Back (Player) - Contact Button 
+                    use contact_button("The Abyss Stares Back")
 
-                    # Stare Into The Abyss - Contact Item Button
-                    use contact_item("Stare Into The Abyss")
+                    # Stare Into The Abyss - Contact Button
+                    use contact_button("Stare Into The Abyss")
 
             # Chat Box
             fixed: 
@@ -1839,11 +1839,11 @@ screen chat_app():
                 if active_contact: 
                     use chat_box(active_contact)
 
-## Contact Item Template ##############################################################
+## Contact Button Template ############################################################
 ## 
-## A template screen for contact item buttons, which will active the chat box contact
+## A template screen for contact buttons, which will activate the chat box for contact
 
-screen contact_item(name, avatar="#808080"): 
+screen contact_button(name, avatar="#808080"): 
 
     $ online = False # Implement Disabler / Enabler later
 
