@@ -97,8 +97,8 @@ label start:
     # Day 1 (Demo) Start
 
     call demo_intro # script/demo/demo_intro.rpy
-
-    ```W.I.P```
+    
+    "W.I.P" #DELETE LATER
 
     # This ends the game.
 

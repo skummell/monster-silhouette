@@ -607,7 +607,7 @@ screen app_button(app_name, tooltip, in_scene=False, app_icon="gui/placeholders/
         action If(in_scene, Function(show_app, app_name), Show(app_name))
 
         # Disable Button if disablers are on and screen is not Computer UI Menu
-        if button_disabled(app_name, report=False):
+        if button_disabled(app_name):
             sensitive False
 
         tooltip tooltip
@@ -710,7 +710,7 @@ screen app_exit(id_name):
         at app_exit_button
 
         # Disable Button if disablers are on and screen is not Computer UI Menu
-        if button_disabled(id_name, report=False):
+        if button_disabled(id_name):
             sensitive False 
         
         action Hide()
@@ -1679,6 +1679,10 @@ screen ending_gallery():
 ## Special Gameplay screens
 ################################################################################
 
+screen exit_disabled_warning(app):
+
+    text "Note: [app] App exit button is currently unavailable. Use ESC to close out of app."
+
 ## Profile App screen ##########################################################
 ## 
 ## A screen that gives information about the player's current Player Name, 
@@ -1695,8 +1699,15 @@ screen profile_app():
     $ window_height = 600
     $ content_width = 650
     $ content_height = 525
+
+    $ app_title = "Profile"
+
+    # Exit button unavailble warning. 
+    # If on computer_ui_menu and Profile App exit button is disabled
+    if renpy.get_screen("computer_ui_menu") and button_disabled(app_title): 
+        use exit_disabled_warning(app_title)
     
-    use app_screen(window_width, window_height, content_width, content_height, "Profile"):
+    use app_screen(window_width, window_height, content_width, content_height, app_title):
                 
         # Profile Info
         fixed: 
@@ -1795,7 +1806,14 @@ screen chat_app():
     $ content_width = 850
     $ content_height = 525
 
-    use app_screen(window_width, window_height, content_width, content_height, "Chat"):
+    $ app_title = "Chat"
+
+    # Exit button unavailble warning. 
+    # If on computer_ui_menu and Profile App exit button is disabled
+    if renpy.get_screen("computer_ui_menu") and button_disabled(app_title): 
+        use exit_disabled_warning(app_title)
+
+    use app_screen(window_width, window_height, content_width, content_height, app_title):
 
         fixed: 
             xysize(230 + 570 + 20, 500)
@@ -1864,7 +1882,7 @@ screen contact_button(name, avatar="#808080"):
         action SetVariable("active_contact", name), If(_in_chat_block, false=Function(nvl_clear))
 
         # Disable Button if disablers are on and screen is not Computer UI Menu
-        if button_disabled(name, report=False):
+        if button_disabled(name):
             sensitive False
 
         add "gui/placeholders/Contact Item Background.svg": 
@@ -2113,7 +2131,14 @@ screen draft_app():
     $ content_width = 670
     $ content_height = 575
 
-    use app_screen(window_width, window_height, content_width, content_height, "Draft", "draft_tools"): 
+    $ app_title = "Draft"
+
+    # Exit button unavailble warning. 
+    # If on computer_ui_menu and Profile App exit button is disabled
+    if renpy.get_screen("computer_ui_menu") and button_disabled(app_title): 
+        use exit_disabled_warning(app_title)
+
+    use app_screen(window_width, window_height, content_width, content_height, app_title, "draft_tools"): 
 
         frame: 
             xysize(650, 515)

@@ -26,14 +26,14 @@
 ##              Global  - all buttons of all types 
 ##              Type    - all buttons of a specific type 
 ##              ID      - a specific button
-##            At higher levels
+##
+##              Disabler level variables in conditionals
 ##                  Disabling overrides lower level conditions
-##                  Enabling  only clears level and any levels above it
-##            At lower levels
-##                  Disabling and Enabling clears all levels above it 
+##                  Enabling  only clears level, other level conditions still apply                  
 ##
 ##          For Valid Button Types & IDs refer to 'valid_button_ids' Dictionary Variable
-##              usage of invalid button types and ids make statements and functions fail to work
+##              usage of invalid button types and ids cause statements and functions to fail,
+##               causing a error message to be printed to console and the function to return without doing anything
 ##
 ##
 ## (Note: Statements are intended for usage in script files.)
@@ -80,21 +80,22 @@
 ##      show_app         (screen_name)              - show a app screen on scene (master layer) on top of current scene
 ##      hide_app         (screen_name)              - hide a app screen on scene (master layer)
 ##  Button Disabler System Utility Functions 
-##      button_disabled  (button=None, report=True) - returns a boolean on whether buttons are globally disabled, 
+##      button_disabled  (button=None, report=False) - returns a boolean on whether buttons are globally disabled, 
 ##                                                    a specific button type is disabled or 
 ##                                                    a specific button id is disabled depending on input
-##                                                    (optionally use report=False to disable console printed report 
-##                                                     on button or disabler requested.)
+##                                                    (optionally use report=True to receive console printed report 
+##                                                     on global disabler, or button id / button type requested.)
 ## 
 ## (Note: Debugger Functions are intended for usage in console.)
 ##
 ## List of Debugger Functions:
-##      button_disabled        (button=None, report=True)
-##          - Check whether a button, button type or global disabler is disabled or not 
-##          - (boolean return 
-##             & report on inner flags, 
-##                  including where disabled status is coming from 
-##                  if the button or button type given is disabled
+##      button_disabled        (button=None, report=False)
+##          - Check whether a button, button type or the global disabler is disabled or not 
+##          - (boolean return)
+##          - (report=True adds:)
+##              (report on inner flags, 
+##                         including where disabled status is coming from 
+##                         if the button or button type given is disabled
 ##               printed to console)
 ##      button_disabler_status (global_btn=True, btn_type=True, btn_id=True, disabled=True, enabled=True, inline=False)
 ##          - Check button disabler status 
@@ -339,12 +340,71 @@ init python:
 ## Tracks, disables and enables buttons that can be disabled
 ##
 ## Usage format: 
+##      enable_global
+##
+##      ## removes global button disabler override
+##      ## button disabled status now depends on lower levels (button type disabler & button id disabler)
 ##      
-##      disable_global 
+##      disable_type "button_type"
+##
+##      ## all buttons of button_type no longer do anything
+##      ## does not change lower level disablers (button id disabler)
+##      ## does not change global disabler
+##      ## disable_id for a button of button_type is redundant while this is on
+##      
+##
+##      disable_id "button_id" 
+##
+##      ## button with button_id no longer does anything
+##      ## does not change button type disabler nor global disabler
+##      ## redudant if button type disabler for button type of button_id or global disabler is already on
+##
+##      enable_type "button_type" 
+##
+##      ## removes button type disabler override for button_type
+##      ## removes global disabler override if it's on
+##      ## button disabled status now depends on lower level (button id disabler)
+##
+##      disable_global
+##
+##      ## all buttons that can be disabled all no longer do anything
+##      ## does not change lower level disablers (button type disablers & button id disabler)
+##      ## disable_type and disable_id are redundant when this is on
+##
+##      enable_id "button_id"
+##
+##      ## removes button id disabler for button_id
+##      ## removes button type disabler override for button type of button_id if it's on
+##      ## removes global disabler override if it's on
+##      ## button with button_id now works
+##
+##      disable_all
+##
+##      ## all buttons that can be disabled no longer do anything
+##      ## turns on ALL button disablers at all levels (global, button type, button id)
+##
+##      enable_all_type "button_type"
+##
+##      ## removes button type disabler override for button_type
+##      ## removes all button id disablers for button ids of button_type
+##      ## removes global disabler override if it's on
+##      ## all buttons of button_type now work
+##
+##      enable_all
+##      
+##      ## removes ALL disablers at all levels (global, button type, button id)
+##      ## all buttons now work
+##
+##      disable_all_type "button_type"
+##  
+##      ## all buttons of button_type no longer do anything
+##      ## turns on all button id disablers for button ids of button_type
+##      ## does not change global disabler
+##      ## enable_id for a button of button_type is redundant while this is on
  
 
 ## Button Disabler System Statements
-init python: 
+python early: 
 
     ## Parse no parameters
     def parse_no(lex): 
@@ -526,17 +586,13 @@ init python:
 
     ## Turn on button type disabler
     ## Prevents valid buttons (for disabling) of button type from working
-    ## Does not touch lower levels but bubbles up to higher levels
-    def disable_type(button_type): 
+    ## Does not touch other levels
+    def disable_type(button_type):
 
         # Invalid input 
         if button_type not in valid_button_ids:
             print(f"'{button_type}' is not a valid button type.")
             return
-
-        # Turn on global disabler if it's not already on
-        if not disable_buttons:
-            store.disable_buttons = True
 
         # Turn on button type disabler for 'button_type'
         disabled_button_types[button_type] = True
@@ -559,8 +615,8 @@ init python:
 
     ## Turn on button id disabler
     ## Prevent button of (valid) button id from working
-    ## Bubbles up to higher levels 
-    def disable_id(id): 
+    ## Does not touch other levels
+    def disable_id(id):
 
         ## Invalid input 
         if not any(id in valid_button_ids[t] for t in valid_button_ids):
@@ -574,14 +630,6 @@ init python:
         if id not in disabled_button_ids[button_type]:
             disabled_button_ids[button_type].add(id)
 
-        ## Turn on button type disabler if it's not already on
-        if not disabled_button_types[button_type]:
-            disabled_button_types[button_type] = True
-
-        ## Turn on global disabler if it's not already on
-        if not disable_buttons:
-            store.disable_buttons = True
-
     ## Turn on all button disablers for button type
     ## Disables button type in all levels
     def disable_all_type(button_type): 
@@ -589,9 +637,6 @@ init python:
         if button_type not in valid_button_ids:
             print(f"'{button_type}' is not a valid button type.")
             return
-
-        ## Turn on global disabler
-        store.disable_buttons = True
         
         ## Turn on button type disabler for 'button_type'
         disabled_button_types[button_type] = True
@@ -650,8 +695,8 @@ init python:
             store.disable_buttons = False
     
 
-## Helper / Debug Functions 
-##   button_disabled(button=None, report=True)
+## Debugger Functions 
+##   button_disabled(button=None, report=False)
 ##   button_disabler_status(global_btn=True, btn_type=True, btn_id=True, disabled=True, enabled=True, inline=False)
 ##
 ## Usage format: 
@@ -664,25 +709,25 @@ init python:
 ##          (Note: if button is not a valid button type or button id it will return 1)
 ##
 ##          default parameters : 
-##              button=None, report=True
+##              button=None, report=False
 ##
 ##
 ##          default :
 ##
 ##              button_disabled()                        - boolean check if global disabler is on or off
-##                                                         prints report on console stating whether buttons are globally disabled or not
+##                                                         report stating whether buttons are globally disabled or not
 ##          with optional parameters: 
 ##
-##              button_disabled(button_type)             - boolean check if button type is disabled or not
-##                                                         prints report on console stating how button type is disabled
+##              button_disabled(button=button_type)      - boolean check if button type is disabled or not
+##                                                         report stating how button type is disabled
 ##                                                         through global disabler, button type disabler or both
 ##                                                         or says it's enabled
-##              button_disabled(button_id)               - boolean check if button is disabled r noto
-##                                                         prints report on console stating how button id is disabled
+##              button_disabled(button=button_id)        - boolean check if button is disabled or not
+##                                                         report stating how button id is disabled
 ##                                                         through global disabler, button type disabler, button id disabler
 ##                                                         a combination of two or all three 
 ##                                                         or says it's enabled
-##              button_disabled(report=false)            - to disable console report prints 
+##              button_disabled(report=True)             - to enable console report prints
 ##
 ##
 ##      button_disabler_status: 
@@ -692,7 +737,7 @@ init python:
 ##          are disabled and those who aren't)
 ##
 ##          default parameters : 
-##              global_btn=True, btn_type=True, btn_id=True, disabled=True, enabled=True, inline=True
+##              global_btn=True, btn_type=True, btn_id=True, disabled=True, enabled=True, inline=False
 ##
 ##          default :           
 ##              button_disabler_status()                 - prints out a full status report of button disablers in all levels
@@ -705,13 +750,13 @@ init python:
 ##
 ##              (if global_btn, btn_type, and btn_id all =False it will be treated as if global_btn=True)
 ##          
-##              button_disabled_status(disabled=False)   - does not print out list of disabled button types and ids in report
-##              button_disabled_status(enabled=False)    - does not print out list of enabled  button types and ids in report
+##              button_disabler_status(disabled=False)   - does not print out list of disabled button types and ids in report
+##              button_disabler_status(enabled=False)    - does not print out list of enabled  button types and ids in report
 ##
 ##              (if both disabled and enabled both =False it will be treated as if disabled=True)
 ##              (no effect if btn_type and btn_id are both set to False)
 ##
-##              button_disabled_status(inline=True)     - make status report for button type and button id disablers
+##              button_disabler_status(inline=True)      - make status report for button type and button id disablers
 ##                  print in a line (per button type for the button id disabler)
 ##                  to prevent taking up space vertically on console print
 
@@ -720,7 +765,7 @@ init python:
     ## Boolean check whether a button, button type or global disabler is disabled 
     ## leave button parameter empty if you want to check global disabler
     ## report=False if you don't want the report to print on console 
-    def button_disabled(button=None, report=True):
+    def button_disabled(button=None, report=False):
 
         ## Searching by button type or button id
         if button != None:
@@ -781,7 +826,7 @@ init python:
 
                 ## Disabled through global disabler
                 if disable_buttons:
-                    msg = f"Button '{button}' of '{button_type}' is DISABLED globally.\n\n"
+                    msg = f"Button '{button}' of '{button_type}' type is DISABLED globally.\n\n"
 
                     msg += "Flags:\n"
                     msg += "  - global button disabler (True)\n"
@@ -812,7 +857,7 @@ init python:
                 else:
                     ## Disabled through button type disabler
                     if disabled_button_types[button_type]:
-                        msg = f"Button '{button}' of '{button_type}' is DISABLED by {button_type} type.\n\n"
+                        msg = f"Button '{button}' of '{button_type}' type is DISABLED by {button_type} type.\n\n"
 
                         msg += "Flags:\n"
                         msg += "  - global button disabler (False)\n"
@@ -831,7 +876,7 @@ init python:
                     else:
                         ## Disabled through button id disabler
                         if any(button in disabled_button_ids[t] for t in disabled_button_ids):
-                            msg = f"Button '{button}' of '{button_type}' is individually DISABLED.\n\n"
+                            msg = f"Button '{button}' of '{button_type}' type is individually DISABLED.\n\n"
 
                             msg += "Flags:\n"
                             msg += "  - global button disabler (False)\n"
@@ -844,7 +889,7 @@ init python:
                             return True
 
                         else:
-                            msg = f"Button '{button}' of '{button_type}' is ENABLED.\n\n"
+                            msg = f"Button '{button}' of '{button_type}' type is ENABLED.\n\n"
                             msg += "Flags:\n"
                             msg += "  - global button disabler (False)\n"
                             msg += f"  - {button_type} type disabler (False)\n"
@@ -909,7 +954,7 @@ init python:
             if disable_buttons:
                 report += "Buttons are Globally DISABLED."
             else:
-                report += "Buttons are Globally ENABLED."
+                report += "Buttons are NOT Globally Disabled."
             
             report += "\n\n"
 
