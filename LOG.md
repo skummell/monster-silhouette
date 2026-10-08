@@ -279,10 +279,24 @@
 
 - Major File Update: `custom_systems.rpy`
   - Tweaks to existing functions and statements 
-    - `show_app_e` no longer exists! 
+    - `show_app_e` - No longer exists! 
+    - `show_app(app_screen)` - No longer takes a `disable` parameter!
+      - Button disabling will be handled with the Button Disabler System from now on!
   - New Functions!
     - `button_disabled(button=None, report=True)`
     - `button_disabler_status(global_btn=True, btn_type=True, btn_id=True, disabled=True, enabled=True, inline=False)`
+    - `disable_global()`
+    - `enable_global()`
+    - `disable_all()`
+    - `enable_all()`
+    - `disable_type(button_type)`
+    - `enable_type(button_type)`
+    - `disable_all_type(button_type)`
+    - `enable_all_type(button_type)`
+    - `button_enable(id)`
+    - `button_enable(id)`
+  - New Statements!
+    - All Button Disabler System Custom Statements (Check below ↓)
 
 - Button Disabler System
   - Variables: 
@@ -290,11 +304,17 @@
     - `disabled_button_types` - Universal (boolean) disablers per button type
     - `disabled_button_ids` - List of individual disabled buttons
     - `valid_button_ids` - List of all valid button ids, linked to their button types that can be disabled
+  - Custom Statements: 
+    - Disable or enable all Buttons
+      - `disable_global`, `enable_global`, `disable_all`, `enable_all`
+    - Disable or enable all Buttons of button_type
+      - `disable_type "button_type"`, `enable_type "button_type"`, `disable_all_type "button_type"`, `enable_all_type "button_type"`
+    - Disable or enable Button with button_id
+      - `button_enable "button_id"`, `button_enable "button_id"`
   - Debug / Helper Functions:
     - `button_disabled()` - boolean check whether a disabler currently on or not, receive a report in console from where it's disabled by default
     - `button_disabler_status()` - console function that prints an organized list of button disablers' status
     - Extensive documentation on comments above functions for their usage and optional parameters!
-  - Disabler functions added!
 
 - Usable Bedroom Background Progression 
   - Concept Art 2.0 Completed!
