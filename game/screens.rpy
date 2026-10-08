@@ -853,8 +853,7 @@ screen computer_ui():
 
 screen scrollable_content(scroll=None, yinitial=0.0, spacing=0, scrollbars="vertical", left_pad=0, top_pad=0, right_pad=0, bottom_pad=0, yadjustment=None, vp_width=0, vp_height=0): 
 
-    python:
-        adj.value = float('inf')
+    
 
     # Content with scroll support
     if scroll == "viewport":
