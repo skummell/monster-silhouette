@@ -312,7 +312,7 @@
     - Disable or enable Button with button_id
       - `button_enable "button_id"`, `button_enable "button_id"`
   - Debug / Helper Functions:
-    - `button_disabled()` - boolean check whether a disabler currently on or not, receive a report in console from where it's disabled by default
+    - `button_disabled()` - boolean check whether global disabler, button type or button name is currently disabled or not, receive a report in console about where the status is originating from and any inner flag details behind the status, by default
     - `button_disabler_status()` - console function that prints an organized list of button disablers' status
     - Extensive documentation on comments above functions for their usage and optional parameters!
 
@@ -346,4 +346,10 @@
   - New Occasions added!
     - default: work, mephisto_arrival, mephisto_leaves
     - early time: work
+
+### Oct 7, 2026 
+
+- Partial implementation of Button Disabler System
+  - Button sensitivity blocked: 
+    - if condition testing button disabled status
 

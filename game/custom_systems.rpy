@@ -867,7 +867,10 @@ init python:
         ## Search Global Disabler only
         else:
             if disable_buttons:
-                msg = "Buttons are DISABLED globally."
+                msg = "Buttons are DISABLED globally.\n\n"
+
+                msg += "Flags:\n"
+                msg += "  - global button disabler (True)\n"
 
                 if report:
                     print(msg)
@@ -875,7 +878,10 @@ init python:
                 return True
 
             else:
-                msg = "Buttons are NOT disabled globally."
+                msg = "Buttons are NOT disabled globally.\n\n"
+
+                msg += "Flags:\n"
+                msg += "  - global button disabler (False)\n"
 
                 if report:
                     print(msg)

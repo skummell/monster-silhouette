@@ -12,17 +12,20 @@ default active_contact = None # Track which Chat Contact is Open / Active
 
 # Button Disablers
 default disable_buttons = False # Universally disable all buttons that can be disabled
-default disabled_button_types = { # Universally disable buttons for a specific type
+# Universally disable buttons for a specific type
+default disabled_button_types = { 
     "app_exit": False,
     "app_button": False,
     "contact_button": False
 }
-default disabled_button_ids = { # List of individual disabled buttons
+# List of individual disabled buttons
+default disabled_button_ids = { 
     "app_exit": set(), # List of Apps with disabled exit button
     "app_button": set(), # List of disabled Apps
     "contact_button": set() # List of disabled contacts
 }
-default valid_button_ids = { # Button IDs Roster
+# Button IDs Roster
+default valid_button_ids = { 
     "app_exit": {
         "Profile", "Chat", "Draft"
     },
@@ -603,8 +606,9 @@ screen app_button(app_name, tooltip, in_scene=False, app_icon="gui/placeholders/
                 
         action If(in_scene, Function(show_app, app_name), Show(app_name))
 
-        #if profile_disabled or apps_disabled or disabled_buttons: 
-        #    sensitive False
+        # Disable Button if disablers are on and screen is not Computer UI Menu
+        if button_disabled(app_name, report=False):
+            sensitive False
 
         tooltip tooltip
 
@@ -705,8 +709,9 @@ screen app_exit(id_name):
         idle "gui/placeholders/App Exit Button Placeholder.svg"
         at app_exit_button
 
-        #if exit_disabled or disabled_buttons: 
-        #    sensitive False 
+        # Disable Button if disablers are on and screen is not Computer UI Menu
+        if button_disabled(id_name, report=False):
+            sensitive False 
         
         action Hide()
 
@@ -1858,8 +1863,9 @@ screen contact_button(name, avatar="#808080"):
 
         action SetVariable("active_contact", name), If(_in_chat_block, false=Function(nvl_clear))
 
-        #if disable_contacts: 
-        #    sensitive False
+        # Disable Button if disablers are on and screen is not Computer UI Menu
+        if button_disabled(name, report=False):
+            sensitive False
 
         add "gui/placeholders/Contact Item Background.svg": 
             xysize(200, 110)
