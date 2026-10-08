@@ -94,6 +94,11 @@ label start:
 
     # Black Screen 
 
+    # Disable All Buttons 
+    disable_all
+    # Enable All App Exit Buttons
+    enable_all_type "app_exit"
+
     # Day 1 (Demo) Start
 
     call demo_intro # script/demo/demo_intro.rpy

@@ -8,7 +8,7 @@
 ## The init offset statement causes the initialization statements in this file
 ## to run before init statements in any other file.
 init offset = -2
-define _game_menu_screen = "computer_ui_screen"
+define _game_menu_screen = "computer_ui_menu"
 
 ## Calling gui.init resets the styles to sensible default values, and sets the
 ## width and height of the game.

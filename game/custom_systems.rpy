@@ -31,9 +31,17 @@
 ##                  Disabling overrides lower level conditions
 ##                  Enabling  only clears level, other level conditions still apply                  
 ##
+##          Button Disabler Variables 
+##              disable_buttons         - Global Disabler
+##              disabled_button_types   - Button Type Disablers
+##              disabled_button_ids     - Button ID Disablers
+##              valid_button_ids        - All Valid Button IDs for Disabling
+##              app_to_exit             - Maps App Buttons to App Exit Buttons
+##
 ##          For Valid Button Types & IDs refer to 'valid_button_ids' Dictionary Variable
 ##              usage of invalid button types and ids cause statements and functions to fail,
 ##               causing a error message to be printed to console and the function to return without doing anything
+##
 ##
 ##
 ## (Note: Statements are intended for usage in script files.)
@@ -153,6 +161,12 @@ python early:
         store._chat_start_contact = contact 
         store._in_chat_block = True
 
+        # Disable all Contact Buttons
+        disable_all_type("contact_button")
+
+        # Enable Contact Button
+        enable_id(_chat_start_contact)
+
         ## Timestamps
         existing = store.chat_timestamps.get(contact, [])
         last_date = next((e[1] for e in reversed(existing) if e[1]), None) # Last non empty date
@@ -207,7 +221,7 @@ python early:
 
         if renpy.get_screen("chat_app", layer="master"): 
             # Enable Exit Button
-            show_app("chat_app")
+            enable_id("Chat")
 
     renpy.register_statement(
         name = "chat_end",
@@ -287,7 +301,14 @@ python early:
         return screen
 
     def execute_show_app(app_screen):
+        
+        # Show app_screen on scene (master) layer
         show_app(app_screen) 
+
+        # Disable corresponding exit button
+        app_exit_button = app_to_exit[app_screen]
+        disable_id(app_exit_button)
+        
 
     renpy.register_statement(
         name = "show_app", 
@@ -302,7 +323,13 @@ python early:
         return screen
 
     def execute_hide_app(app_screen): 
+        
+        # Hide app_screen on scene (master) layer
         hide_app(app_screen)
+
+        # Enable corresponding exit button
+        app_exit_button = app_to_exit[app_screen]
+        enable_id(app_exit_button)
 
     renpy.register_statement(
         name = "hide_app",

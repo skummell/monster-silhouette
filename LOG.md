@@ -293,8 +293,8 @@
     - `enable_type(button_type)`
     - `disable_all_type(button_type)`
     - `enable_all_type(button_type)`
-    - `button_enable(id)`
-    - `button_enable(id)`
+    - `disable_id(id)`
+    - `enable_id(id)`
   - New Statements!
     - All Button Disabler System Custom Statements (Check below ↓)
 
@@ -310,7 +310,7 @@
     - Disable or enable all Buttons of button_type
       - `disable_type "button_type"`, `enable_type "button_type"`, `disable_all_type "button_type"`, `enable_all_type "button_type"`
     - Disable or enable Button with button_id
-      - `button_enable "button_id"`, `button_enable "button_id"`
+      - `enable_id "button_id"`, `disable_id "button_id"`
   - Debug / Helper Functions:
     - `button_disabled()` - boolean check whether global disabler, button type or button name is currently disabled or not, receive a report in console about where the status is originating from and any inner flag details behind the status, by default
     - `button_disabler_status()` - console function that prints an organized list of button disablers' status
@@ -352,4 +352,25 @@
 - Partial implementation of Button Disabler System
   - Button sensitivity blocked: 
     - if condition testing button disabled status
+
+## Oct 8, 2026 
+
+- New Button Disabler Variable!
+  - `app_to_exit` - Dictionary List Mapping App Buttons IDs to their correspondent App Exit Buttons IDs
+
+- Button Disabler System Implementation
+  - In other Game Systems' Statements (`custom_systems.rpy`) d
+    - `show_app` - auto-disables corresponding exit button 
+    - `hide_app` - auto-enables corresponding exit button
+    - `chat_start` - disables all contact buttons then enables corresponding contact button
+    - `chat_end` - auto-enables chat exit button
+  - In Script Files (`script.rpy` & `script/*.rpy`)
+    - Comments updated on disabling actions from other statements called
+    - Disable Buttons are all levels then enable app exit buttons at `start` of script 
+    - Enable Profile App Button after first time Profile App is shown and hidden in script (`demo_intro`)
+    - Enable Chat App Button when Chat Icon is meant to be clickable (`demo_intro`)
+    - Disable Chat App Exit Button after Chat Box Activates (`demo_intro`)
+      - In preparation for Click Implementations 
+    - Enable Draft App Button when Draft App is meant to be clickable (`demo_interlude1`)
+
 

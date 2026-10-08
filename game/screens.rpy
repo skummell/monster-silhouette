@@ -36,6 +36,12 @@ default valid_button_ids = {
         "And", "At You", "Golden Manager", "The Abyss Stares Back", "Stare Into The Abyss"
     }
 }
+# Mapping between App Button and Exit Button 
+default app_to_exit = { 
+    "profile_app": "Profile",
+    "chat_app": "Chat", 
+    "draft_app": "Draft"
+}
 
 ################################################################################
 ## Styles
