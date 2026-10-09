@@ -706,9 +706,9 @@ init python:
             disabled_button_ids[button_type].discard(id)
 
         else:
-            ## If button_type set is empty 
+            ## If button_type set is empty and button type disabler is on
             ## add all other valid buttons to button_type set except button id
-            if not disabled_button_ids[button_type]:
+            if disabled_button_types[button_type] and not disabled_button_ids[button_type]:
                 for other_id in valid_button_ids[button_type]:
                     if other_id != id:
                         disabled_button_ids[button_type].add(other_id)

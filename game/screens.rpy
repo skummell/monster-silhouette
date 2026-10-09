@@ -632,7 +632,7 @@ screen app_screen(window_width, window_height, content_width, content_height, sc
     
     tag app
 
-    if renpy.get_screen("app", "master"):
+    if renpy.get_screen("app", "master") and not renpy.get_screen("computer_ui_menu"):
         key "game_menu" action config.game_menu_action
     else: 
         key "game_menu" action Hide()
@@ -831,7 +831,7 @@ screen computer_ui_menu():
 
     tag menu
 
-    key "game_menu" action Return()
+    key "game_menu" action [Return(), Return()]
     
     use computer_ui
 
@@ -1690,9 +1690,34 @@ screen ending_gallery():
 ## Special Gameplay screens
 ################################################################################
 
+## Exit Disabled Warning Screen ################################################
+##
+## This screen warns the player that the exit button for the app is currently unavailable.
+
 screen exit_disabled_warning(app):
 
-    text "Note: [app] App exit button is currently unavailable. Use ESC to close out of app."
+    zorder 20
+
+
+    frame: 
+
+        style "exit_disabled_warning_frame"
+
+        text "{b}Note:{/b} [app] App exit button is currently unavailable. Use ESC shortcut to close out of app.":
+            style "exit_disabled_warning_text"
+
+style exit_disabled_warning_frame:
+
+    background gui.muted_color
+    xalign 0.5 
+    ypos 10
+
+style exit_disabled_warning_text:
+
+    size 16 
+    color gui.hover_color
+    xalign 0.5
+    textalign 0.5
 
 ## Profile App screen ##########################################################
 ## 
@@ -1809,7 +1834,7 @@ screen chat_app():
     zorder 10 
     modal True 
 
-    on "hide" action SetVariable("active_contact", None), If(_in_chat_block, false=Function(nvl_clear))
+    on "hide" action If(_in_chat_block, false=SetVariable("active_contact", None)), If(_in_chat_block, false=Function(nvl_clear))
 
     # App Screen Dimensions 
     $ window_width = 900

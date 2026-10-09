@@ -373,9 +373,29 @@
       - In preparation for Click Implementations 
     - Enable Draft App Button when Draft App is meant to be clickable (`demo_interlude1`)
 
+- Styled Exit Disabled Warning for Computer UI Menu when you open an app whose exit buton is disabled
+
 - Bugs & Fixes: 
-  - Change `sensitive False` to `NullAction` for hover events to still work but button do nothing when disabled
-  - Fixed `_game_menu_screen` to the correct screen name (`computer_ui_menu`)
+  - `_game_menu_screen` with wrong screen name 
+    - Fix: 
+      - Switched to `computer_ui_menu`
+  - Hover events prevented by `sensitive False`
+    - Fix: 
+      - Swapped `sensitive False` with `NullAction` for hover events to still work but button do nothing when disabled
+  - Stuck in `computer_ui_menu` when exiting with ESC after opening a app
+    - Fix: 
+      - `game_menu` key on computer_ui_menu now fully exit back to game/scene 
+      - `[Return(), Return()]` action instead of a single `Return()`
+  - `active_contact` cleared when returning to game during chat block if Chat App opened & exited at least once from computer_ui_menu
+    - Fix: 
+      - Wrap on hide action in a if for in_chat_block
+      - Clears active_contact only if False (not on chat block)
+  - Profile App Exit Button disabled by enable Chat exit button inside of hide_app "chat_app" statement 
+    - Due to triggering empty set conditional 
+      - Which adds all buttons of button type to disabled id except enabled id
+    - Fix: 
+      - Added additinal if condition
+      - Conditional only triggers if button type disabler is on
 
 
 
