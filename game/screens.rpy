@@ -609,12 +609,15 @@ screen app_button(app_name, tooltip, in_scene=False, app_icon="gui/placeholders/
         id app_name
 
         idle app_icon
-                
-        action If(in_scene, Function(show_app, app_name), Show(app_name))
 
         # Disable Button if disablers are on and screen is not Computer UI Menu
         if button_disabled(app_name):
-            sensitive False
+            
+            action NullAction()
+
+        else: 
+            
+            action If(in_scene, Function(show_app, app_name), Show(app_name))
 
         tooltip tooltip
 
@@ -717,9 +720,12 @@ screen app_exit(id_name):
 
         # Disable Button if disablers are on and screen is not Computer UI Menu
         if button_disabled(id_name):
-            sensitive False 
+
+            action NullAction()
+
+        else: 
         
-        action Hide()
+            action Hide()
 
 transform app_exit_button: 
     xysize(60, 25)
@@ -1884,11 +1890,14 @@ screen contact_button(name, avatar="#808080"):
 
         clipping True 
 
-        action SetVariable("active_contact", name), If(_in_chat_block, false=Function(nvl_clear))
-
         # Disable Button if disablers are on and screen is not Computer UI Menu
         if button_disabled(name):
-            sensitive False
+
+            action NullAction()
+            
+        else: 
+
+            action SetVariable("active_contact", name), If(_in_chat_block, false=Function(nvl_clear))
 
         add "gui/placeholders/Contact Item Background.svg": 
             xysize(200, 110)
