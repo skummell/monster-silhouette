@@ -372,6 +372,11 @@
     - Disable Chat App Exit Button after Chat Box Activates (`demo_intro`)
       - In preparation for Click Implementations 
     - Enable Draft App Button when Draft App is meant to be clickable (`demo_interlude1`)
+
+- Bugs & Fixes: 
   - Change `sensitive False` to `NullAction` for hover events to still work but button do nothing when disabled
+  - Fixed `_game_menu_screen` to the correct screen name (`computer_ui_menu`)
+
+
 
 
