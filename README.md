@@ -23,21 +23,30 @@ Monster Silhouette © 2026 SkumMell
 The Demo for Monster Silhouette is currently being built. 
 
 Progress can be observed through this repository. 
+
+<br>
+
+Source Code Docs Coming soon.
+
+<br>
+
 Track development timeline through the [Build Log](LOG.md) and repository commits. 
+<br>
 (Note: Build Log covers development in detail, including before repository creation.)
 
 ### Demo
 
 Demo Script & Concept Arts are fully completed. 
+<br>
 Currently in the process of coding everything. 
 
 ### Full Game
 
 Full Game may greatly differ from the Demo. 
+<br>
 Depending on the final script the rating may increase to 18+. 
 
-No Release Date as of now.
-Will likely have Episodic Releases. 
+No Release Date as of now. Will likely have Episodic Releases. 
 
 ## Features
 
@@ -99,9 +108,11 @@ Will likely have Episodic Releases.
 ## Download & Play Monster Silhouette 
 
 This GitHub repository contains the source code for Monster Silhouette. 
-It only includes Project Files (.rpy), and does not contain modified Engine Files, Game Assets, Story Progression Scripts nor Game Downloadables.
+<br>
+It only includes Project Files (`.rpy`), and does not contain modified Engine Files, Game Assets, Story Progression Scripts nor Game Downloadables.
 
 The Demo hasn't been released yet. 
+<br>
 Game will be hosted on [itch.io](https://itch.io/) once it does. (Project Page Coming Soon!)
 
 ## Licensing 

@@ -1,5 +1,19 @@
 # Build Log 
 
+This file is an extensive Build Log and Change Log for Monster Silhouette as a project. 
+
+Includes changes to repo tracked project files, untracked project files, & other game development progress. 
+
+Logs are divided by date ranges then specific dates. 
+<br>
+If something is under a date range rather than a specific date it means it was worked on multiple days within that date range rather than a specific day corresponding to a single date.
+
+Refer to repo commits for specific dates, times and changes on finalized code edits, fixes & etc on tracked project files mentioned in the logs. 
+<br>
+Not every commit made as soon as every change is completed.
+<br>
+(Note: Repo commits only start as of Sep 21, 2026.)
+
 ## Aug 25-30, 2026
 
 - Brainstorming & Premise 
@@ -96,7 +110,6 @@
         - Functional Exit Button
       - App Main Content Area
       - Optional Toolbars
-      
   - Layout for 3 Other Screens (Using Placeholder UI Elements)
     - Profile App Screen 
     - Chat App Screen 
@@ -311,7 +324,7 @@
       - `disable_type "button_type"`, `enable_type "button_type"`, `disable_all_type "button_type"`, `enable_all_type "button_type"`
     - Disable or enable Button with button_id
       - `enable_id "button_id"`, `disable_id "button_id"`
-  - Debug / Helper Functions:
+  - Debugger Functions:
     - `button_disabled()` - boolean check whether global disabler, button type or button name is currently disabled or not, receive a report in console about where the status is originating from and any inner flag details behind the status, by default
     - `button_disabler_status()` - console function that prints an organized list of button disablers' status
     - Extensive documentation on comments above functions for their usage and optional parameters!
@@ -397,6 +410,45 @@
       - Added additinal if condition
       - Conditional only triggers if button type disabler is on
 
+## Oct 9-13, 2026 
 
+- Moved button disabler variables from `screen.rpy` to `custom_systems.rpy`
 
+- Major File Update: `custom_systems.rpy`
+  - Variable Tweaks 
+    - Change assignment from default to init python
+      - `valid_button_ids`, `app_to_exit`
+  - New Functions!
+    - `freeze_until(flag_name)`
+    - `flag_check(flag_name)`
+    - `app_open(app_screen)`
+    - `contact_open(contact_name)`
+  - New Statements!
+    - All Freeze System Custom Statements (Check below ↓)
 
+- Freeze System 
+  - Overlay Screen for Freeze Hint (`freeze_hint_display`)
+  - Variables: 
+    - `flag_conditions` - Dictionary conditions mapped to flag names
+    - `freeze_hint` - Dictionary of freeze hints mapped to flag names
+    - `_current_hint` - Hint for current Freeze Block
+  - Custom Statements: 
+    - `freeze_until "flag_name"` - Pause script until condition assigned to flag_name is met
+
+- Add Freeze Conditions dynamically 
+  - Based on already logged app screens and contact names (`valid_button_ids`)
+    - Use `app_button` and `contact_button` keys' values to dynamically add `[app]` and `[contact]` conditions
+- Add Freeze Hints dynamically 
+  - Based on already logged app screens, app names, and contact names
+    - Use `valid_button_ids`, `contact_button` key values to dynamically add `[contact]` hints
+    - use `app_to_exit` keys and values to dynamically add `[app]` hints
+
+- Freeze System Implementation: 
+  - Script Implementation: 
+    - `demo_intro.rpy`
+      - Freeze until Chat is opened 
+      - Freeze until And contact is open 
+    - `demo_interlude1.rpy`
+      - Freeze until Chat is closed 
+      - Freeze until Draft is opened
+      - Freeze until Draft is closed

@@ -6,7 +6,13 @@
 ##                                               and easy to use functions  inside of screens, 
 ##                                                                                    other parts of code, and
 ##                                                                                    dev console
-##
+
+################################################################################
+## Initialization
+################################################################################
+
+init offset = -1 
+
 ## List of Game Systems currently handled: 
 ##      Chat System 
 ##          record, show, and use nvl lines on script as chat instances
@@ -42,6 +48,8 @@
 ##              usage of invalid button types and ids cause statements and functions to fail,
 ##               causing a error message to be printed to console and the function to return without doing anything
 ##
+##      Freeze System
+##          freeze script progression until conditions are met
 ##
 ##
 ## (Note: Statements are intended for usage in script files.)
@@ -65,6 +73,8 @@
 ##      enable_all_type  "button_type"  - enable ALL buttons of button_type at all disabler levels 
 ##      disable_id       "button_id"    - disable buton with button_id at all disabler levels 
 ##      enable_id        "button_id"    - enable buton with button_id at all disabler levels 
+##  Freeze System Statements 
+##      freeze_until     "flag_name"    - freeze script progression until flag_name condition is achieved
 ##
 ##
 ## Game System Functions: 
@@ -82,17 +92,19 @@
 ##
 ## List of Game System Utility Functions:
 ##  Chat System Utility Functions
-##      get_chat_entries (contact)                  - read chat entries / history linked to contact 
+##      get_chat_entries    (contact)                  - read chat entries / history linked to contact 
 ##  Scene System Utility Functions
-##      show_scene       (screen_name)              - show a screen on scene (master) layer
-##      show_app         (screen_name)              - show a app screen on scene (master layer) on top of current scene
-##      hide_app         (screen_name)              - hide a app screen on scene (master layer)
+##      show_scene          (screen_name)              - show a screen on scene (master) layer
+##      show_app            (screen_name)              - show a app screen on scene (master layer) on top of current scene
+##      hide_app            (screen_name)              - hide a app screen on scene (master layer)
 ##  Button Disabler System Utility Functions 
-##      button_disabled  (button=None, report=False) - returns a boolean on whether buttons are globally disabled, 
-##                                                    a specific button type is disabled or 
-##                                                    a specific button id is disabled depending on input
-##                                                    (optionally use report=True to receive console printed report 
-##                                                     on global disabler, or button id / button type requested.)
+##      button_disabled     (button=None, report=False) - returns a boolean on whether buttons are globally disabled, 
+##                                                        a specific button type is disabled or 
+##                                                        a specific button id is disabled depending on input
+##                                                        (optionally use report=True to receive console printed report 
+##                                                         on global disabler, or button id / button type requested.)
+##  Freeze System Utility Functions 
+##      
 ## 
 ## (Note: Debugger Functions are intended for usage in console.)
 ##
@@ -108,6 +120,7 @@
 ##      button_disabler_status (global_btn=True, btn_type=True, btn_id=True, disabled=True, enabled=True, inline=False)
 ##          - Check button disabler status 
 ##          - (prints organized list of status of disablers to console)
+##
 
 ################################################################################
 ## Chat System #################################################################
@@ -124,7 +137,7 @@
 ##      "narration 2"
 ##      chat_end "contact"
 
-init offset = -1 
+## Chat System Variables 
 
 ## Chat Range Storage 
 ## chat_ranges = { "And": [(0, 5), (12, 18)], "Golden Manager": [(6, 11)], ...}
@@ -138,7 +151,7 @@ default chat_timestamps = {}
 
 ## Temporary state between chat_start and chat_end
 default _chat_start_index = None 
-default _chat_start_contact = None
+default _chat_contact = None
 
 ## In Chat Flag 
 default _in_chat_block = False
@@ -158,14 +171,14 @@ python early:
 
     def execute_chat_start(contact): 
         store._chat_start_index = len(_history_list)
-        store._chat_start_contact = contact 
+        store._chat_contact = contact 
         store._in_chat_block = True
 
         # Disable all Contact Buttons
         disable_all_type("contact_button")
 
         # Enable Contact Button
-        enable_id(_chat_start_contact)
+        enable_id(_chat_contact)
 
         ## Timestamps
         existing = store.chat_timestamps.get(contact, [])
@@ -188,10 +201,10 @@ python early:
 
     def execute_chat_end(contact):
 
-        if contact != store._chat_start_contact:
+        if contact != store._chat_contact:
             raise Exception(
                 "chat_end contact (%r) doesn't match chat_start (%r)"
-                % (contact, store._chat_start_contact)
+                % (contact, store._chat_contact)
             )
 
         store.chat_ranges.setdefault(contact, []).append(
@@ -214,7 +227,7 @@ python early:
         )
 
         store._chat_start_index = None
-        store._chat_start_contact = None
+        store._chat_contact = None
         store._in_chat_block = False
         store._chat_date_change = False
         store._chat_time_change = False
@@ -229,8 +242,10 @@ python early:
         execute = execute_chat_end,
     )
 
-## Chat History Reader
+## Chat System Functions
 init python: 
+
+    ## Chat History Reader
     def get_chat_entries(contact): 
         """
         Returns a list of HistoryEntry objects belong to `contact`, 
@@ -337,13 +352,13 @@ python early:
         execute = execute_hide_app,
     )
 
+## Scene System Functions
 ## Call Screens on Master (Scene) Layer
 init python: 
 
     ## Show a screen on scene (master) layer 
     ## Acts like a classic scene and clears master layer to replace 
     ## previous scenes and prevent endless stacking
-
     def show_scene(screen_name):     
         renpy.scene(layer="master") # Clear Layer
         renpy.show_screen(screen_name, _layer="master") 
@@ -357,7 +372,7 @@ init python:
     ## Hide a screen on the scene (master) layer 
     ## Intended for screens shown through show_app
     ## As those shown with show_scene will get replaced by any new scene 
-    #3 shown automatically
+    ## shown automatically
     def hide_app(screen_name): 
         renpy.hide_screen(screen_name, layer="master")
 
@@ -429,6 +444,48 @@ init python:
 ##      ## does not change global disabler
 ##      ## enable_id for a button of button_type is redundant while this is on
  
+## Button Disabler System Variables 
+
+# Universally disable all buttons that can be disabled
+default disable_buttons = False 
+
+# Universally disable buttons for a specific type
+default disabled_button_types = { 
+    "app_exit": False,
+    "app_button": False,
+    "contact_button": False
+}
+
+# List of individual disabled buttons
+default disabled_button_ids = { 
+    "app_exit": set(), # List of Apps with disabled exit button
+    "app_button": set(), # List of disabled Apps
+    "contact_button": set() # List of disabled contacts
+}
+
+# Valid Button IDs Roster
+init python: 
+    valid_button_ids = { 
+
+        "app_exit": {
+            "Profile", "Chat", "Draft"
+        },
+
+        "app_button": {
+            "profile_app", "chat_app", "draft_app"
+        },
+
+        "contact_button": {
+            "And", "At You", "Golden Manager", "The Abyss Stares Back", "Stare Into The Abyss"
+        }
+    }
+
+    # Mapping between App Button and Exit Button 
+    app_to_exit = { 
+        "profile_app": "Profile",
+        "chat_app": "Chat", 
+        "draft_app": "Draft"
+    }
 
 ## Button Disabler System Statements
 python early: 
@@ -566,6 +623,8 @@ python early:
         parse = parse_enable_id, 
         execute = execute_enable_id, 
     )
+
+## Button Disabler System Functions
 
 ## Disable Buttons through the appropriate channels
 init python: 
@@ -1045,3 +1104,114 @@ init python:
                 report += "\n"
 
         print(report)
+
+################################################################################
+## Freeze System ###############################################################
+##
+## Freeze script progression to open different game modes
+## 
+## Usage format: 
+##
+##      "narration 1"
+##      "narration 2"
+##
+##      freeze_until "flag_name" # Pauses script until flag_name condition = True
+##
+##      "narration 3" # Fact: flag_name condition = True --> Script continues
+##
+##      chat_start "The Abyss Stares Back"
+##
+##      freeze_until [_chat_contact] # Grabs _chat_contact of current chat block ("The Abyss Stares Back") 
+##                                   # Freezes until contact button for it is clicked 
+
+## Freeze System Variables 
+
+## Freeze Conditions 
+## Maps freeze flag name to corresponding condition
+init python: 
+    freeze_conditions = { }
+
+    ## App Open Conditions
+    ## "[app_screen]"
+    for app_screen in valid_button_ids["app_button"]:
+        freeze_conditions[f"{app_screen}"] = f'app_open("{app_screen}")'
+
+    ## Contact Open Conditions
+    ## "[contact]"
+    ## _chat_contact - for the chat block's assigned contact 
+    for contact in valid_button_ids["contact_button"]: 
+        freeze_conditions[f"{contact}"] = f'contact_open("{contact}")'
+    
+    freeze_hint = {}
+
+    ## App Open Freeze Hints
+    ## "[app_screen]"
+    ## Hint Format: "Click on the [app_name] Icon to open [app_name] App."
+    for app_screen, app_name in app_to_exit.items(): 
+        freeze_hint[f"{app_screen}"] = f"Click on the {app_name} Icon to open {app_name} App."
+
+    ## Contact Open Freeze Hints 
+    ## "[contact]"
+    ## Hint Format: "Click [contact]'s Contact to open [contact]'s Chat Box."
+    for contact in valid_button_ids["contact_button"]: 
+        freeze_hint[f"{contact}"] = f"Click {contact}'s Contact to open {contact}'s Chat Box."
+
+# Freeze Hint Flag
+default _current_hint = None
+
+## Freeze System Statements 
+python early: 
+    
+    ## freeze_until "flag_name"
+    def parse_freeze_until(lex):
+        flag_name = lex.string()
+        lex.eol()
+        return flag_name
+
+    def execute_freeze_until(flag_name):
+        flag_name = renpy.substitute(flag_name) # Makes "flag_until [variable]" possible
+
+        freeze_until(flag_name)
+
+    renpy.register_statement(
+        name = "freeze_until",
+        parse = parse_freeze_until,
+        execute = execute_freeze_until,
+    )
+
+## Freeze System Functions 
+init python: 
+
+    ## Freeze / Paused script until flag_name condition is met
+    def freeze_until(flag_name): 
+
+        ## Invalid input
+        if flag_name not in store.freeze_conditions: 
+            print(f"freeze_until: '{flag_name}' is not a valid freeze flag.")
+            return
+
+        _window_hide()
+
+        # Set Current Hint 
+        store._current_hint = freeze_hint.get(flag_name)
+        
+        ## Loop until (flag_name) condition is met
+        while not flag_check(flag_name):
+            renpy.pause(0.05)
+
+        # Clear Current Hint
+        store._current_hint = None 
+
+        return
+
+    ## Check flag condition 
+    def flag_check(flag_name): 
+        return eval(store.freeze_conditions[flag_name])
+
+    ## Returns a boolean based on whether an app is open inside of the master layer
+    def app_open(app_screen): 
+        return renpy.get_screen(app_screen, layer="master") is not None
+
+    ## Returns a boolean based on whether a contact is the current active_contact or not 
+    def contact_open(contact_name): 
+        return active_contact == contact_name

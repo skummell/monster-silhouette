@@ -10,39 +10,6 @@ default player_endings = 0 # Track How Many Endings Have Been Reached By The Pla
 default total_endings = 0 # Number Of Endings Currently Available 
 default active_contact = None # Track which Chat Contact is Open / Active
 
-# Button Disablers
-default disable_buttons = False # Universally disable all buttons that can be disabled
-# Universally disable buttons for a specific type
-default disabled_button_types = { 
-    "app_exit": False,
-    "app_button": False,
-    "contact_button": False
-}
-# List of individual disabled buttons
-default disabled_button_ids = { 
-    "app_exit": set(), # List of Apps with disabled exit button
-    "app_button": set(), # List of disabled Apps
-    "contact_button": set() # List of disabled contacts
-}
-# Button IDs Roster
-default valid_button_ids = { 
-    "app_exit": {
-        "Profile", "Chat", "Draft"
-    },
-    "app_button": {
-        "profile_app", "chat_app", "draft_app"
-    },
-    "contact_button": {
-        "And", "At You", "Golden Manager", "The Abyss Stares Back", "Stare Into The Abyss"
-    }
-}
-# Mapping between App Button and Exit Button 
-default app_to_exit = { 
-    "profile_app": "Profile",
-    "chat_app": "Chat", 
-    "draft_app": "Draft"
-}
-
 ################################################################################
 ## Styles
 ################################################################################
@@ -306,11 +273,12 @@ screen quick_menu():
             textbutton _("Prefs") action ShowMenu('preferences')
 
 
-## This code ensures that the quick_menu (& status_bar) screen(s) is displayed in-game, whenever
+## This code ensures that the quick_menu (status_bar & freeze_hint_display) screen(s) is displayed in-game, whenever
 ## the player has not explicitly hidden the interface.
 init python:
     config.overlay_screens.append("quick_menu")
     config.overlay_screens.append("status_bar")
+    config.overlay_screens.append("freeze_hint_display")
 
 default quick_menu = True
 default status_bar = False
@@ -854,18 +822,18 @@ screen computer_ui():
         add "gui/placeholders/gray_background.svg": 
             at fill_screen
 
-        use status_bar
         use app_grid  
+
         if not renpy.get_screen("quick_menu"): # Only when Quick Menu is not Available
             use navigation_dock 
+        
+        
 
 ## Scrollable Content screen ###################################################
 ##
 ## A screen that provides scroll support depending on the scroll type
 
 screen scrollable_content(scroll=None, yinitial=0.0, spacing=0, scrollbars="vertical", left_pad=0, top_pad=0, right_pad=0, bottom_pad=0, yadjustment=None, vp_width=0, vp_height=0): 
-
-    
 
     # Content with scroll support
     if scroll == "viewport":
@@ -1715,6 +1683,32 @@ style exit_disabled_warning_frame:
 style exit_disabled_warning_text:
 
     size 16 
+    color gui.hover_color
+    xalign 0.5
+    textalign 0.5
+
+screen freeze_hint_display():
+
+    zorder 150 
+
+    if not renpy.get_screen("computer_ui_menu") and _current_hint is not None: 
+        
+        frame: 
+            style "freeze_hint_display_frame"
+
+            text "{b}Hint:{/b} [_current_hint]": 
+                style "freeze_hint_display_text"
+
+
+style freeze_hint_display_frame: 
+
+    background gui.muted_color
+    xpos 40
+    ypos 40 
+
+style freeze_hint_display_text: 
+
+    size 16
     color gui.hover_color
     xalign 0.5
     textalign 0.5
