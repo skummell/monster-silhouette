@@ -14,6 +14,59 @@ Not every commit made as soon as every change is completed.
 <br>
 (Note: Repo commits only start as of Sep 21, 2026.)
 
+---
+
+**Log relevant files (including those not included in repo):**
+
+(**Note:** not all folders nor all files inside folders are named in trees)
+
+- Project Files: 
+
+  ```
+  monster_silhouette/
+  ├── game/
+  │   ├── audio/
+  │   ├── gui/
+  │   ├── images/
+  │   └── script/
+  │   │   └── demo/
+  │   │       ├── demo_choices/
+  │   │       │   └── demo_choice1.rpy
+  │   │       ├── demo_interludes/
+  │   │       │   └── demo_choice1.rpy
+  │   │       └── demo_intro.rpy
+  │   ├── custom_systems.rpy
+  │   ├── gui.rpy
+  │   ├── options.rpy 
+  │   ├── screens.rpy 
+  │   └── script.rpy
+  ├── LOG.md (CURRENT FILE!)
+  └── README.md 
+
+  ```
+
+- Engine Files:  
+
+  ```
+  renpy-8.5.3-sdk/
+  └── renpy/
+      └── common/
+          ├── 00gamemenu.rpy
+          └── 00action_menu.rpy
+
+  ```
+
+- Game Design Document (GDD) Files 
+  
+  ```
+  Monster Silhouette/
+  ├── Characters/
+  ├── Concept Art/
+  ├── Game Mechanics/
+  ├── Locations/
+  └── Script/
+  ```
+
 ## Aug 25-30, 2026
 
 - Brainstorming & Premise 
@@ -452,3 +505,56 @@ Not every commit made as soon as every change is completed.
       - Freeze until Chat is closed 
       - Freeze until Draft is opened
       - Freeze until Draft is closed
+
+## Oct 14-21, 2026 
+
+- Usable Bedroom Background Progression 
+  - 1 Point Perspective
+  - Elements: 
+    - Desk Set Up 
+      - Wallet, Key, Laptop Sprites 
+    - Wardrobe / Closet 
+    - Bookshelf 
+    - Bed
+
+- Interactable Bedroom Scene
+  - `bedroom` - New screen!
+
+- Narrative Script Progression
+  - Script Files (not included in Repo) - `script/demo/`
+    - `demo_intro.rpy`
+    - `demo_choices/demo_intro.rpy` 
+    - `demo_interludes/demo_interlude1.rpy`
+    - `demo_prep/` - New Folder!
+      - `demo_bed_click.rpy` - New File!
+      - `demo_closet_click.rpy` - New File!
+      - `demo_key_click.rpy` - New File!
+      - `demo_laptop_click.rpy` - New File!
+      - `demo_wallet_click.rpy` - New File!
+  - Completed Script Dialogue Implementation
+    - Day 1 - Introduction
+    - Day 1 - First Choice 
+    - Day 1 - Bed Click 
+    - Day 1 - Wallet Click 
+    - Day 1 - Closet Click 
+    - Day 1 - Laptop Click 
+    - Day 1 - Key Click
+    - Game System Partial Implementations Within Script
+      - Single Condition Freeze Implemented
+      - Expanding Freeze System
+  - Not Completed: 
+    - Game System Implementations Within Script
+      - Prep Phase Freeze 
+      - Prep Phase Click System 
+      - Closet Click System       
+    - Day 1 - First Interlude 
+      - Stopped in the middle of Prep Phase
+    - Polishes
+
+- Prep Phase System 
+  - Integrate into Freeze System 
+  - Variables: 
+    - `key_attempted` - Prep Phase Hint gater (Track whether key has been clicked at least once)
+    - `closet_clicked` - Freeze sub condition (Track whether closet click has been successfully completed)
+    - `laptop_clicked` - Freeze sub condition (Track whether laptop has been clicked)
+  - Freeze System now supports dynamic hints 

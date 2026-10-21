@@ -1141,6 +1141,9 @@ init python:
     ## _chat_contact - for the chat block's assigned contact 
     for contact in valid_button_ids["contact_button"]: 
         freeze_conditions[f"{contact}"] = f'contact_open("{contact}")'
+
+    # Prep Phase Condition
+    freeze_conditions["prep_done"] = f'prep_done_condition()'
     
     freeze_hint = {}
 
@@ -1155,6 +1158,21 @@ init python:
     ## Hint Format: "Click [contact]'s Contact to open [contact]'s Chat Box."
     for contact in valid_button_ids["contact_button"]: 
         freeze_hint[f"{contact}"] = f"Click {contact}'s Contact to open {contact}'s Chat Box."
+
+    # Prep Phase Freeze Hints
+    def prep_done_hint(): # Dynamic Hints 
+        if not store.key_attempted: 
+            return "Click to interact with elements in the bedroom."
+        
+        if not store.closet_clicked: 
+            return "Click on the wardrobe to change before going out."
+
+        if not store.laptop_clicked: 
+            return "Click on the laptop to carry it with you."
+
+        return "Click the key to move the story forward."
+
+    freeze_hint["prep_done"] = prep_done_hint
 
 # Freeze Hint Flag
 default _current_hint = None
@@ -1192,11 +1210,16 @@ init python:
 
         _window_hide()
 
-        # Set Current Hint 
-        store._current_hint = freeze_hint.get(flag_name)
+        ## Set Current Hint 
+        hint_source = freeze_hint.get(flag_name)
+        store._current_hint = hint_source() if callable(hint_source) else hint_source
         
         ## Loop until (flag_name) condition is met
         while not flag_check(flag_name):
+            # Support for dynamic hints (if hint_source is a callable function)
+            if callable(hint_source): 
+                store._current_hint = hint_source()
+
             renpy.pause(0.05)
 
         # Clear Current Hint
@@ -1215,3 +1238,7 @@ init python:
     ## Returns a boolean based on whether a contact is the current active_contact or not 
     def contact_open(contact_name): 
         return active_contact == contact_name
+
+    ## Prep Done Condition Check 
+    def prep_done_condition(): 
+        return store.closet_clicked and store.laptop_clicked

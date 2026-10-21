@@ -26,6 +26,7 @@ init python:
         renpy.restart_interaction()
 
 # Internal States 
+
 # Hidden Flags 
 default true_name = False # Affects Player Character POV narration, Dialogue options and more
 default early_day = False # Affects time you arrive in Victor's lounge
@@ -35,10 +36,12 @@ default wallet_on_person = False # Affects some scenes and narration in the loun
 default semiformal_top = False # Extra Character Dialogue
 default contour_top = False # Extra Character Dialogue
 default many_pockets = False # Extra scenes
+
 # Stats
 default rapport = None # Affects Mephisto's attitude towards you 
 default suspicion = None # Affects Player's attitude towards Mephisto 
 default deadline = 7 # Progresses to next game day 
+
 # Visible Flags 
 default player_name = ""
 default abyss_date = datetime.date(2025, 9, 26) # (Fri) Sep 26
@@ -67,6 +70,11 @@ default clock = { # Default Scheduled Times of Day
 }
 default abyss_time = "3:00 AM"
 default day = 1
+
+# Prep Phase Flags 
+default key_attempted = False # Affects Prep Phase Hint
+default closet_clicked = False # Prevents Freeze from ending until player clicks on closet sprite in bedroom scene 
+default laptop_clicked = False # Prevents Freeze from ending until player clicks on laptop sprite in bedroom scene
 
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
@@ -104,6 +112,12 @@ label start:
     call demo_intro # script/demo/demo_intro.rpy
     
     "W.I.P" #DELETE LATER
+
+    show_scene "bedroom"
+
+    pause
+
+    "Check out the bedroom scene. This is a placeholder for the actual bedroom scene."
 
     # This ends the game.
 
