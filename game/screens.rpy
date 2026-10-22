@@ -2211,7 +2211,7 @@ screen draft_tools():
             add "gui/placeholders/Draft Settings Bar Placeholder.svg": 
                 xysize (700, 50)
 
-screen bedroom(): 
+screen bedroom(click_map={}): 
     
     tag game 
 
@@ -2234,7 +2234,7 @@ screen bedroom():
             xysize(294, 470)
             xpos 114
             ypos 62
-            action NullAction() # Change to a Click!
+            action (Call(click_map["closet"]) if "closet" in click_map else NullAction())
 
         # Desk + Items
         fixed:
@@ -2245,12 +2245,13 @@ screen bedroom():
                 xysize(546, 432)
 
             # Wallet - Wallet Click
-            imagebutton:
-                idle "images/bedroom_wallet_v1.png"
-                xysize(37, 19)
-                xpos 67
-                ypos 183
-                action NullAction() # Change to a Click!
+            if not wallet_on_person:
+                imagebutton:
+                    idle "images/bedroom_wallet_v1.png"
+                    xysize(37, 19)
+                    xpos 67
+                    ypos 183
+                    action (Call(click_map["wallet"]) if "wallet" in click_map else NullAction())
 
             # Key - Key Click
             imagebutton:
@@ -2258,15 +2259,16 @@ screen bedroom():
                 xysize(12, 14)
                 xpos 103
                 ypos 212
-                action NullAction() # Change to a Click!
+                action (Call(click_map["key"]) if "key" in click_map else NullAction())
 
             # Laptop - Laptop Click
-            imagebutton:
-                idle "images/bedroom_laptop_v1.png"
-                xysize(142, 102)
-                xpos 369
-                ypos 106
-                action NullAction() # Change to a Click!
+            if not laptop_clicked:
+                imagebutton:
+                    idle "images/bedroom_laptop_v1.png"
+                    xysize(142, 102)
+                    xpos 369
+                    ypos 106
+                    action (Call(click_map["laptop"]) if "laptop" in click_map else NullAction())
 
         # Chair
         add "images/bedroom_chair_v1.png":
@@ -2281,7 +2283,70 @@ screen bedroom():
             xpos 88
             yanchor 1.0
             ypos 740
-            action NullAction() # Change to a Click!
+            action (Call(click_map["bed"]) if "bed" in click_map else NullAction())
+
+screen wardrobe_panel(): 
+
+    modal True 
+
+    frame: 
+        xalign 0.5
+        yalign 0.5
+        xysize(420, 320)
+        padding(20, 20)
+
+        # Background 
+        add "#C8C8C8":
+            xysize(420, 320)
+            xalign 0.5 
+            yalign 0.5
+
+        clipping True
+
+        hbox:
+            xysize(380, 260)
+            spacing 20
+
+            clipping True
+
+            ## Tops (Left Column)
+            vbox:
+                spacing 20
+
+                ## Top Option 1 - Semiformal
+                imagebutton:
+                    idle Solid("#000000", xsize=180, ysize=120)
+                    selected semiformal_top
+                    action (SetVariable("semiformal_top", True), SetVariable("contour_top", False))
+
+                ## Top Option 2 - Contour
+                imagebutton:
+                    idle Solid("#000000", xsize=180, ysize=120)
+                    selected contour_top
+                    action (SetVariable("contour_top", True), SetVariable("semiformal_top", False))
+
+            ## Bottoms (Right Column)
+            vbox:
+                spacing 20
+
+                ## Bottom Option 1 - Many Pockets
+                imagebutton:
+                    idle Solid("#000000", xsize=180, ysize=120)
+                    selected many_pockets
+                    action SetVariable("many_pockets", not many_pockets)
+
+                ## Bottom Option 2
+                imagebutton:
+                    idle Solid("#000000", xsize=180, ysize=120)
+                    action NullAction()
+
+        ## Done Button
+        textbutton "Done":
+            ysize 0
+            yalign 1.0
+            sensitive (not top_selected and not bottom_selected)
+            action [SetVariable("closet_clicked", True), Function(hide_app, "wardrobe_panel")]
+
 
 ################################################################################
 ## Cosmetic Screens

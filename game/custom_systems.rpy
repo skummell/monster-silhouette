@@ -51,6 +51,12 @@ init offset = -1
 ##      Freeze System
 ##          freeze script progression until conditions are met
 ##
+##      Game Mode System
+##          change from regular script progression to a specific game mode with its own rules and conditions
+##          
+##          Game Modes
+##              Prep Phase - A game mode for the start of every day, before entering the main part of the day's script 
+##
 ##
 ## (Note: Statements are intended for usage in script files.)
 ##
@@ -75,6 +81,8 @@ init offset = -1
 ##      enable_id        "button_id"    - enable buton with button_id at all disabler levels 
 ##  Freeze System Statements 
 ##      freeze_until     "flag_name"    - freeze script progression until flag_name condition is achieved
+##  Game Mode System Statements
+##      prep_phase        "click_script_1" ... "click_script_n" - Activates Prep Phase Game Mode and feeds click scripts to bedroom scene
 ##
 ##
 ## Game System Functions: 
@@ -92,11 +100,11 @@ init offset = -1
 ##
 ## List of Game System Utility Functions:
 ##  Chat System Utility Functions
-##      get_chat_entries    (contact)                  - read chat entries / history linked to contact 
+##      get_chat_entries    (contact)                   - read chat entries / history linked to contact 
 ##  Scene System Utility Functions
-##      show_scene          (screen_name)              - show a screen on scene (master) layer
-##      show_app            (screen_name)              - show a app screen on scene (master layer) on top of current scene
-##      hide_app            (screen_name)              - hide a app screen on scene (master layer)
+##      show_scene          (screen_name)               - show a screen on scene (master) layer
+##      show_app            (screen_name)               - show a app screen on scene (master layer) on top of current scene
+##      hide_app            (screen_name)               - hide a app screen on scene (master layer)
 ##  Button Disabler System Utility Functions 
 ##      button_disabled     (button=None, report=False) - returns a boolean on whether buttons are globally disabled, 
 ##                                                        a specific button type is disabled or 
@@ -104,8 +112,12 @@ init offset = -1
 ##                                                        (optionally use report=True to receive console printed report 
 ##                                                         on global disabler, or button id / button type requested.)
 ##  Freeze System Utility Functions 
-##      
-## 
+##      flag_check          (flag_name)                 - returns a boolean on whether the flag_name condition is True or False
+##      app_open            (app_screen)                - returns a boolean on whether the app_screen is currently open on the master layer
+##      contact_open        (contact_name)              - returns a boolean on whether the contact_name is the current active_contact or not
+##      prep_done_condition ()                          - returns a boolean on whether the prep phase complete conditions are met or not
+##  Game Mode System Utility Functions
+##
 ## (Note: Debugger Functions are intended for usage in console.)
 ##
 ## List of Debugger Functions:
@@ -352,6 +364,40 @@ python early:
         execute = execute_hide_app,
     )
 
+    ## show_panel "panel_screen"
+    def parse_show_panel(lex): 
+        screen = lex.string()
+        lex.eol()
+        return screen
+
+    def execute_show_panel(panel_screen): 
+        
+        # Show panel_screen on scene (master) layer
+        show_app(panel_screen)
+
+    renpy.register_statement(
+        name = "show_panel", 
+        parse = parse_show_panel,
+        execute = execute_show_panel,
+    )
+
+    ## hide_panel "panel_screen"
+    def parse_hide_panel(lex): 
+        screen = lex.string()
+        lex.eol()
+        return screen
+
+    def execute_hide_panel(panel_screen): 
+        
+        # Hide app_screen on scene (master) layer
+        hide_app(panel_screen)
+
+    renpy.register_statement(
+        name = "hide_panel",
+        parse = parse_hide_panel, 
+        execute = execute_hide_panel,
+    )
+
 ## Scene System Functions
 ## Call Screens on Master (Scene) Layer
 init python: 
@@ -359,15 +405,15 @@ init python:
     ## Show a screen on scene (master) layer 
     ## Acts like a classic scene and clears master layer to replace 
     ## previous scenes and prevent endless stacking
-    def show_scene(screen_name):     
+    def show_scene(screen_name, **kwargs):
         renpy.scene(layer="master") # Clear Layer
-        renpy.show_screen(screen_name, _layer="master") 
+        renpy.show_screen(screen_name, _layer="master", **kwargs) 
 
     ## Show a screen above the current scene on the scene (master) layer
     ## and below the dialogue (say screen, which is on a layer above scene)
     ## Intended for modal screens (specifically app screens)
-    def show_app(screen_name): 
-        renpy.show_screen(screen_name, _layer="master") 
+    def show_app(screen_name, **kwargs): 
+        renpy.show_screen(screen_name, _layer="master", **kwargs) 
 
     ## Hide a screen on the scene (master) layer 
     ## Intended for screens shown through show_app
@@ -1123,6 +1169,7 @@ init python:
 ##
 ##      freeze_until [_chat_contact] # Grabs _chat_contact of current chat block ("The Abyss Stares Back") 
 ##                                   # Freezes until contact button for it is clicked 
+##
 
 ## Freeze System Variables 
 
@@ -1242,3 +1289,82 @@ init python:
     ## Prep Done Condition Check 
     def prep_done_condition(): 
         return store.closet_clicked and store.laptop_clicked
+
+################################################################################
+## Game Mode System ############################################################
+##
+## Change from normal script progression to a different game mode 
+## Generally makes usage of the freeze system to pause script progression 
+## until a game mode is completed
+## 
+## Usage format: 
+##
+##      "narration 1"
+##      "narration 2"
+##      "narration 3" 
+##      "narration 4"
+##
+##      prep_phase "bed_click_script" "closet_click_script" "wallet_click_script" "laptop_click_script" "key_click_script" # Begins prep phase
+##                                                                                                                         # Feed click scripts (labels)
+##                                                                                                                         # Only ends at prep_done 
+##                                                                                                                           condition = True
+##
+##      "narration 5" # Only plays after prep phase is completed (prep_done condition = True)
+##      "narration 6"
+
+## Game Mode System Variables 
+
+## Prep Phase Flags 
+default key_attempted = False # Affects Prep Phase Hint
+default closet_clicked = False # Prevents Freeze from ending until player clicks on closet sprite in bedroom scene 
+default laptop_clicked = False # Prevents Freeze from ending until player clicks on laptop sprite in bedroom scene
+## Closet Click Flags 
+default top_selected = False    # Track if a Top has already been selected
+default bottom_selected = False # Track if a Bottom has alreday been selected
+
+## Game Mode System Statements
+python early: 
+
+    ## prep_phase click_script_1 click_script_2 click_script_3 ... click_script_n
+    def parse_prep_phase(lex): 
+        clicks = []
+
+        ## Parse all clicks until end of line
+        while not lex.eol(): 
+            clicks.append(lex.string())
+
+        return clicks
+
+    def execute_prep_phase(info): 
+        prep_phase(info)
+
+    renpy.register_statement(
+        name="prep_phase", 
+        parse=parse_prep_phase,
+        execute=execute_prep_phase
+    )
+
+## Game Mode System Functions
+init python:
+    
+    ## Prep Phase initiation and freeze until prep_done condition is met
+    def prep_phase(clicks):
+
+        click_map = {}
+
+        # Map click labels to their corresponding click types
+        for label in clicks: 
+            if label.endswith("bed_click"): 
+                click_map["bed"] = label
+            elif label.endswith("closet_click"):
+                click_map["closet"] = label
+            elif label.endswith("wallet_click"):
+                click_map["wallet"] = label
+            elif label.endswith("laptop_click"):
+                click_map["laptop"] = label
+            elif label.endswith("key_click"):
+                click_map["key"] = label
+
+        show_scene("bedroom", click_map=click_map)
+
+        freeze_until("prep_done")

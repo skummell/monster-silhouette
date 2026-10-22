@@ -71,11 +71,6 @@ default clock = { # Default Scheduled Times of Day
 default abyss_time = "3:00 AM"
 default day = 1
 
-# Prep Phase Flags 
-default key_attempted = False # Affects Prep Phase Hint
-default closet_clicked = False # Prevents Freeze from ending until player clicks on closet sprite in bedroom scene 
-default laptop_clicked = False # Prevents Freeze from ending until player clicks on laptop sprite in bedroom scene
-
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
@@ -116,6 +111,8 @@ label start:
     show_scene "bedroom"
 
     pause
+
+    show_panel "wardrobe_panel"
 
     "Check out the bedroom scene. This is a placeholder for the actual bedroom scene."
 

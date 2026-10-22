@@ -551,10 +551,20 @@ Not every commit made as soon as every change is completed.
       - Stopped in the middle of Prep Phase
     - Polishes
 
-- Prep Phase System 
-  - Integrate into Freeze System 
-  - Variables: 
-    - `key_attempted` - Prep Phase Hint gater (Track whether key has been clicked at least once)
-    - `closet_clicked` - Freeze sub condition (Track whether closet click has been successfully completed)
-    - `laptop_clicked` - Freeze sub condition (Track whether laptop has been clicked)
+- Freeze System Update!
+  - Integrate Prep Phase into Freeze System 
   - Freeze System now supports dynamic hints 
+
+### Oct 21, 2026 
+
+- Game Mode System 
+  - Switch from script progression to other game modes
+    - Makes use of the Freeze System
+  - Custom Statements: 
+    - `prep_phase` - Turns on Prep Phase Game Mode
+  - Game Modes: 
+    - Prep Phase Game Mode 
+      - Variables: 
+        - `key_attempted` - Prep Phase Hint gater (Track whether key has been clicked at least once)
+        - `closet_clicked` - Freeze sub condition (Track whether closet click has been successfully completed)
+        - `laptop_clicked` - Freeze sub condition (Track whether laptop has been clicked)
