@@ -65,7 +65,8 @@ define gui.text_color = '#C8C8C8'
 define gui.interface_text_color = '#000'
 
 ## Fourth Wall break colors 
-define gui.fourth_wall = "#8B1A1A"
+define gui.fourth_wall_color = "#000" # Change this to a matching background muted red or something 
+define gui.fourth_wall_text = "#8B1A1A"
 
 ## Fonts and Font Sizes ########################################################
 

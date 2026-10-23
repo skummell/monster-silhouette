@@ -43,8 +43,6 @@ init offset = -1
 ##              disabled_button_ids     - Button ID Disablers
 ##              valid_button_ids        - All Valid Button IDs for Disabling
 ##              app_to_exit             - Maps App Buttons to App Exit Buttons
-##              prep_busy               - Prep Phase Bedroom Button Disabler
-##              closet_busy             - Prep Phase Wardrobe Button Disabler
 ##
 ##          For Valid Button Types & IDs refer to 'valid_button_ids' Dictionary Variable
 ##              usage of invalid button types and ids cause statements and functions to fail,
@@ -104,26 +102,28 @@ init offset = -1
 ##
 ## List of Game System Utility Functions:
 ##  Chat System Utility Functions
-##      get_chat_entries    (contact)                   - read chat entries / history linked to contact 
+##      get_chat_entries        (contact)                   - read chat entries / history linked to contact 
 ##  Scene System Utility Functions
-##      show_scene          (screen_name)               - show a screen on scene (master) layer
-##      show_app            (screen_name)               - show a app screen on scene (master layer) on top of current scene + used in show_panel too
-##      hide_app            (screen_name)               - hide a app screen on scene (master layer) + used in hide_panel too
+##      show_scene              (screen_name)               - show a screen on scene (master) layer
+##      show_app                (screen_name)               - show a app screen on scene (master layer) on top of current scene + used in show_panel too
+##      hide_app                (screen_name)               - hide a app screen on scene (master layer) + used in hide_panel too
 ##  Button Disabler System Utility Functions 
-##      button_disabled     (button=None, report=False) - returns a boolean on whether buttons are globally disabled, 
-##                                                        a specific button type is disabled or 
-##                                                        a specific button id is disabled depending on input
-##                                                        (optionally use report=True to receive console printed report 
-##                                                         on global disabler, or button id / button type requested.)
+##      button_disabled         (button=None, report=False) - returns a boolean on whether buttons are globally disabled, 
+##                                                            a specific button type is disabled or 
+##                                                            a specific button id is disabled depending on input
+##                                                            (optionally use report=True to receive console printed report 
+##                                                             on global disabler, or button id / button type requested.)
 ##  Freeze System Utility Functions 
-##      flag_check          (flag_name)                 - returns a boolean on whether the flag_name condition is True or False
-##      app_open            (app_screen)                - returns a boolean on whether the app_screen is currently open on the master layer
-##      contact_open        (contact_name)              - returns a boolean on whether the contact_name is the current active_contact or not
-##      prep_done_condition ()                          - returns a boolean on whether the prep phase complete conditions are met or not
+##      flag_check              (flag_name)                 - returns a boolean on whether the flag_name condition is True or False
+##      app_open                (app_screen)                - returns a boolean on whether the app_screen is currently open on the master layer
+##      contact_open            (contact_name)              - returns a boolean on whether the contact_name is the current active_contact or not
+##      prep_done_condition     ()                          - returns a boolean on whether the prep phase complete conditions are met or not
 ##  Game Mode System Utility Functions
-##      call_prep_script    (label)                     - calls label script in new context, sets Bedroom Button Disabler on and off, before and after
-##      open_wardrobe       ()                          - shows wardrobe panel on scene (master layer) and sets Bedroom Button Disabler =True
-##      close_wardrobe      ()                          - hides wardrobe panel on scene (master layer) and sets Bedroom Button Disabler =False 
+##    Prep Phase Game Mode Utility Functions
+##      open_wardrobe           (click_map)                 - shows wardrobe panel on scene (master layer) and sets Bedroom Button Disabler =True
+##      close_wardrobe          ()                          - hides wardrobe panel on scene (master layer) and sets Bedroom Button Disabler =False 
+##      call_prep_script        (label)                     - calls label script in new context and sets Bedroom Button Disabler on and off
+##      call_prep_closet_script (label)                     - calls label script in new context and sets Closet Button Disabler on and off
 ##      
 ##
 ## (Note: Debugger Functions are intended for usage in console.)
@@ -505,16 +505,18 @@ default disable_buttons = False
 
 # Universally disable buttons for a specific type
 default disabled_button_types = { 
-    "app_exit": False,
-    "app_button": False,
-    "contact_button": False
+    "app_exit": False,          # App Exit buttons
+    "app_button": False,        # App buttons
+    "contact_button": False,     # Contact buttons
+    "prep_busy": False,          # Bedroom Interactables
+    "closet_busy": False        # Wardrobe Interactables
 }
 
 # List of individual disabled buttons
 default disabled_button_ids = { 
-    "app_exit": set(), # List of Apps with disabled exit button
-    "app_button": set(), # List of disabled Apps
-    "contact_button": set() # List of disabled contacts
+    "app_exit": set(),          # List of Apps with disabled exit button
+    "app_button": set(),        # List of disabled Apps
+    "contact_button": set()     # List of disabled contacts
 }
 
 # Valid Button IDs Roster
@@ -531,7 +533,11 @@ init python:
 
         "contact_button": {
             "And", "At You", "Golden Manager", "The Abyss Stares Back", "Stare Into The Abyss"
-        }
+        },
+
+        "prep_busy": { },
+
+        "closet_busy": { }
     }
 
     # Mapping between App Button and Exit Button 
@@ -540,10 +546,6 @@ init python:
         "chat_app": "Chat", 
         "draft_app": "Draft"
     }
-
-# Game Mode System Button Disablers
-default prep_busy = False # Prep Phase Button Disabler
-default closet_busy = False # Wardrobe Button Disabler
 
 ## Button Disabler System Statements
 python early: 
@@ -1195,6 +1197,16 @@ init python:
     for app_screen in valid_button_ids["app_button"]:
         freeze_conditions[f"{app_screen}"] = f'app_open("{app_screen}")'
 
+    ## App Close Conditions 
+    ## "[app_name]"
+    for app_exit in valid_button_ids["app_exit"]: 
+
+        # Get corresponding app 
+        exit_to_app = {v: k for k, v in app_to_exit.items()}
+        app_screen = exit_to_app[app_exit]
+        
+        freeze_conditions[f"{app_exit}"] = f'not app_open("{app_screen}")'
+
     ## Contact Open Conditions
     ## "[contact]"
     ## _chat_contact - for the chat block's assigned contact 
@@ -1212,6 +1224,11 @@ init python:
     for app_screen, app_name in app_to_exit.items(): 
         freeze_hint[f"{app_screen}"] = f"Click on the {app_name} Icon to open {app_name} App."
 
+    ## App Close Freeze Hints 
+    ## "[app_name]"
+    for app_name in valid_button_ids["app_exit"]: 
+        freeze_hint[f"{app_name}"] = f"Click on the {app_name} Exit button to close {app_name} App."
+
     ## Contact Open Freeze Hints 
     ## "[contact]"
     ## Hint Format: "Click [contact]'s Contact to open [contact]'s Chat Box."
@@ -1220,6 +1237,10 @@ init python:
 
     # Prep Phase Freeze Hints
     def prep_done_hint(): # Dynamic Hints 
+
+        if store.closet_clicked and store.laptop_clicked: 
+            return "Click the key to move the story forward."
+
         if not store.key_attempted: 
             return "Click to interact with elements in the bedroom.\n Elements with hover text are interactable."
         
@@ -1228,8 +1249,6 @@ init python:
 
         if not store.laptop_clicked: 
             return "Click on the laptop to carry it with you."
-
-        return "Click the key to move the story forward."
 
     freeze_hint["prep_done"] = prep_done_hint
 
@@ -1379,23 +1398,60 @@ init python:
                 click_map["key"] = label
             elif label.endswith("post_closet"): 
                 click_map["dressed"] = label
+            elif label.endswith("dress_shirt_selected"): 
+                click_map["dress_shirt"] = label
+            elif label.endswith("turtle_neck_selected"): 
+                click_map["turtle_neck"] = label
+            elif label.endswith("cargo_pants_selected"): 
+                click_map["cargo_pants"] = label
+            elif label.endswith("dress_jeans_selected"): 
+                click_map["dress_jeans"] = label
+
+        store.status_bar = False
+
+        enable_type("prep_busy")
 
         show_scene("bedroom", click_map=click_map)
 
         freeze_until("prep_done")
 
+        store.status_bar = True
+
     ## Open Wardrobe Panel
-    def open_wardrobe(dressed=None):
-        store.prep_busy = True
-        show_app("wardrobe_panel", post_dress=dressed)
+    ## Toggle on Bedroom button disabler
+    def open_wardrobe(click_map):
+        dress_shirt = click_map.get("dress_shirt")
+        turtle_neck = click_map.get("turtle_neck")
+        cargo_pants = click_map.get("cargo_pants")
+        dress_jeans = click_map.get("dress_jeans")
+        dressed = click_map.get("dressed")
+
+        disable_type("prep_busy")
+
+        show_app("wardrobe_panel", dress_shirt=dress_shirt, turtle_neck=turtle_neck, cargo_pants=cargo_pants, dress_jeans=dress_jeans, dressed=dressed)
 
     ## Close Wardrobe Panel 
+    ## Toggle off Bedroom button disabler
     def close_wardrobe(): 
         hide_app("wardrobe_panel")
-        store.prep_busy = False
+        enable_type("prep_busy")
 
     ## Call Script in new context
+    ## Toggle Bedroom button disabler 
     def call_prep_script(label):
-        store.prep_busy = True
+        
+        disable_type("prep_busy")
+        
         renpy.call_in_new_context(label)
-        store.prep_busy = False
+        
+        enable_type("prep_busy")
+
+    ## Call Script in new context
+    ## Toggle Wardrobe button disabler
+    def call_prep_closet_script(label):
+
+        disable_type("closet_busy")
+
+        renpy.call_in_new_context(label)
+
+        enable_type("closet_busy")

@@ -103,20 +103,6 @@ label start:
     # Enable All App Exit Buttons
     enable_all_type "app_exit"
 
-    "Hold"
-
-    "Start"
-
-    prep_phase "demo_bed_click" "demo_wallet_click" "demo_closet_click" "demo_laptop_click" "demo_key_click" "demo_post_closet"
-
-    pause
-
-    "Check out the bedroom scene. This is a placeholder for the actual bedroom scene."
-
-    pause
-
-    scene black 
-
     pause
 
     # Day 1 (Demo) Start

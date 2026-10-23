@@ -577,7 +577,7 @@ Not every commit made as soon as every change is completed.
     - `show_panel` - New Statement!
     - `hide_panel` - New Statement!
 
-## Oct 22, 2026 
+## Oct 22-23, 2026 
 
 - Debugging Prep Phase Game Mode
   - Issues & Fixes
@@ -593,3 +593,21 @@ Not every commit made as soon as every change is completed.
     - Add Tooltips 
     - Fix up formatting and styling
   - Additional Prep Phase Testing
+  - Working out kinks
+    - Closet Script updates with select lines
+    - Full integration with Button Disabler System
+      - Matching button type disablers for `bedroom` and `wardrobe_panel` buttons
+      - Toggle them with `disable_type` and `enable_type`
+      - Check status with `button_disabled` for disabler in screen functionality
+
+- Button Disabler System Update!
+  - `prep_busy` - New button type disabler!
+  - `close_busy` - New button type disabler!
+
+- Game Mode System Update!
+  - `prep_phase(clicks)` function minor adjustments 
+  - Prep Phase Game Mode Functions
+    - `open_wardrobe(click_map)` - Toggle on Bedroom Buttons Disabler & open Wardrobe with closet scripts if any 
+    - `close_wardrobe()` - Close Wardrobe & toggle off Bedroom Buttons disabler
+    - `call_prep_script(label)` - Call Script (label) in new context & toggle Bedroom Buttons Disabler
+    - `call_prep_closet_script(label)` - Call Script (label) in new context & toggle Closet Buttons Disabler

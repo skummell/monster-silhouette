@@ -2245,7 +2245,17 @@ screen bedroom(click_map={}):
 
             tooltip "Wardrobe"
 
-            action (Function(open_wardrobe, dressed=click_map["dressed"]) if "dressed" in click_map else Function(open_wardrobe), (Function(call_prep_script, click_map["closet"])) if "closet" in click_map and not prep_busy else NullAction())
+            if "closet" not in click_map: 
+                sensitive False
+
+            if button_disabled("prep_busy", report=True): 
+
+                action NullAction()
+            else: 
+
+                if "closet" in click_map: 
+                    
+                    action (Function(open_wardrobe, click_map), Function(call_prep_closet_script, click_map["closet"]))
 
         # Desk + Items
         fixed:
@@ -2265,7 +2275,17 @@ screen bedroom(click_map={}):
 
                     tooltip "Wallet"
 
-                    action (Function(call_prep_script, click_map["wallet"]) if "wallet" in click_map and not prep_busy else NullAction())
+                    if "wallet" not in click_map: 
+                        sensitive False 
+
+                    if button_disabled("prep_busy"): 
+
+                        action NullAction()
+                    else: 
+
+                        if "wallet" in click_map:
+
+                            action Function(call_prep_script, click_map["wallet"])
 
             # Key - Key Click
             imagebutton:
@@ -2276,7 +2296,17 @@ screen bedroom(click_map={}):
 
                 tooltip "Key"
 
-                action (Function(call_prep_script, click_map["key"]) if "key" in click_map and not prep_busy else NullAction())
+                if "key" not in click_map: 
+                    sensitive False 
+                
+                if button_disabled("prep_busy"): 
+
+                    action NullAction()
+                else: 
+
+                    if "key" in click_map:
+
+                        action Function(call_prep_script, click_map["key"])
 
             # Laptop - Laptop Click
             if not laptop_clicked:
@@ -2288,7 +2318,17 @@ screen bedroom(click_map={}):
 
                     tooltip "Laptop"
 
-                    action ((Function(call_prep_script, click_map["laptop"]), SetVariable("laptop_clicked", True)) if "laptop" in click_map and not prep_busy else NullAction())
+                    if "laptop" not in click_map: 
+                        sensitive False 
+
+                    if button_disabled("prep_busy"): 
+
+                        action NullAction()
+                    else: 
+
+                        if "laptop" in click_map: 
+
+                            action (Function(call_prep_script, click_map["laptop"]), SetVariable("laptop_clicked", True))
 
         # Chair
         add "images/bedroom_chair_v1.png":
@@ -2306,7 +2346,18 @@ screen bedroom(click_map={}):
 
             tooltip "Bed"
 
-            action (Function(call_prep_script, click_map["bed"]) if "bed" in click_map and not prep_busy else NullAction())
+            if "bed" not in click_map: 
+                sensitive False
+
+            if button_disabled("prep_busy"): 
+
+                action NullAction()
+
+            else: 
+
+                if "bed" in click_map: 
+
+                    action Function(call_prep_script, click_map["bed"])
 
 # Delete later
 image wardrobe_option = Transform("gui/placeholders/Chat Bubble (Receive).svg", xsize=180, ysize=120)
@@ -2316,9 +2367,15 @@ image wardrobe_option_selected = Transform("gui/placeholders/Chat Bubble (Sent).
 ##
 ## Panel Screen for Closet Click in Bedroom Prep Phase 
 
-screen wardrobe_panel(post_dress=None): 
+screen wardrobe_panel(dress_shirt=None, turtle_neck=None, cargo_pants=None, dress_jeans=None, dressed=None): 
 
     modal True 
+
+    # Change into hover img for each button later (with each buttons selected variable conditional)
+    $ hover_dress_shirt = "wardrobe_option" if not semiformal_top else "wardrobe_option_selected"
+    $ hover_turtle_neck = "wardrobe_option" if not contour_top else "wardrobe_option_selected"
+    $ hover_cargo_pants = "wardrobe_option" if not many_pockets else "wardrobe_option_selected"
+    $ hover_dress_jeans = "wardrobe_option" if not heavy_pants else "wardrobe_option_selected"
 
     frame: 
         xalign 0.5
@@ -2351,26 +2408,35 @@ screen wardrobe_panel(post_dress=None):
                     ## Top Option 1 - Semiformal
                     imagebutton:
                         idle "wardrobe_option"
+                        hover hover_dress_shirt
                         selected_idle "wardrobe_option_selected"
-                        selected semiformal_top
 
-                        sensitive not closet_busy
+                        selected semiformal_top
 
                         tooltip "A slightly fancy, semi-formal dress shirt you got from Victor a few years ago. You don't know how pricy it was but it was probably pricier than 90% of your closet. Victor never gifted things at a normal price range."
 
-                        action (SetVariable("contour_top", False), SetVariable("semiformal_top", True), SetVariable("top_selected", True))
+                        if button_disabled("closet_busy"): 
+                            action NullAction()
+
+                        else: 
+                            action (If(contour_top, SetVariable("contour_top", False)), SetVariable("semiformal_top", True), SetVariable("top_selected", True), If(dress_shirt, Function(call_prep_closet_script, dress_shirt)))
 
                     ## Top Option 2 - Contour
                     imagebutton:
                         idle "wardrobe_option"
+                        hover hover_turtle_neck
                         selected_idle "wardrobe_option_selected"
-                        selected contour_top
 
-                        sensitive not closet_busy
+                        selected contour_top
                         
                         tooltip "A turtle neck of good quality fabric. You're quite fond of it. Traps heat when the sun is strong but is otherwise fine by itself, even in warmer weather."
 
-                        action (SetVariable("semiformal_top", False), SetVariable("contour_top", True), SetVariable("top_selected", True))
+                        if button_disabled("closet_busy"): 
+                            action NullAction()
+
+                        else: 
+
+                            action (If(semiformal_top, SetVariable("semiformal_top", False)), SetVariable("contour_top", True), If(not top_selected, SetVariable("top_selected", True), If(turtle_neck, Function(call_prep_closet_script, turtle_neck))))
 
                 ## Bottoms (Right Column)
                 vbox:
@@ -2379,32 +2445,45 @@ screen wardrobe_panel(post_dress=None):
                     ## Bottom Option 1 - Many Pockets
                     imagebutton:
                         idle "wardrobe_option"
+                        hover hover_cargo_pants
                         selected_idle "wardrobe_option_selected"
+
                         selected many_pockets
 
-                        sensitive not closet_busy
-
                         tooltip "Your favorite cargo pants. It's got lots of pockets. You could probably fit a surprise or two in them."
+                        
+                        if button_disabled("closet_busy"): 
+                            action NullAction()
 
-                        action (SetVariable("heavy_pants", False), SetVariable("many_pockets", True), SetVariable("bottom_selected", True))
+                        else: 
+                            action (If(heavy_pants, SetVariable("heavy_pants", False)), SetVariable("many_pockets", True), If(not bottom_selected, SetVariable("bottom_selected", True), If(cargo_pants, Function(call_prep_closet_script, cargo_pants))))
 
                     ## Bottom Option 2
                     imagebutton:
                         idle "wardrobe_option"
+                        hover hover_dress_jeans
                         selected_idle "wardrobe_option_selected"
-                        selected heavy_pants
 
-                        sensitive not closet_busy
+                        selected heavy_pants
 
                         tooltip "Dress Jeans you've had since college. Somehow it still looks new. A good pair with a more semi-formal top."
 
-                        action (SetVariable("many_pockets", False), SetVariable("heavy_pants", True), SetVariable("bottom_selected", True))
+                        if button_disabled("closet_busy"): 
+                            action NullAction()
+
+                        else: 
+                            action (If(many_pockets, SetVariable("many_pockets", False)), SetVariable("heavy_pants", True), If(not bottom_selected, SetVariable("bottom_selected", True), If(dress_jeans, Function(call_prep_closet_script, dress_jeans))))
 
             ## Done Button
             textbutton "Dressed":
                 yalign 1.0
                 sensitive (top_selected and bottom_selected)
-                action (SetVariable("closet_clicked", True), Function(close_wardrobe), If(post_dress, Function(call_prep_script, post_dress)))
+
+                if button_disabled("closet_busy"): 
+                    action NullAction()
+                
+                else:
+                    action (SetVariable("closet_clicked", True), Function(close_wardrobe), If(dressed, Function(call_prep_script, dressed)))
 
 
 ################################################################################
