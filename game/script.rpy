@@ -36,6 +36,7 @@ default wallet_on_person = False # Affects some scenes and narration in the loun
 default semiformal_top = False # Extra Character Dialogue
 default contour_top = False # Extra Character Dialogue
 default many_pockets = False # Extra scenes
+default heavy_pants = False # Button Selection only (For now)
 
 # Stats
 default rapport = None # Affects Mephisto's attitude towards you 
@@ -102,19 +103,27 @@ label start:
     # Enable All App Exit Buttons
     enable_all_type "app_exit"
 
+    "Hold"
+
+    "Start"
+
+    prep_phase "demo_bed_click" "demo_wallet_click" "demo_closet_click" "demo_laptop_click" "demo_key_click" "demo_post_closet"
+
+    pause
+
+    "Check out the bedroom scene. This is a placeholder for the actual bedroom scene."
+
+    pause
+
+    scene black 
+
+    pause
+
     # Day 1 (Demo) Start
 
     call demo_intro # script/demo/demo_intro.rpy
     
     "W.I.P" #DELETE LATER
-
-    show_scene "bedroom"
-
-    pause
-
-    show_panel "wardrobe_panel"
-
-    "Check out the bedroom scene. This is a placeholder for the actual bedroom scene."
 
     # This ends the game.
 

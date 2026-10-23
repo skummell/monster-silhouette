@@ -519,6 +519,7 @@ Not every commit made as soon as every change is completed.
 
 - Interactable Bedroom Scene
   - `bedroom` - New screen!
+  - `wardrobe_panel` - New screen!
 
 - Narrative Script Progression
   - Script Files (not included in Repo) - `script/demo/`
@@ -568,3 +569,27 @@ Not every commit made as soon as every change is completed.
         - `key_attempted` - Prep Phase Hint gater (Track whether key has been clicked at least once)
         - `closet_clicked` - Freeze sub condition (Track whether closet click has been successfully completed)
         - `laptop_clicked` - Freeze sub condition (Track whether laptop has been clicked)
+        - `top_selected` - Gates `closet_clicked`
+        - `bottom_selected` - Gates `closet_clicked`
+
+- Scene System Update! 
+  - Support for modal screens without correspondant app exit buttons
+    - `show_panel` - New Statement!
+    - `hide_panel` - New Statement!
+
+## Oct 22, 2026 
+
+- Debugging Prep Phase Game Mode
+  - Issues & Fixes
+    - Freeze Breaks 
+      - Call Scripts in new context 
+      - New issue : Closing off `wardrobe_panel` early
+        - Open `wardrobe_panel` from button directly instead of calling in script
+    - Interaction Overlaps & Incosistencies + Script Loops & Overlaps
+      - Fix all variable settings in `bedroom` screen
+      - Implement Button Disabler to `bedroom` interactables
+      - Implement Button Disabler to `wardrobe_panel` interactables
+  - Polishing (`bedroom` and `wardrobe_panel` screens)
+    - Add Tooltips 
+    - Fix up formatting and styling
+  - Additional Prep Phase Testing

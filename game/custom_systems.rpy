@@ -43,6 +43,8 @@ init offset = -1
 ##              disabled_button_ids     - Button ID Disablers
 ##              valid_button_ids        - All Valid Button IDs for Disabling
 ##              app_to_exit             - Maps App Buttons to App Exit Buttons
+##              prep_busy               - Prep Phase Bedroom Button Disabler
+##              closet_busy             - Prep Phase Wardrobe Button Disabler
 ##
 ##          For Valid Button Types & IDs refer to 'valid_button_ids' Dictionary Variable
 ##              usage of invalid button types and ids cause statements and functions to fail,
@@ -68,6 +70,8 @@ init offset = -1
 ##      show_scene       "screen"       - shows a screen on the scene layer (acts exactly like scene "picture.png")
 ##      show_app         "app_screen"   - show a app screen on the scene layer (above current scene or show_scene)
 ##      hide_app         "app_screen"   - hide app screen on scene layer
+##      show_panel       "panel_screen" - show a panel screen on the scene layer (above current scene or show_scene) 
+##      hide_panel       "panel_screen" - hide panel screen on scene layer
 ##  Button Disabler System Statements
 ##      disable_global                  - disable ALL buttons (that can be disabled) with global disabler override 
 ##      enable_global                   - disable global disabler (button status now dependent on button type and id disablers)
@@ -103,8 +107,8 @@ init offset = -1
 ##      get_chat_entries    (contact)                   - read chat entries / history linked to contact 
 ##  Scene System Utility Functions
 ##      show_scene          (screen_name)               - show a screen on scene (master) layer
-##      show_app            (screen_name)               - show a app screen on scene (master layer) on top of current scene
-##      hide_app            (screen_name)               - hide a app screen on scene (master layer)
+##      show_app            (screen_name)               - show a app screen on scene (master layer) on top of current scene + used in show_panel too
+##      hide_app            (screen_name)               - hide a app screen on scene (master layer) + used in hide_panel too
 ##  Button Disabler System Utility Functions 
 ##      button_disabled     (button=None, report=False) - returns a boolean on whether buttons are globally disabled, 
 ##                                                        a specific button type is disabled or 
@@ -117,6 +121,10 @@ init offset = -1
 ##      contact_open        (contact_name)              - returns a boolean on whether the contact_name is the current active_contact or not
 ##      prep_done_condition ()                          - returns a boolean on whether the prep phase complete conditions are met or not
 ##  Game Mode System Utility Functions
+##      call_prep_script    (label)                     - calls label script in new context, sets Bedroom Button Disabler on and off, before and after
+##      open_wardrobe       ()                          - shows wardrobe panel on scene (master layer) and sets Bedroom Button Disabler =True
+##      close_wardrobe      ()                          - hides wardrobe panel on scene (master layer) and sets Bedroom Button Disabler =False 
+##      
 ##
 ## (Note: Debugger Functions are intended for usage in console.)
 ##
@@ -532,6 +540,10 @@ init python:
         "chat_app": "Chat", 
         "draft_app": "Draft"
     }
+
+# Game Mode System Button Disablers
+default prep_busy = False # Prep Phase Button Disabler
+default closet_busy = False # Wardrobe Button Disabler
 
 ## Button Disabler System Statements
 python early: 
@@ -1209,7 +1221,7 @@ init python:
     # Prep Phase Freeze Hints
     def prep_done_hint(): # Dynamic Hints 
         if not store.key_attempted: 
-            return "Click to interact with elements in the bedroom."
+            return "Click to interact with elements in the bedroom.\n Elements with hover text are interactable."
         
         if not store.closet_clicked: 
             return "Click on the wardrobe to change before going out."
@@ -1288,7 +1300,7 @@ init python:
 
     ## Prep Done Condition Check 
     def prep_done_condition(): 
-        return store.closet_clicked and store.laptop_clicked
+        return store.ready_to_leave
 
 ################################################################################
 ## Game Mode System ############################################################
@@ -1304,10 +1316,10 @@ init python:
 ##      "narration 3" 
 ##      "narration 4"
 ##
-##      prep_phase "bed_click_script" "closet_click_script" "wallet_click_script" "laptop_click_script" "key_click_script" # Begins prep phase
-##                                                                                                                         # Feed click scripts (labels)
-##                                                                                                                         # Only ends at prep_done 
-##                                                                                                                           condition = True
+##      prep_phase "lick_script_1" "click_script_2" ... "click_script_n" # Begins prep phase
+##                                                                       # Feed click scripts (labels)
+##                                                                       # Only ends at prep_done 
+##                                                                         condition = True
 ##
 ##      "narration 5" # Only plays after prep phase is completed (prep_done condition = True)
 ##      "narration 6"
@@ -1315,6 +1327,7 @@ init python:
 ## Game Mode System Variables 
 
 ## Prep Phase Flags 
+default ready_to_leave = False # Gate to leave Prep Phase Mode 
 default key_attempted = False # Affects Prep Phase Hint
 default closet_clicked = False # Prevents Freeze from ending until player clicks on closet sprite in bedroom scene 
 default laptop_clicked = False # Prevents Freeze from ending until player clicks on laptop sprite in bedroom scene
@@ -1346,7 +1359,7 @@ python early:
 
 ## Game Mode System Functions
 init python:
-    
+
     ## Prep Phase initiation and freeze until prep_done condition is met
     def prep_phase(clicks):
 
@@ -1364,7 +1377,25 @@ init python:
                 click_map["laptop"] = label
             elif label.endswith("key_click"):
                 click_map["key"] = label
+            elif label.endswith("post_closet"): 
+                click_map["dressed"] = label
 
         show_scene("bedroom", click_map=click_map)
 
         freeze_until("prep_done")
+
+    ## Open Wardrobe Panel
+    def open_wardrobe(dressed=None):
+        store.prep_busy = True
+        show_app("wardrobe_panel", post_dress=dressed)
+
+    ## Close Wardrobe Panel 
+    def close_wardrobe(): 
+        hide_app("wardrobe_panel")
+        store.prep_busy = False
+
+    ## Call Script in new context
+    def call_prep_script(label):
+        store.prep_busy = True
+        renpy.call_in_new_context(label)
+        store.prep_busy = False

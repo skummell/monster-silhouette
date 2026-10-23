@@ -2211,6 +2211,14 @@ screen draft_tools():
             add "gui/placeholders/Draft Settings Bar Placeholder.svg": 
                 xysize (700, 50)
 
+################################################################################
+## Special Game Mode screens
+################################################################################
+
+## Bedroom Screen ##############################################################
+## 
+## Interactable Background / Scene for Prep Phase Game Mode
+
 screen bedroom(click_map={}): 
     
     tag game 
@@ -2234,7 +2242,10 @@ screen bedroom(click_map={}):
             xysize(294, 470)
             xpos 114
             ypos 62
-            action (Call(click_map["closet"]) if "closet" in click_map else NullAction())
+
+            tooltip "Wardrobe"
+
+            action (Function(open_wardrobe, dressed=click_map["dressed"]) if "dressed" in click_map else Function(open_wardrobe), (Function(call_prep_script, click_map["closet"])) if "closet" in click_map and not prep_busy else NullAction())
 
         # Desk + Items
         fixed:
@@ -2251,7 +2262,10 @@ screen bedroom(click_map={}):
                     xysize(37, 19)
                     xpos 67
                     ypos 183
-                    action (Call(click_map["wallet"]) if "wallet" in click_map else NullAction())
+
+                    tooltip "Wallet"
+
+                    action (Function(call_prep_script, click_map["wallet"]) if "wallet" in click_map and not prep_busy else NullAction())
 
             # Key - Key Click
             imagebutton:
@@ -2259,7 +2273,10 @@ screen bedroom(click_map={}):
                 xysize(12, 14)
                 xpos 103
                 ypos 212
-                action (Call(click_map["key"]) if "key" in click_map else NullAction())
+
+                tooltip "Key"
+
+                action (Function(call_prep_script, click_map["key"]) if "key" in click_map and not prep_busy else NullAction())
 
             # Laptop - Laptop Click
             if not laptop_clicked:
@@ -2268,7 +2285,10 @@ screen bedroom(click_map={}):
                     xysize(142, 102)
                     xpos 369
                     ypos 106
-                    action (Call(click_map["laptop"]) if "laptop" in click_map else NullAction())
+
+                    tooltip "Laptop"
+
+                    action ((Function(call_prep_script, click_map["laptop"]), SetVariable("laptop_clicked", True)) if "laptop" in click_map and not prep_busy else NullAction())
 
         # Chair
         add "images/bedroom_chair_v1.png":
@@ -2283,9 +2303,20 @@ screen bedroom(click_map={}):
             xpos 88
             yanchor 1.0
             ypos 740
-            action (Call(click_map["bed"]) if "bed" in click_map else NullAction())
 
-screen wardrobe_panel(): 
+            tooltip "Bed"
+
+            action (Function(call_prep_script, click_map["bed"]) if "bed" in click_map and not prep_busy else NullAction())
+
+# Delete later
+image wardrobe_option = Transform("gui/placeholders/Chat Bubble (Receive).svg", xsize=180, ysize=120)
+image wardrobe_option_selected = Transform("gui/placeholders/Chat Bubble (Sent).svg", xsize=180, ysize=120)
+
+## Wardrobe Panel ##############################################################
+##
+## Panel Screen for Closet Click in Bedroom Prep Phase 
+
+screen wardrobe_panel(post_dress=None): 
 
     modal True 
 
@@ -2295,6 +2326,8 @@ screen wardrobe_panel():
         xysize(420, 320)
         padding(20, 20)
 
+        background None
+
         # Background 
         add "#C8C8C8":
             xysize(420, 320)
@@ -2303,49 +2336,75 @@ screen wardrobe_panel():
 
         clipping True
 
-        hbox:
-            xysize(380, 260)
-            spacing 20
+        vbox: 
 
-            clipping True
-
-            ## Tops (Left Column)
-            vbox:
+            hbox:
+                xysize(380, 260)
                 spacing 20
 
-                ## Top Option 1 - Semiformal
-                imagebutton:
-                    idle Solid("#000000", xsize=180, ysize=120)
-                    selected semiformal_top
-                    action (SetVariable("semiformal_top", True), SetVariable("contour_top", False))
+                clipping True
 
-                ## Top Option 2 - Contour
-                imagebutton:
-                    idle Solid("#000000", xsize=180, ysize=120)
-                    selected contour_top
-                    action (SetVariable("contour_top", True), SetVariable("semiformal_top", False))
+                ## Tops (Left Column)
+                vbox:
+                    spacing 20
 
-            ## Bottoms (Right Column)
-            vbox:
-                spacing 20
+                    ## Top Option 1 - Semiformal
+                    imagebutton:
+                        idle "wardrobe_option"
+                        selected_idle "wardrobe_option_selected"
+                        selected semiformal_top
 
-                ## Bottom Option 1 - Many Pockets
-                imagebutton:
-                    idle Solid("#000000", xsize=180, ysize=120)
-                    selected many_pockets
-                    action SetVariable("many_pockets", not many_pockets)
+                        sensitive not closet_busy
 
-                ## Bottom Option 2
-                imagebutton:
-                    idle Solid("#000000", xsize=180, ysize=120)
-                    action NullAction()
+                        tooltip "A slightly fancy, semi-formal dress shirt you got from Victor a few years ago. You don't know how pricy it was but it was probably pricier than 90% of your closet. Victor never gifted things at a normal price range."
 
-        ## Done Button
-        textbutton "Done":
-            ysize 0
-            yalign 1.0
-            sensitive (not top_selected and not bottom_selected)
-            action [SetVariable("closet_clicked", True), Function(hide_app, "wardrobe_panel")]
+                        action (SetVariable("contour_top", False), SetVariable("semiformal_top", True), SetVariable("top_selected", True))
+
+                    ## Top Option 2 - Contour
+                    imagebutton:
+                        idle "wardrobe_option"
+                        selected_idle "wardrobe_option_selected"
+                        selected contour_top
+
+                        sensitive not closet_busy
+                        
+                        tooltip "A turtle neck of good quality fabric. You're quite fond of it. Traps heat when the sun is strong but is otherwise fine by itself, even in warmer weather."
+
+                        action (SetVariable("semiformal_top", False), SetVariable("contour_top", True), SetVariable("top_selected", True))
+
+                ## Bottoms (Right Column)
+                vbox:
+                    spacing 20
+
+                    ## Bottom Option 1 - Many Pockets
+                    imagebutton:
+                        idle "wardrobe_option"
+                        selected_idle "wardrobe_option_selected"
+                        selected many_pockets
+
+                        sensitive not closet_busy
+
+                        tooltip "Your favorite cargo pants. It's got lots of pockets. You could probably fit a surprise or two in them."
+
+                        action (SetVariable("heavy_pants", False), SetVariable("many_pockets", True), SetVariable("bottom_selected", True))
+
+                    ## Bottom Option 2
+                    imagebutton:
+                        idle "wardrobe_option"
+                        selected_idle "wardrobe_option_selected"
+                        selected heavy_pants
+
+                        sensitive not closet_busy
+
+                        tooltip "Dress Jeans you've had since college. Somehow it still looks new. A good pair with a more semi-formal top."
+
+                        action (SetVariable("many_pockets", False), SetVariable("heavy_pants", True), SetVariable("bottom_selected", True))
+
+            ## Done Button
+            textbutton "Dressed":
+                yalign 1.0
+                sensitive (top_selected and bottom_selected)
+                action (SetVariable("closet_clicked", True), Function(close_wardrobe), If(post_dress, Function(call_prep_script, post_dress)))
 
 
 ################################################################################
