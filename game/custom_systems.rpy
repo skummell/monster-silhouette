@@ -1415,20 +1415,17 @@ init python:
 
         freeze_until("prep_done")
 
+        disable_type("prep_busy")
+
         store.status_bar = True
 
     ## Open Wardrobe Panel
     ## Toggle on Bedroom button disabler
     def open_wardrobe(click_map):
-        dress_shirt = click_map.get("dress_shirt")
-        turtle_neck = click_map.get("turtle_neck")
-        cargo_pants = click_map.get("cargo_pants")
-        dress_jeans = click_map.get("dress_jeans")
-        dressed = click_map.get("dressed")
 
         disable_type("prep_busy")
 
-        show_app("wardrobe_panel", dress_shirt=dress_shirt, turtle_neck=turtle_neck, cargo_pants=cargo_pants, dress_jeans=dress_jeans, dressed=dressed)
+        show_app("wardrobe_panel", click_map)
 
     ## Close Wardrobe Panel 
     ## Toggle off Bedroom button disabler

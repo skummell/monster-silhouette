@@ -2367,7 +2367,7 @@ image wardrobe_option_selected = Transform("gui/placeholders/Chat Bubble (Sent).
 ##
 ## Panel Screen for Closet Click in Bedroom Prep Phase 
 
-screen wardrobe_panel(dress_shirt=None, turtle_neck=None, cargo_pants=None, dress_jeans=None, dressed=None): 
+screen wardrobe_panel(clicks_map={}): 
 
     modal True 
 
@@ -2405,7 +2405,7 @@ screen wardrobe_panel(dress_shirt=None, turtle_neck=None, cargo_pants=None, dres
                 vbox:
                     spacing 20
 
-                    ## Top Option 1 - Semiformal
+                    ## Top Option 1 - Dress Shirt (Semiformal)
                     imagebutton:
                         idle "wardrobe_option"
                         hover hover_dress_shirt
@@ -2419,9 +2419,10 @@ screen wardrobe_panel(dress_shirt=None, turtle_neck=None, cargo_pants=None, dres
                             action NullAction()
 
                         else: 
-                            action (If(contour_top, SetVariable("contour_top", False)), SetVariable("semiformal_top", True), SetVariable("top_selected", True), If(dress_shirt, Function(call_prep_closet_script, dress_shirt)))
+                            if "dress_shirt" in click_map:
+                                action (If(contour_top, SetVariable("contour_top", False)), SetVariable("semiformal_top", True), SetVariable("top_selected", True), Function(call_prep_closet_script, click_map["dress_shirt"]))
 
-                    ## Top Option 2 - Contour
+                    ## Top Option 2 - Turtle Neck (Contour)
                     imagebutton:
                         idle "wardrobe_option"
                         hover hover_turtle_neck
@@ -2436,13 +2437,15 @@ screen wardrobe_panel(dress_shirt=None, turtle_neck=None, cargo_pants=None, dres
 
                         else: 
 
-                            action (If(semiformal_top, SetVariable("semiformal_top", False)), SetVariable("contour_top", True), If(not top_selected, SetVariable("top_selected", True), If(turtle_neck, Function(call_prep_closet_script, turtle_neck))))
+                            if "turtle_neck" in click_map: 
+
+                                action (If(semiformal_top, SetVariable("semiformal_top", False)), SetVariable("contour_top", True), SetVariable("top_selected", True), Function(call_prep_closet_script, click_map["turtle_neck"]))
 
                 ## Bottoms (Right Column)
                 vbox:
                     spacing 20
 
-                    ## Bottom Option 1 - Many Pockets
+                    ## Bottom Option 1 - Cargo Pants (Many Pockets)
                     imagebutton:
                         idle "wardrobe_option"
                         hover hover_cargo_pants
@@ -2456,9 +2459,10 @@ screen wardrobe_panel(dress_shirt=None, turtle_neck=None, cargo_pants=None, dres
                             action NullAction()
 
                         else: 
-                            action (If(heavy_pants, SetVariable("heavy_pants", False)), SetVariable("many_pockets", True), If(not bottom_selected, SetVariable("bottom_selected", True), If(cargo_pants, Function(call_prep_closet_script, cargo_pants))))
+                            if "cargo_pants" in click_map:
+                                action (If(heavy_pants, SetVariable("heavy_pants", False)), SetVariable("many_pockets", True), SetVariable("bottom_selected", True), Function(call_prep_closet_script, click_map["cargo_pants"]))
 
-                    ## Bottom Option 2
+                    ## Bottom Option 2 - Dress Jeans (Heavy Pants)
                     imagebutton:
                         idle "wardrobe_option"
                         hover hover_dress_jeans
@@ -2472,7 +2476,8 @@ screen wardrobe_panel(dress_shirt=None, turtle_neck=None, cargo_pants=None, dres
                             action NullAction()
 
                         else: 
-                            action (If(many_pockets, SetVariable("many_pockets", False)), SetVariable("heavy_pants", True), If(not bottom_selected, SetVariable("bottom_selected", True), If(dress_jeans, Function(call_prep_closet_script, dress_jeans))))
+                            if "dress_jeans" in click_map:
+                                action (If(many_pockets, SetVariable("many_pockets", False)), SetVariable("heavy_pants", True), SetVariable("bottom_selected", True), Function(call_prep_closet_script, click_map["dress_jeans"]))
 
             ## Done Button
             textbutton "Dressed":
@@ -2483,7 +2488,8 @@ screen wardrobe_panel(dress_shirt=None, turtle_neck=None, cargo_pants=None, dres
                     action NullAction()
                 
                 else:
-                    action (SetVariable("closet_clicked", True), Function(close_wardrobe), If(dressed, Function(call_prep_script, dressed)))
+                    if "dressed" in click_map:
+                        action (SetVariable("closet_clicked", True), Function(close_wardrobe), Function(call_prep_script, click_map["dressed"]))
 
 
 ################################################################################

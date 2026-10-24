@@ -68,6 +68,8 @@ define gui.interface_text_color = '#000'
 define gui.fourth_wall_color = "#000" # Change this to a matching background muted red or something 
 define gui.fourth_wall_text = "#8B1A1A"
 
+# Note: Change arbritary colors "####" to use gui. defined colors in screens and script later.
+
 ## Fonts and Font Sizes ########################################################
 
 ## The font used for in-game text.
