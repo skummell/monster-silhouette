@@ -309,7 +309,7 @@ screen status_bar():
 
     zorder 100
 
-    if status_bar or renpy.get_screen("computer_ui_menu"): 
+    if status_bar or renpy.get_screen("computer_ui_menu"):
         frame: 
             at fill_width(38)
             background None
@@ -802,6 +802,7 @@ screen computer_ui_menu():
     key "game_menu" action [Return(), Return()]
     
     use computer_ui
+    use status_bar
 
 ## Computer UI screen (Custom Game Screen) #####################################
 ##
@@ -1687,6 +1688,11 @@ style exit_disabled_warning_text:
     xalign 0.5
     textalign 0.5
 
+## Freeze Hint Display Screen ##################################################
+##
+## This screen displays a hint for the player in order to end a freeze and 
+## move on with the story
+
 screen freeze_hint_display():
 
     zorder 150 
@@ -1698,7 +1704,6 @@ screen freeze_hint_display():
 
             text "{b}Hint:{/b} [_current_hint]": 
                 style "freeze_hint_display_text"
-
 
 style freeze_hint_display_frame: 
 
@@ -1712,6 +1717,104 @@ style freeze_hint_display_text:
     color gui.hover_color
     xalign 0.5
     textalign 0.5
+
+## Notif Button Template #######################################################
+##
+## This is a template for Notification Buttons 
+
+screen notif_button(app_screen, app_prefix, notif_bg="gui/placeholders/light_gray_background.svg", notif_icon="gui/placeholders/grid_icon_placeholder.svg"): 
+
+    button: 
+
+        style "notif_button"
+
+        if button_disabled(app_screen): 
+
+            action NullAction()
+
+        else: 
+
+            action (Function(show_app, app_screen), Function(hide_app, app_screen + "_notification"))
+
+        add notif_bg: 
+            xysize(315, 74)
+
+        frame: 
+
+            style "notif_button_frame"
+
+            hbox: 
+                style "notif_button_hbox"
+
+                add notif_icon: 
+                    xysize(58, 52)
+
+                vbox: 
+
+                    spacing 10
+                    xalign 0.5
+
+                    text "[app_prefix] Notification": 
+                        style "notif_button_title"
+                    
+                    transclude 
+
+style notif_button: 
+
+    xysize(315, 74)
+    xcenter 0.86
+    ypos 40
+    clipping True 
+
+style notif_button_frame: 
+
+    xfill True 
+    yfill True 
+    background None 
+    padding(15, 10, 15, 10)
+    xalign 0.5
+    yalign 0.5
+
+    clipping True 
+
+style notif_button_hbox: 
+
+    xfill True 
+    yfill True 
+    xalign 0.5
+
+style notif_button_text: 
+    color "#000"
+    size 15
+    textalign 0.5
+    xalign 0.5
+
+style notif_button_title is notif_button_text: 
+    size 18
+    bold True 
+
+## Chat Notification Screen ####################################################
+##
+## This screen displays a chat notification pop up that doubles as 
+## a button to open chat app
+
+screen chat_app_notification(msg=1): 
+
+    zorder 100
+
+    use notif_button("chat_app", "Chat"):
+
+        $ notif_det = ""
+
+        if msg == 1: 
+
+            $ notif_det = "1 New Message"
+
+        else: 
+
+            $ notif_det = "[msg] New Messages"
+
+        text [notif_det] style "notif_button_text"
 
 ## Profile App screen ##########################################################
 ## 

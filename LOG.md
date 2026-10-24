@@ -10,15 +10,17 @@ If something is under a date range rather than a specific date it means it was w
 
 Refer to repo commits for specific dates, times and changes on finalized code edits, fixes & etc on tracked project files mentioned in the logs. 
 <br>
-Not every commit made as soon as every change is completed.
+Not every commit is made as soon as every change is completed.
 <br>
 (Note: Repo commits only start as of Sep 21, 2026.)
 
+For an overview of the Project itself or any major latest updates on it, refer to `README.md` instead.
+
 ---
 
-**Log relevant files (including those not included in repo):**
+**Log relevant files (including those not provided in repo):**
 
-(**Note:** not all folders nor all files inside folders are named in trees)
+(**Note:** Not all folders nor all files inside folders are named in trees. This is a log relevant ONLY overview of file trees.)
 
 - Project Files: 
 
@@ -28,12 +30,18 @@ Not every commit made as soon as every change is completed.
   │   ├── audio/
   │   ├── gui/
   │   ├── images/
-  │   └── script/
+  │   ├── script/
   │   │   └── demo/
   │   │       ├── demo_choices/
   │   │       │   └── demo_choice1.rpy
   │   │       ├── demo_interludes/
-  │   │       │   └── demo_choice1.rpy
+  │   │       │   └── demo_interlude1.rpy
+  │   │       ├── demo_prep/
+  │   │       │   ├── demo_bed_click.rpy
+  │   │       │   ├── demo_closet_click.rpy
+  │   │       │   ├── demo_key_click.rpy
+  │   │       │   ├── demo_laptop_click.rpy
+  │   │       │   └── demo_wallet_click.rpy
   │   │       └── demo_intro.rpy
   │   ├── custom_systems.rpy
   │   ├── gui.rpy
@@ -60,8 +68,10 @@ Not every commit made as soon as every change is completed.
   
   ```
   Monster Silhouette/
+  ├── Art Assets/
+  │   ├── Concept Art/
+  │   └── Placeholder Art/
   ├── Characters/
-  ├── Concept Art/
   ├── Game Mechanics/
   ├── Locations/
   └── Script/
@@ -109,10 +119,10 @@ Not every commit made as soon as every change is completed.
 
 - Engine Files Modification (For Full Bug Fix)
   - Files Modified : 
-    - 00gamemenu.rpy
-    - 00action_menu.rpy
+    - `00gamemenu.rpy`
+    - `00action_menu.rpy`
   - Custom Show Callable for Menu version of Computer UI 
-    - ShowHome() - Creates a new context between game and meta menus
+    - `ShowHome()` - Creates a new context between game and meta menus
     - When you ESC inside Meta Menu you opened from the Computer UI menu you correctly return to the Computer UI menu instead of skipping it and returning to the game directly 
   - Screenshot Timing Tweak 
     - Computer UI Menu no longer shows up in the Save Screenshot
@@ -611,3 +621,14 @@ Not every commit made as soon as every change is completed.
     - `close_wardrobe()` - Close Wardrobe & toggle off Bedroom Buttons disabler
     - `call_prep_script(label)` - Call Script (label) in new context & toggle Bedroom Buttons Disabler
     - `call_prep_closet_script(label)` - Call Script (label) in new context & toggle Closet Buttons Disabler
+
+- Scene System Update! 
+  - New Variables! 
+    - `valid_notif_screen` - Dictionary for valid screen names to be used for `show_notif`
+  - New statements!
+    - `show_notif "notif_screen" kwarg "value"` - Show a notification screen, supports kwargs
+
+- Notification Screens 
+  - `notif_button` - New template screen!
+  - `chat_app_notification` - New screen! 
+  - Implemented into script using `show_notif` statement 

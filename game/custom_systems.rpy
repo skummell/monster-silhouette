@@ -70,6 +70,9 @@ init offset = -1
 ##      hide_app         "app_screen"   - hide app screen on scene layer
 ##      show_panel       "panel_screen" - show a panel screen on the scene layer (above current scene or show_scene) 
 ##      hide_panel       "panel_screen" - hide panel screen on scene layer
+##      show_notif       "notif_screen" - show a notification screen on the scene layer (above current scene or show_scene)
+##                                        supports kwargs 
+##                                           show_notif "notif_screen" kwarg "value"
 ##  Button Disabler System Statements
 ##      disable_global                  - disable ALL buttons (that can be disabled) with global disabler override 
 ##      enable_global                   - disable global disabler (button status now dependent on button type and id disablers)
@@ -104,9 +107,13 @@ init offset = -1
 ##  Chat System Utility Functions
 ##      get_chat_entries        (contact)                   - read chat entries / history linked to contact 
 ##  Scene System Utility Functions
-##      show_scene              (screen_name)               - show a screen on scene (master) layer
-##      show_app                (screen_name)               - show a app screen on scene (master layer) on top of current scene + used in show_panel too
+##      show_scene              (screen_name, **kwargs)     - show a screen on scene (master) layer
+##      show_app                (screen_name, **kwargs)     - show a app screen on scene (master layer) on top of current scene,
+##                                                            used for show_panel statement as well
 ##      hide_app                (screen_name)               - hide a app screen on scene (master layer) + used in hide_panel too
+##      show_notif              (screen_name, **kwargs)     - show a notif screen on scene (master layer) on top of current scene 
+##                                                            input validation with valid_notif_screens 
+##                                                            if notif_screen is already showing hides it first 
 ##  Button Disabler System Utility Functions 
 ##      button_disabled         (button=None, report=False) - returns a boolean on whether buttons are globally disabled, 
 ##                                                            a specific button type is disabled or 
@@ -311,6 +318,11 @@ init python:
 ##      hide_app "app_screen"   # Hides app_screen on top of scene
 ##
 
+## Scene System Variables 
+default valid_notif_screens = { 
+    "chat_app_notification"
+}
+
 ## Scene System Statements 
 python early: 
     
@@ -406,6 +418,40 @@ python early:
         execute = execute_hide_panel,
     )
 
+    ## show_notfi "notif_screen"
+    ## show_notif "notif_screen" kwarg "value"
+    def parse_show_nofif(lex): 
+
+        screen = lex.string()
+        kwargs = {}
+        
+        while not lex.eol(): 
+            key = lex.name()
+            val = lex.string() 
+
+            # Convert Intergers 
+            try: 
+                val = int(val)
+            except (ValueError, TypeError):
+                pass
+
+            kwargs[key] = val
+
+        return (screen, kwargs)
+
+    def execute_show_notif(info):
+
+        screen, kwargs = info
+
+        # Show notif_screen on scene (master) layer 
+        show_notif(screen, **kwargs)
+
+    renpy.register_statement(
+        name = "show_notif", 
+        parse = parse_show_nofif, 
+        execute = execute_show_notif, 
+    )
+
 ## Scene System Functions
 ## Call Screens on Master (Scene) Layer
 init python: 
@@ -429,6 +475,22 @@ init python:
     ## shown automatically
     def hide_app(screen_name): 
         renpy.hide_screen(screen_name, layer="master")
+
+    # Show a screen above the current scene on the scene (master) layer 
+    ## and below the dialogue (say screen, which is on a layer above scene)
+    ## Intended for notification screens 
+    ## Refer to valid_notif_screns for valid screen_names
+    def show_notif(screen_name, **kwargs): 
+        # Invalid input
+        if screen_name not in valid_notif_screens: 
+            print("Error: Invalid Notification Screen name")
+            return 
+        
+        # Hide notif_screen if already showing 
+        if renpy.get_screen(screen_name, "master"): 
+            renpy.hide_screen(screen_name, layer="master")
+
+        renpy.show_screen(screen_name, _layer="master", **kwargs) 
 
 ################################################################################
 ## Button Disabler System ######################################################
@@ -1222,7 +1284,7 @@ init python:
     ## "[app_screen]"
     ## Hint Format: "Click on the [app_name] Icon to open [app_name] App."
     for app_screen, app_name in app_to_exit.items(): 
-        freeze_hint[f"{app_screen}"] = f"Click on the {app_name} Icon to open {app_name} App."
+        freeze_hint[f"{app_screen}"] = f"Click on the {app_name} Icon or Notification to open {app_name} App."
 
     ## App Close Freeze Hints 
     ## "[app_name]"
