@@ -894,6 +894,13 @@ init python:
 
     adj = ui.adjustment(ranged=_on_adj_ranged)
 
+    def scroll_top(adj_var): 
+        adj_var.change(0)
+
+    def scroll_bottom(adj_var): 
+        adj_var.change(adj_var.range)
+
+
 ## Meta Screen Template ########################################################
 ## 
 ## Template for all meta screens 
@@ -2139,16 +2146,17 @@ screen chat_box(contact):
                 
                     use chat_bubble(entry.who, entry.what)
 
-            # Print Chat Time
-
             # Live Chat
             if nvl_list:
                 
+                # Print Chat Date
                 if _chat_date_change: 
                     use chat_date_stamp(abyss_date.strftime("%a %b %d"))
 
+                # Print Chat Time 
                 use chat_time_stamp(abyss_time)
                 
+                # Print Chat Bubbles
                 for entry in nvl_list: 
                     use chat_bubble(entry[0], entry[1])
                     
@@ -2249,6 +2257,8 @@ screen chat_time_stamp(time):
 
     use timestamp_for_chat(time)
 
+# Draft Scroll
+default draft_adj = ui.adjustment()
 
 ## Draft App screen ############################################################
 ## 
@@ -2283,36 +2293,394 @@ screen draft_app():
             
             clipping True
 
-            text "Draft Text Here": 
-                color "#000"
+            # Fake sense that there is something to scroll up to but don't make it actually scroll 
+                # Maybe make the scroll bar look like it's already somewhat scrolled ? 
+                # Or instead of scroll do something like make it look like chapters have been drafted in different files 
+                    # Only file you (player) has access to is the epilogue 
+                    # But all the other chapters are there you just can't click 
+                    # could be implemented into tool bar for draft_app 
+                        # Needs a little concept redesigning to work though 
+                        # or maybe not too much... maybe can just add a related icon with implication
+                            # maybe like hover on the icon will show other files ...
+
+            use draft_file()
+
+## Draft File Template #########################################################
+##
+## Screen Template for an active Draft File inside Draft App.
+
+screen draft_file(log_name="epilogue", book_title="To Be Or Not To Be", book_abrv="tbontb"): 
+
+    # Chapter Title from log_name
+    # ex. (default log_name) 
+    #   chapter_title = "Epilogue"
+    $ chapter_title = log_name[0].upper() + log_name[1:]
+
+    # File Name from book_abrv and log_name 
+    # ex. (default book_abrv and default log_name) 
+    #   file_name = "tbontb_epilogue_transcript"
+    $ file_name = book_abrv + "_" + log_name + "_transcript"
+
+    # Display Fixed Chapter Title Header
+    fixed: 
+        xysize(650, 35)
+        clipping True
+
+        # Book Chapter Title 
+        # ex. (default book_title & default chapter_title) 
+        #   "To Be Or Not To Be - Epilogue"
+        text (book_title + " - " + chapter_title): 
+            xalign 0.5 
+            yalign 0.5 
+            color "#000"
+            size 16
+            bold True
+
+        # Auto Scroll
+        hbox:
+            xalign 1.0
+            yalign 0.5 
+            spacing 10
+
+            # Scroll to top 
+            imagebutton: 
+                idle "#000"
+                xysize(15, 15)
+                action Function(scroll_top, draft_adj)
+                tooltip "Scroll to top"
+
+            # Scroll to bottom 
+            imagebutton: 
+                idle "#000"
+                xysize(15, 15)
+                action Function(scroll_bottom, draft_adj)
+                tooltip "Scroll to bottom"
+
+    # Scrollable Content 
+    fixed: 
+        xysize(650, 480)
+        ypos 35
+        clipping True 
+
+        if _book_transcript.get(log_name, []): 
+
+            # Book Transcript 
+            $ transcript = print_transcript(log_name)
+            
+            use scrollable_content("viewport", spacing=20, top_pad=15, bottom_pad=15, left_pad=10, right_pad=10, yinitial=1.0, yadjustment=draft_adj): 
+
+                for paragraph in transcript: 
+
+                    text paragraph: 
+                        color "#000"
+                        size 18
+                        xfill True 
 
 ## Draft Tools screen ##########################################################
 ## 
 ## A screen that displays Draft App Tools
+## Decorative (for now)
 
 screen draft_tools(): 
+
+    $ width = 700
+    $ height = 650 - 35
 
     tag tools
 
     fixed: 
+        xysize(width, height)
+        ypos 35
 
+        clipping True
+
+        # Top Toolbar
         fixed: 
-            xysize (700, 30)
-            ypos 35
-
-            clipping True 
+            style "toolbar"
 
             add "gui/placeholders/Draft Toolbar Placeholder.svg": 
-                xysize (700, 30)
+                xysize (width, 50) # CHANGE TO 30 Later when placeholder is replaced
 
+            # Toolbar content
+            frame: 
+                style "toolbar_frame"
+
+                # Toolbar Icons
+                fixed: 
+                    xysize(680, 30)
+                
+                    # Mode Switch Icons
+                    hbox: 
+                        style "mode_switch_icons"
+
+                        # Edit Icon
+                        imagebutton: 
+                            idle "#000"
+                            style "edit_icon"
+
+                            action NullAction()
+
+                            tooltip "Edit Mode"
+                            
+                        # Read Icon
+                        imagebutton: 
+                            idle "#000"
+                            style "read_icon"
+
+                            action NullAction()
+
+                            tooltip "View Mode"
+
+                    # Misc Icons
+                    hbox: 
+                        style "misc_icons"
+
+                        # Clipboard Icon
+                        imagebutton: 
+                            idle "#000"
+                            style "cp_icon"
+
+                            action NullAction()
+
+                            tooltip "Copy & Paste"
+                        
+                        # Scissor Icon 
+                        imagebutton:
+                            idle "#000"
+                            style "cut_icon"
+
+                            action NullAction()
+
+                            tooltip "Cut"
+
+                        # Microphone Icon 
+                        imagebutton:
+                            idle "#000"
+                            style "mic_icon"
+
+                            action NullAction()
+
+                            tooltip "Voice Recordings"
+
+                        # Printer Icon 
+                        imagebutton:
+                            idle "#000"
+                            style "print_icon"
+
+                            action NullAction()
+
+                            tooltip "Print"
+
+                        # Airplane Icon
+                        imagebutton: 
+                            idle "#000"
+                            style "share_icon"
+
+                            action NullAction()
+
+                            tooltip "Share"
+
+                        # Three Dots Icon 
+                        imagebutton: 
+                            idle "#000"
+                            style "more_icon"
+
+                            action NullAction()
+
+                            tooltip "Expand Toolbar Options"
+                        
+                    # Open Files Icons
+                    hbox: 
+                        style "open_files_icons"
+
+                        # Folder Icon 
+                        imagebutton: 
+                            idle "#000"
+                            style "folder_icon"
+
+                            action NullAction()
+
+                            tooltip "Choose Folder"
+
+                        # File Icon 
+                        imagebutton: 
+                            idle "#000"
+                            style "file_icon"
+
+                            action NullAction()
+
+                            tooltip "Choose File"
+                        
+
+        # Bottom Settings Bar
         fixed: 
-            xysize (700, 50)
-            ypos 700 - 100
-
-            clipping True
+            style "settings_bar"
 
             add "gui/placeholders/Draft Settings Bar Placeholder.svg": 
-                xysize (700, 50)
+                xysize (width, 50)
+
+            # Toolbar content
+            frame: 
+                
+                style "settings_bar_frame"
+
+                # Toolbar Icons
+                fixed: 
+                    xysize(670, 50)
+
+                    # Save Icons 
+                    hbox: 
+                        style "save_icons"
+
+                        # Save Mode Icon
+                        imagebutton: 
+                            idle "#c8c8c8"
+                            style "save_mode_icon"
+
+                            action NullAction()
+
+                            tooltip "Save Mode"
+
+                        # Save Status Icon 
+                        imagebutton: 
+                            idle "#c8c8c8"
+                            style "save_status_icon"
+
+                            action NullAction()
+
+                            tooltip "Save Status"
+
+                    # Star Icons
+                    hbox: 
+                        style "star_icons"
+
+                        # Star Icon 
+                        imagebutton: 
+                            idle "#c8c8c8"
+                            style "starred_icon"
+
+                            action NullAction()
+
+                            tooltip "Bookmark"
+
+                    # Settings Icons
+                    hbox: 
+                        style "option_icons"
+
+                        # Gear Icon
+                        imagebutton: 
+                            idle "#c8c8c8"
+                            style "gear_icon"
+
+                            action NullAction()
+
+                            tooltip "Settings"
+
+# Toolbar Styles 
+style toolbar: 
+    xsize 700
+    ysize 30
+
+    clipping True
+
+style settings_bar is toolbar: 
+    ysize 50 
+    yalign 1.0
+
+style toolbar_frame: 
+
+    xysize(680, 30)
+    padding (0, 0, 0, 0)
+    xalign 0.5
+    background None
+
+    clipping True
+
+style settings_bar_frame is toolbar_frame: 
+    xysize(670, 50)
+
+# Toolbar Icons 
+style toolbar_icon: 
+    xsize 18
+    ysize 20
+
+style edit_icon is toolbar_icon
+
+style read_icon is toolbar_icon: 
+    xsize 30
+
+style cp_icon is toolbar_icon
+
+style cut_icon is toolbar_icon: 
+    xsize 25
+
+style mic_icon is toolbar_icon: 
+    xsize 16
+
+style print_icon is toolbar_icon: 
+    xsize 27
+
+style share_icon is toolbar_icon: 
+    xsize 22
+
+style more_icon is toolbar_icon: 
+    xsize 20
+
+style folder_icon is toolbar_icon
+
+style file_icon is toolbar_icon: 
+    xsize 60
+
+# Settings Icons 
+style settings_icon: 
+    xsize 20
+    ysize 20
+
+style save_mode_icon is settings_icon: 
+    xsize 80
+
+style save_status_icon is settings_icon
+
+style starred_icon is settings_icon: 
+    xysize(22, 22)
+
+style gear_icon is settings_icon: 
+    xysize(30, 30)
+
+# Toolbar Icon Tuples
+style toolbar_icon_tuple: 
+    ysize 20
+    spacing 10
+    xfit True
+    yalign 0.5
+
+style mode_switch_icons is toolbar_icon_tuple
+
+style misc_icons is toolbar_icon_tuple: 
+    # Edit Icon (18) + Spacing (10) + Read Icon (30) + Gap Between Tuple [mode_switch_icons & misc_icons] (80)
+    xpos (18 + 10 + 30 + 80)
+
+style open_files_icons is toolbar_icon_tuple: 
+    xalign 1.0
+
+# Setting Icons Tuples
+style settings_icon_tuple: 
+    ysize 30
+    spacing 10 
+    xfit True 
+    yalign 0.5
+
+style save_icons is settings_icon_tuple: 
+    ysize 20
+
+style star_icons is settings_icon_tuple: 
+
+    ysize 22
+    # Save Mode Icon (80) + Spacing (10) + Save Status Icon (20) + Gap Between Tuple [save_icons & star_icons] (40)
+    xpos (80 + 10 + 20 + 40)
+
+style option_icons is settings_icon_tuple: 
+    xalign 1.0
 
 ################################################################################
 ## Special Game Mode screens
@@ -2470,7 +2838,7 @@ image wardrobe_option_selected = Transform("gui/placeholders/Chat Bubble (Sent).
 ##
 ## Panel Screen for Closet Click in Bedroom Prep Phase 
 
-screen wardrobe_panel(clicks_map={}): 
+screen wardrobe_panel(click_map={}): 
 
     modal True 
 

@@ -547,7 +547,6 @@ For an overview of the Project itself or any major latest updates on it, refer t
     - Day 1 - First Choice 
     - Day 1 - Bed Click 
     - Day 1 - Wallet Click 
-    - Day 1 - Closet Click 
     - Day 1 - Laptop Click 
     - Day 1 - Key Click
     - Game System Partial Implementations Within Script
@@ -560,6 +559,8 @@ For an overview of the Project itself or any major latest updates on it, refer t
       - Closet Click System       
     - Day 1 - First Interlude 
       - Stopped in the middle of Prep Phase
+      - Day 1 - Closet Click (Incomplete)
+    - Remaining Demo Script 
     - Polishes
 
 - Freeze System Update!
@@ -587,7 +588,7 @@ For an overview of the Project itself or any major latest updates on it, refer t
     - `show_panel` - New Statement!
     - `hide_panel` - New Statement!
 
-## Oct 22-23, 2026 
+## Oct 22-24, 2026 
 
 - Debugging Prep Phase Game Mode
   - Issues & Fixes
@@ -632,3 +633,63 @@ For an overview of the Project itself or any major latest updates on it, refer t
   - `notif_button` - New template screen!
   - `chat_app_notification` - New screen! 
   - Implemented into script using `show_notif` statement 
+
+- Draft System 
+  - Record Draft Variations & write into Book Transcript
+    - Variables: 
+      - `transcript_log` - logs tuples of (draft_number, draft_version) incrementing number and version string 
+      - `_book_transcript` - Store book transcript up to current point in story 
+    - Custom Statements: `write_draft "ver"` & `transcript_line "text"`
+      - Store new draft number version inside of a List of Transcript Logs linked to a Chapter (ch="epilogue")
+      - Call corresponding label for draft version linked to a Chapter (ch="epilogue)
+      - Store lines as paragraphs linked to a Chapter (ch="epilogue) so they can be used for Draft App content 
+  - Read Book Transcript: `print_transcript(ch="epilogue)`
+    - pulls from `_book_transcript[ch]`
+  - Draft App Screen Update 
+    - Prints book_transcript into main content area 
+    - `draft_file` - New screen!
+    - Toolbar Layout 
+    - Auto Scroll
+      - Top of file 
+      - Bottom of file
+    - Toolbar tooltips
+
+- Narrative Script Progression
+  - Script Files (not included in Repo) - `script/demo/`
+    - `demo_intro.rpy`
+    - `demo_book_drafts/` - New Folder!
+      - `demo_book_draft0.rpy` - New File!
+      - `demo_book_draft1.rpy` - New File!
+    - `demo_choices/demo_intro.rpy` 
+    - `demo_interludes/demo_interlude1.rpy`
+    - `demo_prep/` 
+      - `demo_bed_click.rpy`
+      - `demo_closet_click.rpy` 
+      - `demo_key_click.rpy` 
+      - `demo_laptop_click.rpy` 
+      - `demo_wallet_click.rpy` 
+  - Completed Script Dialogue Implementation
+    - Day 1 - Introduction
+    - Day 1 - First Choice 
+    - Day 1 - First Interlude
+      - Day 1 - Bed Click 
+      - Day 1 - Wallet Click 
+      - Day 1 - Closet Click 
+      - Day 1 - Laptop Click 
+      - Day 1 - Key Click
+    - Day 1 - Book Draft 0
+    - Day 1 - Book Draft 1 
+  - Game System Implementations Within Script
+    - For Scripts with Dialogue Implementation Completed
+      - Scene System Implemented
+      - Button Disabler System Implemented 
+      - Single Condition Freezes Implemented
+      - Prep Phase Mode Implemented 
+      - Draft System Implementated
+  - Not Completed: 
+    - Remaining Demo Script 
+      - Choices 2-7 + Unique Choices
+      - Interludes 2-4
+      - Wrap Phase 
+      - Closing 
+    - Polishes

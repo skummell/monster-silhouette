@@ -16,10 +16,15 @@ init offset = -1
 ## List of Game Systems currently handled: 
 ##      Chat System 
 ##          record, show, and use nvl lines on script as chat instances
+##          Chat App feature & functionality 
 ## 
 ##          nvl screen has been repurposed for this system
 ##              nvl lines now display on chat_box screen through this system &
 ##              nvl screen is transparent to the player
+##
+##      Draft System 
+##          record draft variations, log book transcript, and export book transcript
+##          Draft App feature & functionality
 ##
 ##      Scene System
 ##          make use of screens as scenes
@@ -64,6 +69,13 @@ init offset = -1
 ##  Chat System Statements
 ##      chat_start       "contact"      - begin recording chat range 
 ##      chat_end         "contact"      - end recording chat range
+##  Draft System Statements 
+##      write_draft     "ver"           - record draft version suffix
+##                                        supports the ch kwarg (ch="epilogue" by default)
+##                                          write_draft "ver" ch "chapter"
+##      transcript_line "text"          - record paragraph for transcript draft
+##                                        supports the ch kwarg (ch="epilogue" by default)
+##                                          transcript_line "text" ch "chapter"
 ##  Scene System Statements
 ##      show_scene       "screen"       - shows a screen on the scene layer (acts exactly like scene "picture.png")
 ##      show_app         "app_screen"   - show a app screen on the scene layer (above current scene or show_scene)
@@ -106,6 +118,8 @@ init offset = -1
 ## List of Game System Utility Functions:
 ##  Chat System Utility Functions
 ##      get_chat_entries        (contact)                   - read chat entries / history linked to contact 
+##  Draft System Utility Functions 
+##      print_transcript        (ch="epilogue")             - read book transcript for chapter ch
 ##  Scene System Utility Functions
 ##      show_scene              (screen_name, **kwargs)     - show a screen on scene (master) layer
 ##      show_app                (screen_name, **kwargs)     - show a app screen on scene (master layer) on top of current scene,
@@ -298,6 +312,144 @@ init python:
                     result.append(h) # Flag type message
 
         return result
+
+################################################################################
+## Draft System ################################################################
+##
+## Store draft variations of route, print out correct draft variation
+##
+## Usage format: 
+##
+##      # Inside a book_draft label 
+##      # n is draft_number
+##      label book_draftn: 
+##          
+##          if suspicion <= value: 
+##              write_draft "a" # Set up the latest draft version suffix (last character of draft_version)
+##                              # Saves transcript_log (n, last_version + "a")
+##                              # Calls label book_draft{n}_{last_version + "a"}
+##                              # Ensure book_draft labels are called in increasing order 0-9 (n) in script
+##
+##      # Inside a book_draft variation label 
+##      # n is draft_number 
+##      # v is draft_version (a series of n letters)
+##      label book_draftn_v: 
+##
+##          transcript_line "paragraph 1"
+##      
+##          transcript_line "paragraph 2"
+##
+##          transcript_line "paragraph 3"
+
+## Draft System Variables
+
+## Draft Transcript Log
+## (draft_number, draft_version)
+## where draft_version is a series of n (draft_number) letters
+default transcript_log = {
+    "epilogue": [(0, "")]
+}
+
+## Draft Book Transcript 
+## Content of book transcript so far
+default _book_transcript = {"epilogue": []}
+
+## Draft System Statements 
+python early: 
+
+    ## transcript_line "text"
+    ## transcript_line "text" ch "chapter"
+    def parse_transcript_line(lex): 
+        text = lex.string() 
+        ch = None 
+
+        # kwarg "ch"
+        while not lex.eol(): 
+            key = lex.name() 
+            if key == "ch": 
+                ch = lex.string() 
+
+        return (text, ch)
+
+    def execute_transcript_line(info): 
+
+        text, ch = info
+        transcript_line(text, ch)
+
+    renpy.register_statement(
+        name = "transcript_line", 
+        parse = parse_transcript_line, 
+        execute = execute_transcript_line,
+    )
+
+    ## write_draft "ver"
+    ## write_draft "ver" ch "chapter"
+    def parse_write_draft(lex): 
+
+        ver = lex.string()
+        ch = None
+
+        # kwarg "ch"
+        while not lex.eol(): 
+            key = lex.name()
+            if key == "ch": 
+                ch = lex.string()
+
+        return (ver, ch)
+
+    def execute_write_draft(info): 
+
+        ver, ch = info
+        write_draft(ver, ch)
+
+    renpy.register_statement(
+        name = "write_draft", 
+        parse = parse_write_draft, 
+        execute = execute_write_draft,
+    )
+
+## Draft System Functions 
+init python: 
+
+    ## Append a script line to book transcript as a paragraph
+    def transcript_line(text, ch=None): 
+
+        if ch is None: 
+            ch = "epilogue"
+
+        store._book_transcript.setdefault(ch, []).append(renpy.substitute(text))
+
+    ## Write Transcript Log 
+    def write_draft(ver, ch=None): 
+
+        if ch is None: 
+            ch = "epilogue"
+
+        # Transcript Log 
+        log = store.transcript_log.setdefault(ch, [(0, "")])
+        
+        # Grab last transcript log
+        prev_num, prev_ver = log[-1]
+
+        # New transcript log
+        n = prev_num + 1
+        v = prev_ver + ver 
+        log.append((n, v))
+
+        draft_name = "demo_book_draft{}_{}".format(n, v) # DEMO Content 
+
+        renpy.call_in_new_context(draft_name)
+
+    ## "Print" Book Transcript 
+    def print_transcript(ch="epilogue"): 
+
+        """
+        Returns the flat list of paragraph strings accumulated for chapter 'ch', 
+        in the order they were written across all days. 
+        Used by draft_app screen to render book transcript content. 
+        """
+
+        return store._book_transcript.get(ch, [])
 
 ################################################################################
 ## Scene System ################################################################
@@ -1469,8 +1621,6 @@ init python:
             elif label.endswith("dress_jeans_selected"): 
                 click_map["dress_jeans"] = label
 
-        store.status_bar = False
-
         enable_type("prep_busy")
 
         show_scene("bedroom", click_map=click_map)
@@ -1479,15 +1629,13 @@ init python:
 
         disable_type("prep_busy")
 
-        store.status_bar = True
-
     ## Open Wardrobe Panel
     ## Toggle on Bedroom button disabler
     def open_wardrobe(click_map):
 
         disable_type("prep_busy")
 
-        show_app("wardrobe_panel", click_map)
+        show_app("wardrobe_panel", click_map=click_map)
 
     ## Close Wardrobe Panel 
     ## Toggle off Bedroom button disabler
