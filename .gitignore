@@ -40,3 +40,6 @@
 .DS_Store
 clear_cache.sh
 clean_traceback.sh
+
+# Virtual environment 
+.venv/
