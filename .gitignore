@@ -40,6 +40,14 @@
 .DS_Store
 clear_cache.sh
 clean_traceback.sh
+zensical-web.sh
 
 # Virtual environment 
 .venv/
+
+# Zensical Build Output
+site/
+
+# Link Stripped Preview Files
+doc-includes/README-stripped.md
+doc-includes/LOG-stripped.md
