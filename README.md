@@ -20,11 +20,11 @@ Monster Silhouette © 2026 SkumMell
 
 ## Latest Updates
 
+**Source Code Docs is now live on GitHub Pages! [Check it out now!](https://skummell.github.io/monster-silhouette/)**
+
 The Demo for Monster Silhouette is currently being built. 
 <br>
 Progress can be observed through this repository. 
-
-Source Code Docs Coming soon.
 
 Track development timeline through the [Build Log](LOG.md) and repository commits. 
 <br>
