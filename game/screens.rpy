@@ -2698,18 +2698,18 @@ screen bedroom(click_map={}):
         xysize(1280, 720)
 
         # Walls - Backdrop
-        add "images/bedroom_walls_v1.png":
+        add "images/placeholders/bedroom_walls_v1.png":
             xysize(1280, 720)
 
         # Bookshelf
-        add "images/bedroom_bookshelf_v1.png":
+        add "images/placeholders/bedroom_bookshelf_v1.png":
             xysize(342, 508)
             xpos 928
             ypos 17
 
         # Wardrobe - Closet Click
         imagebutton:
-            idle "images/bedroom_wardrobe_v1.png"
+            idle "images/placeholders/bedroom_wardrobe_v1.png"
             xysize(294, 470)
             xpos 114
             ypos 62
@@ -2733,13 +2733,13 @@ screen bedroom(click_map={}):
             xpos 397
             ypos 117
 
-            add "images/bedroom_desk_v1.png":
+            add "images/placeholders/bedroom_desk_v1.png":
                 xysize(546, 432)
 
             # Wallet - Wallet Click
             if not wallet_on_person:
                 imagebutton:
-                    idle "images/bedroom_wallet_v1.png"
+                    idle "images/placeholders/bedroom_wallet_v1.png"
                     xysize(37, 19)
                     xpos 67
                     ypos 183
@@ -2760,7 +2760,7 @@ screen bedroom(click_map={}):
 
             # Key - Key Click
             imagebutton:
-                idle "images/bedroom_key_v1.png"
+                idle "images/placeholders/bedroom_key_v1.png"
                 xysize(12, 14)
                 xpos 103
                 ypos 212
@@ -2782,7 +2782,7 @@ screen bedroom(click_map={}):
             # Laptop - Laptop Click
             if not laptop_clicked:
                 imagebutton:
-                    idle "images/bedroom_laptop_v1.png"
+                    idle "images/placeholders/bedroom_laptop_v1.png"
                     xysize(142, 102)
                     xpos 369
                     ypos 106
@@ -2802,14 +2802,14 @@ screen bedroom(click_map={}):
                             action (Function(call_prep_script, click_map["laptop"]), SetVariable("laptop_clicked", True))
 
         # Chair
-        add "images/bedroom_chair_v1.png":
+        add "images/placeholders/bedroom_chair_v1.png":
             xysize(142, 323)
             xpos 600
             ypos 283
 
         # Bed - Bed Click
         imagebutton:
-            idle "images/bedroom_bed_v1.png"
+            idle "images/placeholders/bedroom_bed_v1.png"
             xysize(964, 173)
             xpos 88
             yanchor 1.0

@@ -733,8 +733,8 @@ default disabled_button_ids = {
     "contact_button": set()     # List of disabled contacts
 }
 
-# Valid Button IDs Roster
 init python: 
+    # Valid Button IDs Roster
     valid_button_ids = { 
 
         "app_exit": {
@@ -1549,7 +1549,7 @@ init python:
 ##      "narration 3" 
 ##      "narration 4"
 ##
-##      prep_phase "lick_script_1" "click_script_2" ... "click_script_n" # Begins prep phase
+##      prep_phase "click_script_1" "click_script_2" ... "click_script_n" # Begins prep phase
 ##                                                                       # Feed click scripts (labels)
 ##                                                                       # Only ends at prep_done 
 ##                                                                         condition = True

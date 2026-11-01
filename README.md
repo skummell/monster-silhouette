@@ -9,26 +9,22 @@ Experience being a successful Horror Mystery writer, while your latest book dead
 Monster Silhouette © 2026 SkumMell 
 
 - **Demo in Progress**
-  - Created as a semester-long Senior Project
+    - Created as a semester-long Senior Project
 - **Demo Release Date (Est):** Late December, 2026
 - **Platform:** Windows, Linux, MacOS, Web
 - **Language Support:** English
-  - Planned to add after demo release: 
-    - Brazilian Portuguese
+    - Planned to add after demo release: 
+        - Brazilian Portuguese
 
 *Made using [Ren'Py](https://www.renpy.org/).*
 
 ## Latest Updates
 
 The Demo for Monster Silhouette is currently being built. 
-
+<br>
 Progress can be observed through this repository. 
 
-<br>
-
 Source Code Docs Coming soon.
-
-<br>
 
 Track development timeline through the [Build Log](LOG.md) and repository commits. 
 <br>
@@ -53,42 +49,42 @@ No Release Date as of now. Will likely have Episodic Releases.
 ### Planned Features for Demo 
 
 - Day 1 of the Story
-  - About 4.5k words (approx 30-35 minutes) per playthrough
-  - Branching story with gated narration & dialogue options
-    - All choices have consequences! Starting from your name!
+    - About 4.5k words (approx 30-35 minutes) per playthrough
+    - Branching story with gated narration & dialogue options
+        - All choices have consequences! Starting from your name!
 - Original UI Design & Art 
-  - 1280x720 resolution for Web Compatibility
-  - Character Sprites for 2 Characters
-  - 2 Locations, 3 Backgrounds
+    - 1280x720 resolution for Web Compatibility
+    - Character Sprites for 2 Characters
+    - 2 Locations, 3 Backgrounds
 - Prep Phase in the beginning of the day
-  - Choose: 
-    - Your Clothes (2 Tops, 2 Bottoms)
-    - Whether to carry your Wallet or not
-    - Whether to sleep for a while longer if you wake up early
-  - Carry your laptop around with you
+    - Choose: 
+        - Your Clothes (2 Tops, 2 Bottoms)
+        - Whether to carry your Wallet or not
+        - Whether to sleep for a while longer if you wake up early
+    - Carry your laptop around with you
 - Four Characters to Interact with!
     - Meet 2 of them in person
-      - Mephisto, a mysterious individual who arrived in town recently 
-        - His silhouette raises your suspicions
-      - Victor, your close friend whom you go to visit
-        - He owns a tea lounge that will serve as the main location of Day 1
+        - Mephisto, a mysterious individual who arrived in town recently 
+            - His silhouette raises your suspicions
+        - Victor, your close friend whom you go to visit
+            - He owns a tea lounge that will serve as the main location of Day 1
     - Talk to the other 2 through chat
         - Theo, your best friend who's away on a trip
         - Your Editor who's checking in on your progress
 - Computer UI System 
-  - Access Meta Screens 
-    - History, Save & Load, Preferences, Endings, About, and Info
-  - In-Game Screens
-    - Profile System 
-      - Check: 
-        - Your Player Name
-        - Book Deadline 
-        - Wallet Location
-        - Suspicion & Rapport Levels
-    - Chat System 
-      - Chat with Characters as part of the story
-    - Draft System 
-      - Check on your Book Draft
+    - Access Meta Screens 
+        - History, Save & Load, Preferences, Endings, About, and Info
+    - In-Game Screens
+        - Profile System 
+            - Check: 
+                - Your Player Name
+                - Book Deadline 
+                - Wallet Location
+                - Suspicion & Rapport Levels
+        - Chat System 
+            - Chat with Characters as part of the story 
+        - Draft System 
+            - Check on your Book Draft
 
 ### Planned Features for Full Game 
 
@@ -101,8 +97,8 @@ No Release Date as of now. Will likely have Episodic Releases.
 #### Features that may or may not be added 
 
 - Romance Mephisto 
-  - If added story will still be fully completable without any romance
-  - Romance will not be the focus of the story
+    - If added story will still be fully completable without any romance
+    - Romance will not be the focus of the story
 - Customizable Features inside In-Game Computer UI
 
 ## Download & Play Monster Silhouette 

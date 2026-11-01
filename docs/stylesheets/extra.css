@@ -1,0 +1,850 @@
+/* 
+    Basic CSS Customization 
+*/ 
+
+:root { 
+    --blue: rgb(0, 76, 255);
+    --blue-dark: #0088ff;
+    --accent-blue: #00d0ff;
+    --off-white: #f5f5f5;
+    --off-gray: #282a36;
+    --red: #a31515;
+    --red-dark: #ff5555;
+    --mid-red: #d71c1c;
+    --green: #008120;
+    --gold: #d98f07;
+}
+
+/* Remove Link underlines */ 
+
+.md-typeset a {
+    text-decoration: none;
+}   
+
+/* 
+    Scrollbar Customization
+*/
+
+/* Get rid of scrollbar on Navigation */
+.md-sidebar--primary .md-sidebar__scrollwrap {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.md-sidebar--primary .md-sidebar__scrollwrap::-webkit-scrollbar {
+    display: none;
+}
+
+/*
+    Emoji Customization
+*/
+
+/* Blue Icon */ 
+/*  Usage: 
+        :emoji:{ .blue-icon }
+*/
+.blue-icon { 
+    color: var(--blue);
+}
+
+.red-icon { 
+    color: var(--red);
+}
+
+/* 
+    Admonition Customization 
+*/
+
+/* Custom Admonition Type 'folder' */
+:root {
+    --md-admonition-icon--folder: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 4.75C2 3.784 2.784 3 3.75 3h4.971c.58 0 1.12.286 1.447.765l1.404 2.063H20.25c.966 0 1.75.784 1.75 1.75V19.25A1.75 1.75 0 0 1 20.25 21H3.75A1.75 1.75 0 0 1 2 19.25Z"/></svg>');
+    --md-admonition-color--folder: var(--blue);
+    --md-admonition-bg-color--folder: var(--off-white);
+    --md-admonition-color-note: var(--red);
+}
+
+/* Get rid of color background on code inside of folder type admonition*/ 
+.md-typeset .admonition.folder code,
+.md-typeset details.folder code {
+    background-color: transparent; 
+}
+
+/* ??? folder */
+.md-typeset details.folder {
+    background-color: var(--md-admonition-bg-color--folder);
+}
+
+.md-typeset .folder > summary::before {
+    background-color: var(--md-admonition-color--folder);
+    -webkit-mask-image: var(--md-admonition-icon--folder);
+    mask-image: var(--md-admonition-icon--folder);
+}
+
+.md-typeset .folder > summary::after {
+    color: var(--md-admonition-color--folder);
+}
+
+/* !!! folder */
+.md-typeset .admonition.folder {
+    background-color: var(--md-admonition-bg-color--folder);
+}
+
+.md-typeset .admonition.folder > .admonition-title::before {
+    background-color: var(--md-admonition-color--folder);
+    -webkit-mask-image: var(--md-admonition-icon--folder);
+    mask-image: var(--md-admonition-icon--folder);
+}
+
+.md-typeset .admonition.folder > .admonition-title::after {
+    color: var(--md-admonition-color--folder);
+}
+
+/* Resize Icon */
+.md-typeset .folder > summary::before,
+.md-typeset .admonition.folder > .admonition-title::before {
+    width: 1.1em;
+    height: 1.1em;
+}
+
+/* File icon inside a link stays folder-blue */
+details.folder p:not(.admonition-title) a .twemoji,
+.admonition.folder p:not(.admonition-title) a .twemoji {
+  color: var(--md-admonition-color--folder);
+}
+
+/* File icon inside a link when hovered stays default link hover color */
+details.folder p:not(.admonition-title) a:hover .twemoji,
+.admonition.folder p:not(.admonition-title) a:hover .twemoji {
+  color: var(--md-accent-fg-color);
+}   
+
+/* Title trailing icons are note-red */
+details.folder summary .twemoji,
+details.folder .admonition-title .twemoji,
+.admonition.folder .admonition-title .twemoji {
+  color: var(--md-admonition-color-note);
+}   
+
+/* All body icons default to note-red */
+details.folder p:not(.admonition-title) .twemoji,
+.admonition.folder p:not(.admonition-title) .twemoji {
+  color: var(--md-admonition-color-note);
+}
+
+/* File icon as first direct child of <p> (no link) stays blue */
+details.folder p:not(.admonition-title) > .twemoji:first-child,
+.admonition.folder p:not(.admonition-title) > .twemoji:first-child {
+  color: var(--md-admonition-color--folder);
+}
+
+/* File icon inside a link stays blue */
+details.folder p:not(.admonition-title) a .twemoji,
+.admonition.folder p:not(.admonition-title) a .twemoji {
+  color: var(--md-admonition-color--folder);
+}   
+
+/* Custom Admonition Type 'file' */
+:root {
+    --md-admonition-icon--file: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3 3a2 2 0 012-2h9.982a2 2 0 011.414.586l4.018 4.018A2 2 0 0121 7.018V21a2 2 0 01-2 2H4.75a.75.75 0 010-1.5H19a.5.5 0 00.5-.5V8.5h-4a2 2 0 01-2-2v-4H5a.5.5 0 00-.5.5v6.25a.75.75 0 01-1.5 0V3zm12-.5v4a.5.5 0 00.5.5h4a.5.5 0 00-.146-.336l-4.018-4.018A.5.5 0 0015 2.5z"/></svg>');
+    --md-admonition-color--file: rgba(0, 7, 137, 0.8);
+    --md-admonition-bg-color--file: #f0f0f0;
+}
+
+/* Get rid of color background on code inside of file type admonition*/ 
+.md-typeset .admonition.file code,
+.md-typeset details.file code {
+    background-color: transparent; 
+}
+
+/* ??? file */
+.md-typeset details.file {
+    background-color: var(--md-admonition-bg-color--file);
+}
+
+.md-typeset .file > summary::before {
+    background-color: var(--md-admonition-color--file);
+    -webkit-mask-image: var(--md-admonition-icon--file);
+    mask-image: var(--md-admonition-icon--file);
+}
+
+.md-typeset .file > summary::after {
+    color: var(--md-admonition-color--file);
+} 
+
+/* !!! file */
+.md-typeset .admonition.file {
+    background-color: var(--md-admonition-bg-color--file);
+}
+
+.md-typeset .admonition.file > .admonition-title::before {
+    background-color: var(--md-admonition-color--file);
+    -webkit-mask-image: var(--md-admonition-icon--file);
+    mask-image: var(--md-admonition-icon--file);
+}
+
+.md-typeset .admonition.file > .admonition-title::after {
+    color: var(--md-admonition-color--file);
+}
+
+/* Resize Icon */
+.md-typeset .file > summary::before,
+.md-typeset .admonition.file > .admonition-title::before {
+    width: 1.1em;
+    height: 1.1em;
+}
+
+/* Default text color for link not hovered inside admonition file or folder */
+.md-typeset .admonition.file a code,
+.md-typeset details.file a code,
+.md-typeset .admonition.folder a code,
+.md-typeset details.folder a code {
+    color: var(--md-default-fg-color);
+}
+
+/* Default link hover color for link hovered inside admonition file or folder */
+.md-typeset .admonition.file a:hover code,
+.md-typeset details.file a:hover code,
+.md-typeset .admonition.folder a:hover code,
+.md-typeset details.folder a:hover code {
+    color: var(--md-accent-fg-color);
+}   
+
+/* Dark Mode */
+[data-md-color-scheme="slate"] {
+    --md-admonition-bg-color--folder: var(--off-gray);
+    --md-admonition-bg-color--file: var(--off-gray);
+    --md-admonition-color--folder: var(--blue-dark);
+    --md-admonition-color--file: var(--blue-dark);
+    --md-admonition-color-note: var(--red-dark);
+}
+
+[data-md-color-scheme="slate"] .md-typeset details.cards > :is(ul, ol) > li:hover,
+[data-md-color-scheme="slate"] .md-typeset .admonition.cards > :is(ul, ol) > li:hover,
+[data-md-color-scheme="slate"] .md-typeset details.cards > .cards:hover,
+[data-md-color-scheme="slate"] .md-typeset .admonition.cards > .cards:hover {
+    box-shadow: 0 12px 24px -8px rgba(255, 255, 255, 0.3);
+    border-color: var(--md-default-fg-color--lightest);
+}
+
+[data-md-color-scheme="slate"] .blue-icon {
+    color: var(--blue-dark)
+}
+
+[data-md-color-scheme="slate"] .red-icon {
+    color: var(--red-dark)
+}
+
+/* Fully Center something */
+
+.center { 
+    text-align: center;
+    justify-content: center;
+    align-self: center;
+}
+
+/* 
+    Grid Card Customization
+*/
+
+.md-typeset
+
+.md-typeset details.cards.no-border, 
+.md-typeset .admonition.cards.no-border,
+.md-typeset details.grid.no-border, 
+.md-typeset .admonition.grid.no-border {
+    border: 0; 
+}
+
+.md-typeset details.cards.no-pad, 
+.md-typeset .admonition.cards.no-pad,
+.md-typeset details.grid.no-pad, 
+.md-typeset .admonition.grid.no-pad {
+    padding: 0; 
+}
+
+.md-typeset details.cards.no-margin, 
+.md-typeset .admonition.cards.no-margin,
+.md-typeset details.grid.no-margin, 
+.md-typeset .admonition.grid.no-margin {
+    margin: 0; 
+}
+
+.md-typeset .admonition.grid.no-row-gap,
+.md-typeset details.grid.no-row-gap,
+.md-typeset .admonition.cards.no-row-gap,
+.md-typeset details.cards.no-row-gap {
+    row-gap: 0;
+}
+
+.md-typeset .admonition.cards.no-row-gap > .admonition,
+.md-typeset .admonition.cards.no-row-gap > details,
+.md-typeset details.cards.no-row-gap > .admonition,
+.md-typeset details.cards.no-row-gap > details {
+    margin: 0;
+}
+
+.md-typeset .admonition.grid.no-col-gap,
+.md-typeset details.grid.no-col-gap,
+.md-typeset .admonition.cards.no-col-gap,
+.md-typeset details.cards.no-col-gap {
+    column-gap: 0;
+}
+
+.md-typeset details.cards.bordered, 
+.md-typeset .admonition.cards.bordered {
+    border: 1px solid rgba(127, 127, 127, 0.35);
+}
+
+/* Single Column rendering for Grid Cards */
+.md-typeset details.grid.col.single,
+.md-typeset .admonition.grid.col.single,
+.md-typeset details.cards.col.single,
+.md-typeset .admonition.cards.col.single {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+/* Two Column rendering for Grid Cards */
+.md-typeset details.grid.col.two,
+.md-typeset .admonition.grid.col.two,
+.md-typeset details.cards.col.twp,
+.md-typeset .admonition.cards.col.two { 
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Three Column rendering for Grid Cards */
+.md-typeset details.grid.col.three,
+.md-typeset .admonition.grid.col.three,
+.md-typeset details.cards.col.three,
+.md-typeset .admonition.cards.col.three { 
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Four Column rendering for Grid Cards */
+.md-typeset details.grid.col.four,
+.md-typeset .admonition.grid.col.four,
+.md-typeset details.cards.col.four,
+.md-typeset .admonition.cards.col.four { 
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* n Column rendering for Grid Cards */
+.md-typeset details.grid.col.five,
+.md-typeset .admonition.grid.col.five,
+.md-typeset details.cards.col.five,
+.md-typeset .admonition.cards.col.five { 
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+/* n Column rendering for Grid Cards */
+.md-typeset details.grid.col.six,
+.md-typeset .admonition.grid.col.six,
+.md-typeset details.cards.col.six,
+.md-typeset .admonition.cards.col.six { 
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+/* n Column rendering for Grid Cards */
+.md-typeset details.grid.col.multi,
+.md-typeset .admonition.grid.col.multi,
+.md-typeset details.cards.col.multi,
+.md-typeset .admonition.cards.col.multi { 
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.md-typeset .admonition.grid.fit,
+.md-typeset details.grid.fit,
+.md-typeset .admonition.cards.fit,
+.md-typeset details.cards.fit {
+    grid-template-columns: repeat(2, max-content);
+    justify-content: start;
+}
+
+/* Centers content in ALL cards inside cards admonition (use centered-content) */
+.md-typeset .admonition.cards.centered-content > :is(ul, ol) > li,
+.md-typeset details.cards.centered-content > :is(ul, ol) > li,
+.md-typeset .admonition.cards.centered-content > .cards,
+.md-typeset details.cards.centered-content > .cards {
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.md-typeset .admonition.grid.up,
+.md-typeset details.grid.up {
+    align-items: start;
+}
+
+.md-typeset .admonition.grid.down,
+.md-typeset details.grid.down {
+    align-items: end;
+}
+
+/* Make Grid Cards Linkable */ 
+/*  Usage: 
+            [my-ref]: url-2
+
+        <!-- 
+            Ref Link Note: 
+                There must be no space between ref link [my-ref] and attr-list { .card-link }
+
+                ✓ Correct: 
+                [][my-ref]{.card-link} 
+
+                ☓ Wrong: 
+                [][my-ref] {.card-link}
+        -->
+
+        <!-- Inside Grid Cards Div --> 
+        <div class="grid cards" markdown>
+            <!-- List syntax -->
+
+            - This card links to url-1
+                <!-- No name href Link -->
+                <a href="url-1" class="card-link"></a>
+
+            - This card links to url-2
+                <!-- No name ref link -->
+                [][my-ref]{ .card-link }
+            
+            <!-- Block Syntax -->
+            This card links to url-1
+            <!-- No name href Link -->
+            <a href="url-1" class="card-link"></a>
+            { .card }
+
+            This card links to url-2
+            <!-- No name ref link -->
+            [][my-ref]{ .card-link }
+            { .card }
+        <div>
+*/
+.admonition.cards li {
+  position: relative;
+  cursor: pointer;
+}
+
+.admonition.cards .card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Card text content follows link hover color when containing card-link attribute */
+.grid.cards li:has(.card-link):hover {
+  color: var(--md-typeset-a-color);
+}   
+
+/* Get rid of code text background when inside Card containing card-link attribute */ 
+.grid.cards li:has(.card-link) code { 
+    background-color: transparent; 
+}
+
+/* Make code text follow link hover color when inside Card containing caard-link attribute */
+.grid.cards li:has(.card-link):hover code { 
+    color: var(--md-typeset-a-color);
+}
+
+/* Make Grid look like a card */
+.grid.card-set {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    border: 1px solid rgba(127, 127, 127, 0.35);
+    border-radius: 0.2rem;
+    padding: 1rem;
+}
+
+/* 
+    Grid / Cards Admonitions
+    - !!! grid  / ??? grid  : layout grid of direct content children
+    - !!! cards / ??? cards : Material-style card grid (inner ul/ol)
+*/
+
+/* ===== Grid / Cards Admonitions ===== */
+
+/* Grid type: 2-col grid container (matches .grid.card-set) */
+.md-typeset .admonition.grid,
+.md-typeset details.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    row-gap: 0;
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid rgba(127, 127, 127, 0.35);
+    border-radius: 0.2rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    box-shadow: none;
+}
+
+.md-typeset .admonition.grid > .admonition-title,
+.md-typeset details.grid > summary,
+.md-typeset .admonition.cards > .admonition-title,
+.md-typeset details.cards > summary {
+    grid-column: 1 / -1;
+}
+
+.md-typeset details.cards[open]::details-content {
+    display: contents;
+}
+
+/* Cards type: block container (inner list is the grid) */
+.md-typeset .admonition.cards,
+.md-typeset details.cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    background-color: transparent;
+    border: none;
+    border-radius: 0.2rem;
+    padding: 0;
+    margin: 1rem 0;    
+    box-shadow: none;
+}
+
+/* ⬇ THE FIX: collapsible variants use Material's default details padding */
+.md-typeset details.grid,
+.md-typeset details.cards {
+    padding: 0 0.8rem;
+}
+
+/* No hover highlight on the collapsible title */
+.md-typeset details.grid > summary:hover,
+.md-typeset details.cards > summary:hover {
+    color: inherit;
+}
+
+/* Hide only the default left icon (grid/cards have none registered) */
+.md-typeset .admonition.grid > .admonition-title::before,
+.md-typeset .admonition.cards > .admonition-title::before,
+.md-typeset details.grid > summary::before,
+.md-typeset details.cards > summary::before {
+    display: none;
+}
+
+/* Cards inner list → card grid */
+/* <ul> becomes transparent so its li items are direct grid items */
+.md-typeset .admonition.cards > :is(ul, ol),
+.md-typeset details.cards > :is(ul, ol) {
+    display: contents;
+}
+
+/* Both li items AND .cards paragraphs become little cards */
+.md-typeset .admonition.cards > :is(ul, ol) > li,
+.md-typeset details.cards > :is(ul, ol) > li,
+.md-typeset .admonition.cards > .cards,
+.md-typeset details.cards > .cards {
+    border: 1px solid rgba(127, 127, 127, 0.35);
+    border-radius: 0.2rem;
+    display: block;
+    margin: 0;
+    padding: 0.8rem;
+    transition: border-color 125ms, box-shadow 125ms, background-color 125ms;
+}
+
+/* === Levitating hover for all cards (list + block syntax) === */
+.md-typeset .admonition.cards > :is(ul, ol) > li,
+.md-typeset details.cards > :is(ul, ol) > li,
+.md-typeset .admonition.cards > .cards,
+.md-typeset details.cards > .cards {
+    /* Base state: smooth transition so the lift feels fluid */
+    transition: transform 250ms ease, box-shadow 250ms ease;
+    border: 1px solid rgba(127, 127, 127, 0.35);
+    border-radius: 0.2rem;
+}
+
+/* Hover state: lift the card and cast a shadow */
+.md-typeset .admonition.cards > :is(ul, ol) > li:hover,
+.md-typeset details.cards > :is(ul, ol) > li:hover,
+.md-typeset .admonition.cards > .cards:hover,
+.md-typeset details.cards > .cards:hover {
+    transform: translateY(-4px);
+    /* A deeper, more visible shadow than --md-shadow-z3 */
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.3);
+    border-color: rgba(127, 127, 127, 0.35);
+}
+
+.md-typeset .admonition.cards > :is(ul, ol) > li > :first-child,
+.md-typeset details.cards > :is(ul, ol) > li > :first-child {
+    margin-top: 0;
+}
+
+.md-typeset .admonition.cards > :is(ul, ol) > li > :last-child,
+.md-typeset details.cards > :is(ul, ol) > li > :last-child {
+    margin-bottom: 0;
+}
+
+/* Bottom gap when last content in an open cards block is a card */
+.md-typeset details.cards[open]:has(:is(ul, ol):last-child),
+.md-typeset details.cards[open]:has(.cards:last-child) {
+    padding-bottom: 1rem;
+}
+
+/* Non-collapsable title: same size + centering as the ??? summary */
+.md-typeset .admonition.grid > .admonition-title,
+.md-typeset .admonition.cards > .admonition-title {
+    margin: 0;
+    padding: 0 1.6rem;
+    min-height: 2.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    text-align: center;
+}
+
+/* Summary: kill Material's asymmetric padding, let flex+min-height center */
+.md-typeset details.grid > summary,
+.md-typeset details.cards > summary {
+    margin: 0;
+    padding: 0 1.6rem;
+    min-height: 2.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+}
+
+.md-typeset details.grid:not([open]),
+.md-typeset details.cards:not([open]) {
+    display: block;
+}
+
+/* Chevron: vertically centre it in the summary, keep it pinned right */
+.md-typeset details.grid > summary::after,
+.md-typeset details.cards > summary::after {
+    top: 50%;
+    right: 0.8rem;
+    transform: translateY(-50%) rotate(0deg);
+}
+
+.md-typeset details.grid[open] > summary::after,
+.md-typeset details.cards[open] > summary::after {
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.md-typeset details.grid[open]::details-content {
+    display: contents;
+}
+
+/* 
+    Custom Page Status 
+*/ 
+
+/* status: modified */
+
+/* 
+    Current Icon : octicon-dot-fill-24
+        d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"
+*/
+.md-status--modified {
+  --md-status: url( 
+    'data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/></svg>'
+  );
+}
+
+/* Icon Color */
+.md-status--modified::after {
+  background-color: var(--mid-red); 
+}
+
+.md-status:hover::after {
+  background-color: var(--accent-blue);
+}
+
+/*
+    Scrollable grid: columns become slides 
+*/
+
+.md-typeset .admonition.scrollable,
+.md-typeset details.scrollable {
+    position: relative;
+    padding: 0;
+    gap: 0;
+}
+
+.md-typeset details.scrollable[open]::details-content {
+    display: contents;
+}
+
+/* Nav hidden while a ??? is closed */
+.md-typeset details.scrollable:not([open]) .scrollable-nav {
+    display: none;
+}
+
+.md-typeset .scrollable-viewport {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
+    padding-bottom: 4.5rem;
+}
+
+.md-typeset .scrollable-viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.md-typeset .scrollable-track {
+    display: flex;
+    align-items: stretch;
+}
+
+/* One slide = one row's worth of columns */
+.md-typeset .scrollable-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 1rem;            
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: grid;
+    align-items: center;
+    gap: 1rem;
+}
+
+.md-typeset .scrollable-slide > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+/* Nav outside the viewport, positioned in the container */
+.md-typeset .scrollable-nav {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    display: flex;
+    gap: 0.4rem;
+    z-index: 1;
+}
+
+.md-typeset .scrollable-nav button {
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--md-default-fg-color--lightest);
+    background-color: var(--md-default-bg-color);
+    color: var(--md-default-fg-color);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 125ms, border-color 125ms, opacity 125ms;
+}
+
+.md-typeset .scrollable-nav button:hover:not(:disabled) {
+    background-color: var(--md-accent-fg-color);
+    border-color: var(--md-accent-fg-color);
+    color: var(--md-default-bg-color);
+}
+
+.md-typeset .scrollable-nav button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .scrollable-nav button {
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* 
+    Hover Markdown Preview 
+*/
+
+.hover-preview-popover {
+    position: fixed;
+    z-index: 100;
+    width: max-content;
+    min-width: 240px;
+    max-width: calc(100vw - 16px);
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1rem;
+    background-color: var(--md-default-bg-color);
+    border: 1px solid var(--md-default-fg-color--lightest);
+    border-radius: 0.4rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 150ms ease, visibility 150ms ease;
+}
+
+.hover-preview-popover.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Dark mode: shadow + subtle rim */
+[data-md-color-scheme="slate"] .hover-preview-popover {
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Content constraints inside the popover */
+.hover-preview-popover img,
+.hover-preview-popover pre {
+    max-width: 100%;
+    height: auto;
+}
+
+.hover-preview-popover pre {
+    white-space: pre-wrap;             
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    overflow-x: hidden;
+}
+
+.hover-preview-popover pre {
+    overflow-x: auto;
+}
+
+.hover-preview-popover table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+/* Loading state */
+.hover-preview-loading {
+    opacity: 0.6;
+    font-style: italic;
+}
+
+a.hover-preview,
+.hover-preview {
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+}
+
+/* Remove glossary underline when the abbr is inside a winning-tooltip link */
+.md-typeset a[title] abbr.link-tooltip-clean,
+.md-typeset a[data-md-tooltip] abbr.link-tooltip-clean,
+.md-typeset abbr.link-tooltip-clean {
+    border-bottom: none;
+    text-decoration: none;
+    cursor: inherit;    /* restore normal pointer over links */
+}
+
+/* Kill glossary dotted underline on abbrs inside card-link cards */
+.md-typeset li:has(.card-link) abbr,
+.md-typeset .cards:has(.card-link) abbr {
+    border-bottom: none;
+    text-decoration: none;
+    cursor: inherit;
+}
