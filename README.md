@@ -26,7 +26,7 @@ The Demo for Monster Silhouette is currently being built.
 <br>
 Progress can be observed through this repository. 
 
-Track development timeline through the [Build Log](LOG.md) and repository commits. 
+Track development timeline through the [Build Log](LOG.md) & repository [commits](https://github.com/skummell/monster-silhouette/commits/main/) and track Docs & game releases & pre-releases through [GitHub Releases](https://github.com/skummell/monster-silhouette/releases).
 <br>
 (Note: Build Log covers development in detail, including before repository creation.)
 
@@ -105,7 +105,7 @@ No Release Date as of now. Will likely have Episodic Releases.
 
 This GitHub repository contains the source code for Monster Silhouette. 
 <br>
-It only includes Project Files (`.rpy`), and does not contain modified Engine Files, Game Assets, Story Progression Scripts nor Game Downloadables.
+It only includes Project Files (`.rpy`) & Source Code Documentation, and does not contain modified Engine Files, Game Assets, Story Progression Scripts, nor Game Downloadables.
 
 The Demo hasn't been released yet. 
 <br>
