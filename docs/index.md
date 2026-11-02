@@ -4,8 +4,8 @@ status: new
 tags: 
     - Index
     - ㅤLast Updated
-    - ㅤㅤOctober 
-    - ㅤㅤㅤ31
+    - ㅤㅤNovember
+    - ㅤㅤㅤ1
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -354,7 +354,7 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
 
 === "Interactive Mechanics"
 
-    ??? tip "Check out the Gameplay Mechanics pages for more details"
+    ??? tip "Check out the Gameplay Mechanics pages for more details:"
 
         !!! cards col four centered-content ""
 
@@ -430,7 +430,7 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
 
     === "Game Screens"
 
-        ??? tip "Check out the Game Screens pages for more details"
+        ??? tip "Check out the Game Screens pages for more details:"
 
             !!! cards col three centered-content ""
 
@@ -456,13 +456,13 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
 
         Game Screen Documentation provides an overview of any custom screens or modifications I've made to Ren'Py special screens for Monster Silhouette.
 
-        Screens are primarily defined in [`screens.rpy`][screens] file.
+        Game Screens are primarily defined in [`screens.rpy`][screens] file.
         <br>
         Where you'll be able to find all the screen definitions. 
 
     === "Game Systems"
 
-        ??? tip "Check out the following Game Systems pages for more details"
+        ??? tip "Check out the Game Systems pages for more details:"
 
             !!! cards col three centered-content ""
 
@@ -486,7 +486,7 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
 
         **Game Systems** 
 
-        Game System Documentation provides an overview of the custom the game systems I've created to manage the unique mechanics in Monster Silhouette. 
+        Game System Documentation provides an overview of the custom game systems I've created to manage the unique mechanics in Monster Silhouette. 
 
         Game Systems are primarily defined in [`custom_systems.rpy`][systems] file. 
         <br>
@@ -495,6 +495,8 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
         These game systems serve to make the interaction between script labels and files and other parts of the game's code easy and clean.
 
     === "Settings & Options"
+
+        !!! tip "Check out the [Settings & Options][settings-options] page for more details"
 
         **Settings & Options**
 
@@ -505,6 +507,8 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
         Where you'll be able to find GUI Configurations and Customization Options for the game. 
 
     === "Custom Actions"
+
+        !!! tip "Check out the [Custom Actions][custom-actions] page for more details"
 
         **Custom Actions**
 
