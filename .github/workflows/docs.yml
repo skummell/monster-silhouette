@@ -29,5 +29,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v5
         with:
           path: site
-      - uses: actions/deploy-pages@v5
+      - uses: actions/deploy-pages@v5.0.1
         id: deployment
+        with: 
+          error_count: 20
