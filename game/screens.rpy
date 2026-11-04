@@ -91,6 +91,20 @@ style tooltip_text:
     xalign 0.5
     textalign 0.5
 
+# Set Clipping to True
+style clipped: 
+    clipping True
+
+# Set Frame with no background, padding nor margin
+style zeroed_frame: 
+    background None
+    padding(0, 0)
+    margin(0, 0)
+
+# Set to bold 
+style bolded: 
+    bold True 
+
 ################################################################################
 ## In-game screens
 ################################################################################
@@ -304,72 +318,147 @@ style quick_button_text:
 
 ## Status Bar screen ###########################################################
 ## This screen is only included in-game and provides you with the
-## in-game date and time
+## In-game Date and Time
+
 screen status_bar(): 
 
     zorder 100
 
-    if status_bar or renpy.get_screen("computer_ui_menu"):
-        frame: 
-            at fill_width(38)
-            background None
-            padding(0, 0)
-            margin(0, 0)
+    # Computer UI Status Bar Logo Dimensions
+    $ ui_logo_height = 20 
+    $ ui_logo_width = 35
 
-            clipping True
+    # Computer UI Status Bar Icon Dimensions 
+    $ status_bar_icon_width = 40
+    $ status_bar_icon_height = 20
+
+    if status_bar or renpy.get_screen("computer_ui_menu"):
+
+        # Content
+        frame: 
+            at fill_width(status_bar_height)
+            style "status_bar_frame"
 
             add "gui/placeholders/status_bar_placeholder.svg": 
-                at fill_width(38)
+                at fill_width(status_bar_height)
             
             if renpy.get_screen("computer_ui") or renpy.get_screen("computer_ui_menu") or renpy.get_screen("computer_ui", "master"): 
+
                 # Logo 
                 add "#000": 
-                    xysize(35, 20)
+                    xysize(ui_logo_width, ui_logo_height)
                     yalign 0.5
-                    xpos 20
+                    xpos ui_logo_left_pad
 
+            # Icons & Details
             hbox: 
-                xpos int(config.screen_width * 2 / 3) - 40
-                xsize int(config.screen_width / 3) + 30
-                yalign 0.5 
-                spacing 20
+                style "status_bar_hbox"
 
+                # Computer UI Icons
                 if renpy.get_screen("computer_ui") or renpy.get_screen("computer_ui_menu") or renpy.get_screen("computer_ui", "master"): 
                     # Battery
                     add "#000": 
-                        xysize(40, 20)
+                        xysize(status_bar_icon_width, status_bar_icon_height)
+                        yalign 0.5 
 
                     # WiFi 
                     add "#000":
-                        xysize(40, 20)
+                        xysize(status_bar_icon_width, status_bar_icon_height)
+                        yalign 0.5 
 
                     # Spotlight
                     add "#000":
-                        xysize(40, 20)
+                        xysize(status_bar_icon_width, status_bar_icon_height)
+                        yalign 0.5 
 
                 else: # Placeholder space for layout consistency 
 
-                    null width 40 height 20
-                    null width 40 height 20
-                    null width 40 height 20
+                    null width status_bar_icon_width height status_bar_icon_height
+                    null width status_bar_icon_width height status_bar_icon_height
+                    null width status_bar_icon_width height status_bar_icon_height
 
-                text _(abyss_date.strftime("%a %b %d")): 
-                    size 20
+                # Date Text 
+                fixed: 
+                    style "date_text_container"
+
+                    text _(abyss_date.strftime("%a %b %d")): 
+                        style "date_text"
 
                 # Time Text Container 
                 fixed: 
-                    xysize (100, 20)
-                    yalign 0.5
+                    style "time_text_container"
 
                     textbutton (abyss_time): 
-                        style "default"
-                        xalign 1.0
+                        style "time_text"
                         text_hover_color gui.hover_color
                         text_size 20
 
                         action If(renpy.get_screen("computer_ui_menu"), Return(), None)
 
                         tooltip "Return"
+
+# Positioning Dimensions for status_bar
+define status_bar_height = 38
+define status_bar_details_gap = 20
+define ui_logo_left_pad = 20
+
+# Status Bar Content Frame 
+style status_bar_frame is zeroed_frame 
+style status_bar_frame is clipped
+
+style status_bar_hbox is clipped
+
+# Status Bar Icons & Details Container 
+style status_bar_hbox: 
+
+    # Same pad to the right as the logo has to the left
+    xanchor 1.0
+    xpos int(config.screen_width - ui_logo_left_pad)
+    # Length of one third of Status Bar
+    xsize int(config.screen_width / 3)
+    # Center Vertically
+    yalign 0.5 
+    # Spacing between Hbox Elements
+    spacing status_bar_details_gap 
+
+# Status Bar Text Containers
+style status_bar_text_container: 
+
+    # Text Container Height 
+    ysize 25
+    # Center Vertically 
+    yalign 0.5 
+
+# Status Bar Date Text Container 
+style date_text_container is status_bar_text_container
+
+style date_text_container: 
+
+    # Date Text Container Width
+    xsize 120
+
+# Status Bar Time Text Container
+style time_text_container is status_bar_text_container
+
+style time_text_container: 
+
+    # Time Text Container Width 
+    xsize 100
+
+# Status Bar Text
+style status_bar_text: 
+
+    # Align to the Left
+    xalign 1.0
+    # Text Size 
+    size 20
+
+# Status Bar Date Text 
+style date_text is status_bar_text 
+
+# Status Bar Time Text
+style time_text is default
+style time_text is status_bar_text
 
 # Fill Screen Transform
 transform fill_screen: 
@@ -427,9 +516,7 @@ screen navigation_dock():
     
         # Dock Icons (6 icons)
         grid 6 1: 
-            xalign 0.5
-            ypos 640
-            spacing 30 
+            style "navigation_dock"
 
             # History - Icon Button 
             imagebutton:
@@ -490,13 +577,42 @@ screen navigation_dock():
     # Main Menu Return - Power Off Icon Button
     if not main_menu: 
         imagebutton: 
+
+            style "power_off_button"
+
             idle "gui/placeholders/power_off_placeholder.svg"
-            xalign 0.95
-            ypos 660
 
             action MainMenu()
 
             tooltip "Start Screen"
+
+# Positioning Dimensions for navigation_dock
+define dock_icons_spacing = 30 
+define dock_bottom_pad = 20
+
+# Docks at the bottom of the screen 
+style bottom_dock: 
+    # Push to the bottom of screen
+    yalign 1.0
+    # Raise up a little
+    yoffset -(dock_bottom_pad)
+
+# Navigation Dock
+style navigation_dock is bottom_dock
+
+style navigation_dock: 
+    # Center Horizontally 
+    xalign 0.5 
+    # Navigation Dock Icons Spacing 
+    spacing dock_icons_spacing 
+
+# Power Off Button
+style power_off_button is bottom_dock 
+
+style power_off_button: 
+    # Push to the right corner of the screen
+    xalign 0.95
+
 
 ## App Grid screen #############################################################
 ## This screen display in-game apps inside the Computer UI 
@@ -511,9 +627,7 @@ screen app_grid():
     fixed: 
         # Grid Icons (6 columns x 3 rows)  
         grid 6 3: 
-            xalign 0.5
-            ypos 150
-            spacing 40 
+            style "app_grid"
 
             # Row 1 
 
@@ -564,6 +678,20 @@ screen app_grid():
                     
                 text tooltip style "tooltip_text"
 
+# Positioning Dimensions for app_grid
+define app_grid_status_gap = 112
+define app_grid_top_pad = status_bar_height + app_grid_status_gap
+define app_grid_spacing = 40
+
+# App Grid 
+style app_grid: 
+    # Horizontal centering 
+    xalign 0.5 
+    # Top Padding
+    ypos app_grid_top_pad
+    # Grid Spacing
+    spacing app_grid_spacing
+
 ## App Open Button Template ####################################################
 ##
 ## Template for app buttons 
@@ -607,12 +735,12 @@ screen app_screen(window_width, window_height, content_width, content_height, sc
 
     window id "app": 
 
-        xysize (window_width, window_height)
         style "app_window"
+        xysize (window_width, window_height)
 
         fixed: 
+            style "app_window_content"
             xysize (window_width, window_height)
-            clipping True
 
             add "#000000":
                 xysize (window_width, window_height)
@@ -633,13 +761,28 @@ screen app_screen(window_width, window_height, content_width, content_height, sc
             if tool_screen != None: 
                 use expression tool_screen
 
+# Positioning Dimensions for app_screen
+define app_header_content_gap = 20
+
+# App Screen Window
+style app_window is clipped
+style app_window is zeroed_frame
+
 style app_window: 
     xalign 0.5
     yalign 0.5
-    background None 
-    clipping True 
 
-define app_header_height = 35
+# App Screen Window Content 
+style app_window_content is clipped
+
+# App Main Content Frame Transform & Style 
+transform app_main_content(content_width, content_height): 
+    xysize(content_width, content_height)
+    xalign 0.5
+    ypos app_header_height + app_header_content_gap
+
+style app_main_content is zeroed_frame
+style app_main_content is clipped
 
 ## App Header screen ###########################################################
 ##
@@ -650,27 +793,47 @@ screen app_header(window_width, screen_title):
 
     frame: 
 
-        xysize(window_width, app_header_height)
-        
         style "app_header_frame"
+
+        xysize(window_width, app_header_height)
 
         add "gui/placeholders/App Title Bar Placeholder.svg": 
             xysize(config.screen_width, app_header_height)
 
         fixed: 
+        
+            style "app_header_content"
 
             xysize(window_width, app_header_height)
-
-            clipping True 
 
             # Exit Button - Hides Screen 
             use app_exit(screen_title)
 
             # Title Text 
             text screen_title: 
-                xalign 0.5
-                ypos 4
-                bold True
+
+                style "app_header_title"
+
+# Positioning Dimensions for app_header
+define app_header_height = 35
+
+# App Header Frame
+style app_header_frame is zeroed_frame 
+style app_header_frame is clipped
+
+# App Header Content Container
+style app_header_content is clipped
+
+style app_header_content: 
+    yalign 0.5 
+
+# App Header Title
+style app_header_title is bolded
+
+style app_header_title: 
+    # Center Title 
+    xalign 0.5 
+    yalign 0.5 
 
 ## App Exit Button #############################################################
 ##
@@ -681,10 +844,12 @@ screen app_header(window_width, screen_title):
 screen app_exit(id_name): 
 
     imagebutton: 
+
+        style "app_exit_button"
+        
         id id_name
 
-        idle "gui/placeholders/App Exit Button Placeholder.svg"
-        at app_exit_button
+        idle "#0026ff"
 
         # Disable Button if disablers are on and screen is not Computer UI Menu
         if button_disabled(id_name):
@@ -695,30 +860,15 @@ screen app_exit(id_name):
         
             action Hide()
 
-transform app_exit_button: 
-    xysize(60, 25)
-    xpos 10
-    ypos 4
+# Positioning Dimensions for app_exit
+define app_exit_width = 60
+define app_exit_height = app_header_height - 4
 
-# App Main Content Frame Transform & Style 
-transform app_main_content(content_width, content_height): 
-    xysize(content_width, content_height)
-    xalign 0.5
-    ypos app_header_height + 20 
+# App Exit Button
+style app_exit_button: 
+    xysize(app_exit_width, app_exit_height)
+    xpos 10 # Left padding
 
-style app_header_frame: 
-    background None 
-    padding (0, 0)
-    margin (0, 0)
-
-    clipping True 
-
-style app_main_content:
-    background None
-    padding(0, 0)
-    margin(0, 0)
-
-    clipping True 
 
 ## Main Menu screen ############################################################
 ##
@@ -817,7 +967,7 @@ screen computer_ui():
 
         at fill_screen
 
-        clipping True
+        style "clipped"
 
         # Background
         add "gui/placeholders/gray_background.svg": 
@@ -827,8 +977,6 @@ screen computer_ui():
 
         if not renpy.get_screen("quick_menu"): # Only when Quick Menu is not Available
             use navigation_dock 
-        
-        
 
 ## Scrollable Content screen ###################################################
 ##
@@ -873,9 +1021,10 @@ screen scrollable_content(scroll=None, yinitial=0.0, spacing=0, scrollbars="vert
         vpgrid:
             xfill True
             yfill True
+            side_xfill True
             cols 1
             yinitial yinitial
-            scrollbars scrollbars
+            scrollbars (scrollbars if scrollbars else "vertical")
             vscrollbar_unscrollable "hide"
             mousewheel True
             draggable True
@@ -907,24 +1056,21 @@ init python:
 ## (About, Save & Load, History, Preferences, Help, Ending Gallery)
 ## For Design consistency
 
-screen meta_screen(title, scroll=None, yinitial=0.0, spacing=0): 
+screen meta_screen(title, scroll=None, yinitial=0.0, spacing=0, **kwargs): 
 
     tag menu 
 
     key "game_menu" action Return()
 
     # Meta Screen Dimensions 
-    $ button_width = 56 
-    $ button_height = 48
-    $ meta_header_height = 58
     $ content_width = 1240
     $ content_height = 640
 
     fixed: 
 
-        at fill_screen
+        style "clipped"
 
-        clipping True 
+        at fill_screen
 
         # Background 
         add "#000000"
@@ -941,41 +1087,78 @@ screen meta_screen(title, scroll=None, yinitial=0.0, spacing=0):
                 
             # Header Title 
             text title: 
-                xpos 20
-                ypos 15
-                color "#d6d6d6"
-                size 24
-                bold True
+                style "meta_header_title"
 
             # Close Button - Returns to previous screen
             imagebutton: 
+
                 idle "gui/placeholders/meta_screen_exit_placeholder.svg"
                 at meta_close_button
-                xpos config.screen_width - button_width - 12
-                ypos 5
+                style "meta_close_button"
+
                 action Return()
 
         # Main Content Area 
         fixed: 
-            xysize (content_width, content_height)
-            xalign 0.5
-            ypos config.screen_height - content_height - 12
+            
+            style "meta_main_content"
 
-            clipping True
+            xysize (content_width, content_height)
             
             add "gui/placeholders/meta_screen_content_background.svg": 
                 xysize (content_width, content_height)
 
             frame:
 
-                background None 
-                padding (20, 20, 20, 20)
+                style "meta_main_content_frame"
 
-                use scrollable_content(scroll, yinitial, spacing): 
+                use scrollable_content(scroll, yinitial, spacing, **kwargs): 
                     transclude
 
+# Positioning Dimensions for meta_screen
+define meta_header_height = 58
+define meta_exit_button_width = 68
+define meta_exit_button_height = meta_header_height - 6
+define meta_content_bottom_pad = 12
+
+# Meta Screen Header Title 
+style meta_header_title is bolded 
+
+style meta_header_title: 
+    # Left Padding 
+    xpos 20 
+    # Top Padding
+    yalign 0.5
+    # Text Color
+    color "#d6d6d6"
+    # Text Size
+    size 30 
+
+# Meta Screen Exit Button
+style meta_close_button: 
+    # Left Padding 
+    xpos int(config.screen_width - meta_exit_button_width - 12)
+    # Center vertically 
+    yalign 0.5 
+
 transform meta_close_button: 
-    xysize (56, 48)
+    xysize (meta_exit_button_width, meta_exit_button_height)
+
+# Meta Screen Main Content Container 
+style meta_main_content is clipped
+
+style meta_main_content: 
+    # Center Horizontally
+    xalign 0.5 
+    # Enforce Lower Padding
+    yanchor 1.0 
+    ypos (config.screen_height - meta_content_bottom_pad)
+    
+# Meta Screen Main Content Container Frame 
+style meta_main_content_frame is zeroed_frame 
+
+style meta_main_content_frame: 
+    padding (20, 20, 20, 20)
 
 ## About screen ################################################################
 ##
@@ -1005,19 +1188,22 @@ screen about():
 
             ## gui.about is usually set in options.rpy.
             if gui.about:
-                text "[gui.about!t]\n"
+                text "[gui.about!t]\n" style "about_text"
 
-            add Solid("#000000") xysize (1280, 2)
+            add Solid("#000000") xysize (config.screen_width, 2)
 
-            text _("\nMade with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n\n[renpy.license!t]")
+            text _("\nYou are currently playing {b}Monster Silhouette Demo{/b} ([config.version!t]).\n")
+
+            text _("\nMade with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n[renpy.license!t]")
 
 
 style about_label is gui_label
 style about_label_text is gui_label_text
 style about_text is gui_text
 
-style about_label_text:
-    size gui.label_text_size
+style about_text: 
+    size 20
+    line_spacing -5
 
 
 ## Load and Save screen #######################################################
@@ -1052,9 +1238,7 @@ screen file_slots(context=None):
 
         fixed:
 
-            # Center things 
-            xfill True
-            yfill True
+            style "file_slots_fixed"
 
             ## This ensures the input will get the enter event before any of the
             ## buttons do.
@@ -1065,7 +1249,6 @@ screen file_slots(context=None):
                 style "page_label"
 
                 key_events True
-                xalign 0.5
                 action page_name_value.Toggle()
 
                 input:
@@ -1076,10 +1259,7 @@ screen file_slots(context=None):
             grid gui.file_slot_cols gui.file_slot_rows:
                 style_prefix "slot"
 
-                xalign 0.5
-                yalign 0.5
-
-                spacing gui.slot_spacing
+                style "slot_grid"
 
                 for i in range(gui.file_slot_cols * gui.file_slot_rows):
 
@@ -1119,13 +1299,10 @@ screen file_slots(context=None):
             vbox:
                 style_prefix "page"
 
-                xalign 0.5
-                yalign 1.0
+                style "page_vbox"
 
                 hbox:
-                    xalign 0.5
-
-                    spacing gui.page_spacing
+                    style "page_hbox"
 
                     textbutton _("<") action FilePagePrevious()
                     key "save_page_prev" action FilePagePrevious()
@@ -1153,28 +1330,6 @@ screen file_slots(context=None):
                             action DownloadSync()
                             xalign 0.5
 
-# Save or Load Choice Screen - Unified Save & Load Screen Handler
-screen save_load_choice(slot): 
-    modal True
-    zorder 200
-    style_prefix "confirm"
-
-    add "gui/overlay/confirm.png"
-
-    frame: 
-        vbox: 
-            xalign 0.5
-            yalign 0.5
-            spacing 30 
-
-            hbox: 
-                xalign 0.5
-                spacing 100
-
-                textbutton _("Save") action [Hide("save_load_choice"), FileAction(slot)]
-                textbutton _("Load") action [Hide("save_load_choice"), FileLoad(slot)]
-
-    key "game_menu" action Hide("save_load_choice")
 
 style page_label is gui_label
 style page_label_text is gui_label_text
@@ -1188,10 +1343,11 @@ style slot_name_text is slot_button_text
 
 style page_label:
     xpadding 50
-    ypadding 3
+    ypadding 4
     xalign 0.5
 
 style page_label_text:
+    size 28
     textalign 0.5
     layout "subtitle"
     hover_color gui.hover_color
@@ -1200,6 +1356,7 @@ style page_button:
     properties gui.button_properties("page_button")
 
 style page_button_text:
+    size 26
     properties gui.text_properties("page_button")
 
 style slot_button:
@@ -1208,6 +1365,60 @@ style slot_button:
 style slot_button_text:
     properties gui.text_properties("slot_button")
 
+style file_slots_fixed: 
+    # Center things 
+    xfill True
+    yfill True
+
+style slot_grid: 
+    xalign 0.5
+    yalign 0.5
+    spacing gui.slot_spacing
+
+style page_vbox:
+    xalign 0.5
+    yalign 1.0
+    yoffset -5
+
+style page_hbox: 
+    xalign 0.5
+    spacing gui.page_spacing
+
+# Save or Load Choice Screen - Unified Save & Load Screen Handler
+screen save_load_choice(slot): 
+
+    modal True
+    zorder 200
+
+    style_prefix "confirm"
+
+    add "gui/overlay/confirm.png"
+
+    frame: 
+        vbox: 
+            style "confirm_save_load_vbox"
+
+            hbox: 
+                style "confirm_save_load_hbox"
+
+                textbutton _("Save") action [Hide("save_load_choice"), FileAction(slot)]
+                textbutton _("Load") action [Hide("save_load_choice"), FileLoad(slot)]
+
+    key "game_menu" action Hide("save_load_choice")
+
+style confirm_save_load: 
+    xalign 0.5 
+
+style confirm_save_load_vbox is confirm_save_load 
+
+style confirm_save_load_vbox: 
+    yalign 0.5
+    spacing 30 
+
+style confirm_save_load_hbox is confirm_save_load 
+
+style confirm_save_load_hbox: 
+    spacing 100
 
 ## Preferences screen ##########################################################
 ##
@@ -1330,6 +1541,7 @@ style pref_label:
 
 style pref_label_text:
     yalign 1.0
+    bold True 
 
 style pref_vbox:
     xsize 225
@@ -1471,7 +1683,7 @@ screen help():
     tag menu
     zorder 2
 
-    default device = "keyboard"
+    default device = "controls"
 
     use meta_screen(_("Help"), scroll="viewport"):
 
@@ -1481,6 +1693,8 @@ screen help():
             spacing 15
 
             hbox:
+
+                textbutton _("MS-Controls") action SetScreenVariable("device", "controls")
 
                 textbutton _("Keyboard") action SetScreenVariable("device", "keyboard")
                 textbutton _("Mouse") action SetScreenVariable("device", "mouse")
@@ -1494,6 +1708,8 @@ screen help():
                 use mouse_help
             elif device == "gamepad":
                 use gamepad_help
+            elif device == "controls":
+                use controls_help
 
 
 screen keyboard_help():
@@ -1598,6 +1814,37 @@ screen gamepad_help():
 
     textbutton _("Calibrate") action GamepadCalibrate()
 
+screen controls_help():
+
+    hbox: 
+        label _("F5")
+        text _("Quick Save.")
+    
+    hbox: 
+        label _("F6")
+        text _("Quick Load.")
+
+    hbox: 
+        label _("D")
+        text _("Delete save slot on hover.")
+    
+    hbox: 
+        label _("ESC")
+        text _("Access Computer UI Menu and exit game menus and apps.")
+    
+    hbox: 
+        
+        fixed: 
+            style "help_icon"
+
+            add "#000" xysize(label_icon_width, label_icon_height) yalign 0.5 xalign 1.0
+
+        text _("Click for a hint to progress.")
+
+define label_right_pad = 20
+define label_width = 250
+define label_icon_width = 24 
+define label_icon_height = 24
 
 style help_button is gui_button
 style help_button_text is gui_button_text
@@ -1613,13 +1860,19 @@ style help_button_text:
     properties gui.text_properties("help_button")
 
 style help_label:
-    xsize 250
-    right_padding 20
+    xsize label_width
+
+style help_hbox: 
+    spacing label_right_pad
 
 style help_label_text:
     size gui.text_size
     xalign 1.0
     textalign 1.0
+
+style help_icon:
+    xsize label_width
+    ysize label_icon_height
 
 ## Ending Gallery screen #######################################################
 ## 
@@ -1632,34 +1885,93 @@ screen ending_gallery():
 
     $ screen_name = "Ending Gallery"
 
+    $ ending_lock_icon_width = 300 
+    $ ending_lock_icon_height = 350
+
     if player_endings == 0: # Zero Endings Unlcoked
         use meta_screen(_(screen_name)): 
 
             fixed:
-                clipping True
+                style "ending_gallery"
 
                 vbox: 
-                    xysize(655, 415)
-                    xalign 0.5
-                    ypos 120
-                    spacing 40 
+                    style "ending_gallery_zero_vbox"
 
                     clipping True
 
                     add "#000": 
-                        xysize(300, 350)
+                        xysize(ending_lock_icon_width, ending_lock_icon_height)
                         xalign 0.5
 
                     text "Currently no Available Endings": 
-                        bold True
-                        color "#000"
-                        size 30
-                        xalign 0.5
+                        style "ending_gallery_zero_text"
 
     else: # At Least One Ending Unlocked 
         
-        use meta_screen(_(screen_name), "vpgrid")
+        use meta_screen(_(screen_name), "viewport", scrollbars=None, top_pad=50): 
+
+            fixed: 
+                style "ending_gallery_endings"
+
+                # Ending Grid Placeholder 
+                grid 2 3: 
+                    style "ending_gallery_grid"
+
+                    fixed: 
+                        style "ending_gallery_grid_entry"
+                        add "#a71f1f": 
+                            xysize(ending_grid_entry_width, ending_grid_entry_height)
+
+                    fixed: 
+                        style "ending_gallery_grid_entry"
+                        add "#000": 
+                            xysize(ending_grid_entry_width, ending_grid_entry_height)
+
+                    fixed: 
+                        style "ending_gallery_grid_entry"
+                        add "#000": 
+                            xysize(ending_grid_entry_width, ending_grid_entry_height)
+                    
+                    fixed: 
+                        style "ending_gallery_grid_entry"
+                        add "#000": 
+                            xysize(ending_grid_entry_width, ending_grid_entry_height)
+                    
+                    fixed: 
+                        style "ending_gallery_grid_entry"
+                        add "#000": 
+                            xysize(ending_grid_entry_width, ending_grid_entry_height)
             
+define ending_grid_entry_width = 590 
+define ending_grid_entry_height = 130
+
+style ending_gallery is clipped
+
+# Ending Gallery Zero Endings Main Content Container 
+style ending_gallery_zero_vbox: 
+    xysize(655, 415)
+    xalign 0.5
+    yalign 0.5
+    spacing 40 
+
+style ending_gallery_zero_text is label_text
+
+style ending_gallery_zero_text:
+    xalign 0.5
+    color "#000"
+
+style ending_gallery_endings: 
+    xysize (1200, 430)
+    xalign 0.5
+    yalign 0.5
+
+style ending_gallery_grid:
+    spacing 20
+    xalign 0.5
+    yalign 0.5
+
+style ending_gallery_grid_entry:
+    xysize(ending_grid_entry_width, ending_grid_entry_height)
 
 
 ################################################################################
@@ -1840,6 +2152,11 @@ screen profile_app():
     $ content_width = 650
     $ content_height = 525
 
+    # Profile Pic
+    $ profile_pic_width = 100
+    $ profile_pic_height = 100
+    $ profile_pic_top_pad = 95
+
     $ app_title = "Profile"
 
     # Exit button unavailble warning. 
@@ -1851,81 +2168,478 @@ screen profile_app():
                 
         # Profile Info
         fixed: 
-            xysize(620, 280)
-            xalign 0.5
-            ypos 13
-
-            clipping True
+            style "profile_info"
 
             # Info Content Area
             add "gui/placeholders/Profile App Info Backdrop 1.svg":
-                xysize(620, 280)
+                xysize(profile_section_width, profile_info_height)
 
             add "gui/placeholders/Profile App Info Backdrop 2.svg": 
-                xysize(620, 120)
+                xysize(profile_section_width, 120)
                 ypos 160 
 
             # Profile Pic
             add "gui/placeholders/Profile App Profile Pic Placeholder.svg":
-                xysize(100, 100)
-                xpos 55
-                ypos 95
+                xysize(profile_pic_width, profile_pic_height)
+                xpos profile_content_left_pad
+                ypos profile_pic_top_pad
 
             # Profile ID
             vbox: 
-                xpos 55
-                ypos 195
-                spacing 10
+                style "profile_id"
 
-                # Player Name 
                 text "[player_name]": 
-                    size 20
-                    bold True
+                    style "profile_player_name_text"
 
-                # Profile Name
                 text "The Abyss Stares Back": 
-                    size 18
+                    style "profile_pen_name_text"
 
             # Deadline Reminder Widget
             fixed: 
-
-                xysize(210, 75)
-                xpos 365
-                ypos 30
-                            
-                clipping True
+                style "deadline_widget"
 
                 add "gui/placeholders/Profile App Deadline Widget Placeholder.svg":
-                    xysize(210, 75)
+                    xysize(widget_width, widget_height)
+
+                # Widget Content
+                fixed:
+                    style "deadline_widget_content"
+
+                    # Calendar Icon Placeholder
+                    add "#5E5E5E":
+                        xysize(widget_content_height, widget_content_height)
+
+                    # Text Column
+                    fixed: 
+                        style "deadline_widget_text"
+
+                        # Label
+                        fixed: 
+                            style "deadline_widget_label"
+
+                            text "Book Deadline":
+                                style "deadline_widget_label_text"
+
+                        # Detail
+                        fixed:
+                            style "deadline_widget_detail"
+
+                            # In Badge
+                            fixed: 
+                                style "deadline_widget_in"
+
+                                text "in":
+                                    style "deadline_widget_in_text"
+
+                            # Days Badge
+                            fixed:
+                                style "deadline_widget_days"
+
+                                add "#000"
+
+                                text "[deadline] days":
+                                    style "deadline_widget_days_text"
 
         # Trackers
         fixed: 
-            xysize(620, 200)
-            xpos 15
-            ypos 13 + 280 + 19
-
-            clipping True
+            style "profile_trackers"
 
             # Wallet Tracker 
             fixed: 
-
-                xysize(260, 200)
-
-                clipping True 
+                style "wallet_tracker"
 
                 add "gui/placeholders/Profile App Wallet Tracker Background Placeholder.svg":
-                    xysize(260, 200)              
+                    xysize(wallet_tracker_width, profile_trackers_height)
+
+                # Wallet Tracker Content
+                vbox: 
+                    style "wallet_tracker_content"
+
+                    # Title
+                    text "Wallet":
+                        style "wallet_tracker_title"
+
+                    # Map Sprite
+                    fixed: 
+                        style "wallet_tracker_map"
+
+                        add "#555":
+                            xysize(wallet_tracker_map_width, wallet_tracker_map_height)
+
+                        vbox: 
+                            xalign 0.5
+                            yalign 0.7
+                            spacing 4
+                            clipping True
+
+                            add "#C8C8C8":
+                                xysize(wallet_tracker_spotter_size, wallet_tracker_spotter_size)
+                                xalign 0.5
+
+                            text ("Nearby" if wallet_on_person else "Home"):
+                                style "wallet_tracker_location_text"
 
             # Stat Tracker
             fixed: 
-                        
-                xysize(340, 200)
-                xpos 260 + 18
-
-                clipping True
+                style "stat_tracker"
 
                 add "gui/placeholders/Profile App Stat Tracker Background Placeholder.svg":
-                    xysize(340, 200)
+                    xysize(stat_tracker_width, profile_trackers_height)
+
+                # Stat Tracker Content
+                vbox: 
+                    style "stat_tracker_content"
+
+                    # Suspicion Row
+                    fixed: 
+                        style "stat_tracker_row"
+
+                        # Icon + Body
+                        hbox:
+                            yanchor 1.0
+                            ypos stat_tracker_icon_bottom
+                            spacing stat_tracker_row_icon_gap
+
+                            add "#5E5E5E":
+                                xysize(stat_tracker_row_icon_size, stat_tracker_row_icon_size)
+                                yalign 1.0
+
+                            vbox:
+                                style "stat_tracker_row_body"
+
+                                text "Suspicion":
+                                    style "stat_tracker_row_label"
+
+                                if suspicion is not None:
+                                    bar:
+                                        style "stat_tracker_row_bar"
+                                        value StaticValue(suspicion, 10)
+                                else:
+                                    bar:
+                                        style "stat_tracker_row_bar_locked"
+                                        value StaticValue(0, 10)
+
+                        # Value / Lock
+                        fixed:
+                            style "stat_tracker_row_value_container"
+
+                            if suspicion is not None:
+                                text "[suspicion]":
+                                    style "stat_tracker_row_value"
+                            else:
+                                add "#666":
+                                    xysize(stat_tracker_row_lock_size, stat_tracker_row_lock_size)
+                                    xalign 1.0
+                                    yalign 0.5
+
+                    # Rapport Row
+                    fixed: 
+                        style "stat_tracker_row"
+
+                        # Icon + Body
+                        hbox:
+                            yanchor 1.0
+                            ypos stat_tracker_icon_bottom
+                            spacing stat_tracker_row_icon_gap
+
+                            add "#5E5E5E":
+                                xysize(stat_tracker_row_icon_size, stat_tracker_row_icon_size)
+                                yalign 1.0
+
+                            vbox:
+                                style "stat_tracker_row_body"
+
+                                text "Rapport":
+                                    style "stat_tracker_row_label"
+
+                                if rapport is not None:
+                                    bar:
+                                        style "stat_tracker_row_bar"
+                                        value StaticValue(rapport, 10)
+                                else:
+                                    bar:
+                                        style "stat_tracker_row_bar_locked"
+                                        value StaticValue(0, 10)
+
+                        # Value / Lock
+                        fixed:
+                            style "stat_tracker_row_value_container"
+
+                            if rapport is not None:
+                                text "[rapport]":
+                                    style "stat_tracker_row_value"
+                            else:
+                                add "#666":
+                                    xysize(stat_tracker_row_lock_size, stat_tracker_row_lock_size)
+                                    xalign 1.0
+                                    yalign 0.5
+
+# Profile App Sections
+define profile_section_width = 620
+define profile_info_height = 280
+define profile_info_top_pad = 13
+define profile_content_left_pad = 55
+define profile_trackers_height = 200
+define profile_pic_top_pad = 95
+define profile_pic_height = 100
+
+# Trackers
+define wallet_tracker_width = 260
+define stat_tracker_width = 340
+define stat_tracker_left_pad = wallet_tracker_width + 18
+
+# Deadline Widget
+define widget_width = 210
+define widget_height = 75
+define widget_content_width = 190
+define widget_content_height = 55
+define widget_text_width = 105
+define widget_label_height = 20
+define widget_label_top_pad = 5
+define widget_detail_height = 25
+define widget_in_size = 20
+
+# Wallet Tracker Content
+define wallet_tracker_pad = 10
+define wallet_tracker_content_width = wallet_tracker_width - wallet_tracker_pad * 2
+define wallet_tracker_content_height = profile_trackers_height - wallet_tracker_pad * 2
+define wallet_tracker_title_height = 30
+define wallet_tracker_title_gap = 5
+define wallet_tracker_map_width = wallet_tracker_content_width
+define wallet_tracker_map_height = wallet_tracker_content_height - wallet_tracker_title_height - wallet_tracker_title_gap
+define wallet_tracker_spotter_size = 25
+
+# Stat Tracker Content
+define stat_tracker_pad = 15
+define stat_tracker_content_width = stat_tracker_width - stat_tracker_pad * 2
+define stat_tracker_content_height = profile_trackers_height - stat_tracker_pad * 2
+define stat_tracker_row_gap = 10
+define stat_tracker_row_height = (stat_tracker_content_height - stat_tracker_row_gap) // 2
+define stat_tracker_row_icon_size = 40
+define stat_tracker_row_bar_height = 20
+define stat_tracker_row_icon_gap = 10
+define stat_tracker_row_lock_size = 20
+define stat_tracker_row_value_width = stat_tracker_row_lock_size * 2
+define stat_tracker_row_value_height = stat_tracker_row_lock_size
+define stat_tracker_row_body_width = stat_tracker_content_width - stat_tracker_row_icon_size - stat_tracker_row_value_width - (stat_tracker_row_icon_gap * 2)
+define stat_tracker_row_label_height = 22
+define stat_tracker_row_bar_height = 20
+define stat_tracker_row_bar_gap = 0
+define stat_tracker_row_lock_size = 20
+define stat_tracker_row_body_height = stat_tracker_row_label_height + stat_tracker_row_bar_gap + stat_tracker_row_bar_height
+define stat_tracker_icon_bottom = (stat_tracker_row_height + stat_tracker_row_body_height) // 2
+
+# Profile Info Section
+style profile_info is clipped
+
+style profile_info: 
+    xysize(profile_section_width, profile_info_height)
+    xalign 0.5
+    ypos profile_info_top_pad
+
+# Profile ID Container
+style profile_id is clipped
+
+style profile_id: 
+    xpos profile_content_left_pad
+    ypos (profile_pic_top_pad + profile_pic_height)
+    spacing 10
+
+# Profile ID Texts
+style profile_player_name_text is bolded
+
+style profile_player_name_text: 
+    size 20
+
+style profile_pen_name_text: 
+    size 18
+
+# Deadline Widget
+style deadline_widget is clipped
+
+style deadline_widget: 
+    xysize(widget_width, widget_height)
+    xpos 365
+    ypos 30
+
+# Deadline Widget Content
+style deadline_widget_content is clipped
+
+style deadline_widget_content: 
+    xysize(widget_content_width, widget_content_height)
+    xpos 8
+    yalign 0.5
+
+# Deadline Widget Text Column
+style deadline_widget_text is clipped
+
+style deadline_widget_text: 
+    xysize(widget_text_width, widget_content_height)
+    xpos (widget_content_height + 10)
+
+# Deadline Widget Label
+style deadline_widget_label is clipped
+
+style deadline_widget_label: 
+    xysize(widget_text_width, widget_label_height)
+    ypos widget_label_top_pad
+
+style deadline_widget_label_text is bolded
+
+style deadline_widget_label_text: 
+    size 14
+    color "#000000"
+    xalign 0.5
+    yalign 0.5
+
+# Deadline Widget Detail
+style deadline_widget_detail is clipped
+
+style deadline_widget_detail: 
+    xysize(widget_text_width, widget_detail_height)
+    ypos (widget_label_top_pad + widget_label_height)
+    xpos 15
+
+# Deadline Widget In Badge
+style deadline_widget_in is clipped
+
+style deadline_widget_in: 
+    xysize(widget_in_size, widget_in_size)
+
+style deadline_widget_in_text: 
+    size 12
+    color "#000000"
+    yalign 0.5
+    xalign 0.5
+
+# Deadline Widget Days Badge
+style deadline_widget_days is clipped
+
+style deadline_widget_days: 
+    xysize(60, 20)
+    xpos (widget_in_size + 5)
+
+style deadline_widget_days_text: 
+    size 12
+    color "#C8C8C8"
+    yalign 0.5
+    xalign 0.5
+
+# Trackers Section
+style profile_trackers is clipped
+
+style profile_trackers: 
+    xysize(profile_section_width, profile_trackers_height)
+    xalign 0.5
+    ypos (profile_info_top_pad + profile_info_height + 19)
+
+# Wallet Tracker
+style wallet_tracker is clipped
+
+style wallet_tracker: 
+    xysize(wallet_tracker_width, profile_trackers_height)
+
+# Wallet Tracker Content
+style wallet_tracker_content is clipped
+
+style wallet_tracker_content:
+    xysize(wallet_tracker_content_width, wallet_tracker_content_height)
+    xalign 0.5
+    yalign 0.5
+    spacing wallet_tracker_title_gap
+
+# Wallet Tracker Title
+style wallet_tracker_title is bolded
+
+style wallet_tracker_title:
+    xsize(wallet_tracker_content_width)
+    ysize(wallet_tracker_title_height)
+    textalign 0.5
+    xalign 0.5
+    size 20
+    color "#C8C8C8"
+
+# Wallet Tracker Map
+style wallet_tracker_map is clipped
+
+style wallet_tracker_map:
+    xysize(wallet_tracker_map_width, wallet_tracker_map_height)
+
+# Wallet Tracker Location Text
+style wallet_tracker_location_text is bolded
+
+style wallet_tracker_location_text:
+    size 14
+    color "#C8C8C8"
+    textalign 0.5
+    xalign 0.5
+
+# Stat Tracker
+style stat_tracker is clipped
+
+style stat_tracker: 
+    xysize(stat_tracker_width, profile_trackers_height)
+    xpos stat_tracker_left_pad
+
+# Stat Tracker Content
+style stat_tracker_content is clipped
+
+style stat_tracker_content:
+    xysize(stat_tracker_content_width, stat_tracker_content_height)
+    xalign 0.5
+    yalign 0.5
+    spacing stat_tracker_row_gap
+
+# Stat Tracker Row
+style stat_tracker_row is clipped
+
+style stat_tracker_row:
+    xysize(stat_tracker_content_width, stat_tracker_row_height)
+
+# Stat Tracker Row Body
+style stat_tracker_row_body is clipped
+
+style stat_tracker_row_body:
+    xsize(stat_tracker_row_body_width)
+    yfit True
+    # Spacing between Label and Bar
+    spacing 2
+
+# Stat Tracker Row Label
+style stat_tracker_row_label is bolded
+
+style stat_tracker_row_label:
+    xsize(stat_tracker_row_body_width)
+    size 16
+    color "#C8C8C8"
+
+# Stat Tracker Row Bar
+style stat_tracker_row_bar:
+    xsize(stat_tracker_row_body_width)
+    ysize(stat_tracker_row_bar_height)
+    left_bar gui.accent_color
+    right_bar "#C8C8C8"
+
+style stat_tracker_row_bar_locked is stat_tracker_row_bar:
+    right_bar "#666"
+
+# Stat Tracker Row Value Container
+style stat_tracker_row_value_container is clipped
+
+style stat_tracker_row_value_container:
+    xysize(stat_tracker_row_value_width, stat_tracker_row_value_height)
+    xalign 1.0
+    yanchor 1.0
+    ypos stat_tracker_icon_bottom
+
+# Stat Tracker Row Value
+style stat_tracker_row_value is bolded
+
+style stat_tracker_row_value:
+    xalign 1.0
+    yalign 0.5
+    size 16
+    color "#C8C8C8"
 
 ## Chat App screen ####################################################################
 ## 
@@ -1945,6 +2659,10 @@ screen chat_app():
     $ window_height = 600
     $ content_width = 850
     $ content_height = 525
+    $ contact_panel_content_bot_pad = contact_panel_gap
+    $ contact_panel_content_top_pad = contact_panel_gap
+    $ contact_panel_content_width = contact_button_width
+    $ contact_panel_content_height = contact_panel_height - contact_panel_content_bot_pad - contact_panel_content_top_pad
 
     $ app_title = "Chat"
 
@@ -1956,51 +2674,79 @@ screen chat_app():
     use app_screen(window_width, window_height, content_width, content_height, app_title):
 
         fixed: 
-            xysize(230 + 570 + 20, 500)
-            xpos 15
-            ypos 15
 
-            clipping True 
+            style "chat_app"
 
             # Contact Panel 
             fixed: 
-                xysize(230, 500)
-                
-                clipping True
+                style "contact_panel"
             
                 add "gui/placeholders/Contact Panel Background Placeholder.svg":
-                    xysize(230, 500)
+                    xysize(contact_panel_width, contact_panel_height)
 
-                # Contact List
-                use scrollable_content("viewport", spacing=20, top_pad=10, bottom_pad=10, scrollbars=None, vp_width=230 - 5, vp_height=500 - 15): 
+                fixed: 
+                    xysize(contact_panel_content_width, contact_panel_content_height)
+                    xalign 0.5
+                    yalign 0.5
 
-                    # And (Theo) - Contact Button 
-                    use contact_button("And")
+                    # Contact List
+                    use scrollable_content("viewport", spacing=contact_panel_gap, scrollbars=None, vp_width=contact_panel_content_width, vp_height=contact_panel_content_height): 
 
-                    # At You (Victor) - Contact Button 
-                    use contact_button("At You")
+                        # And (Theo) - Contact Button 
+                        use contact_button("And")
 
-                    # Golden Manager - Contact Button 
-                    use contact_button("Golden Manager")
+                        # At You (Victor) - Contact Button 
+                        use contact_button("At You")
 
-                    # The Abyss Stares Back (Player) - Contact Button 
-                    use contact_button("The Abyss Stares Back")
+                        # Golden Manager - Contact Button 
+                        use contact_button("Golden Manager")
 
-                    # Stare Into The Abyss - Contact Button
-                    use contact_button("Stare Into The Abyss")
+                        # The Abyss Stares Back (Player) - Contact Button 
+                        use contact_button("The Abyss Stares Back")
+
+                        # Stare Into The Abyss - Contact Button
+                        use contact_button("Stare Into The Abyss")
 
             # Chat Box
             fixed: 
-                xysize(570, 500)
-                xpos 230 + 20
-
-                clipping True
+                style "chat_box"
 
                 add "gui/placeholders/Chat Box Background Placeholder.svg":
-                    xysize(570, 500)
+                    xysize(chat_box_width, chat_box_height)
 
                 if active_contact: 
                     use chat_box(active_contact)
+
+define chat_app_pad = 15
+define contact_panel_width = 230
+define contact_panel_height = 500
+define contact_panel_gap = 20 
+define chat_box_width = 570
+define chat_box_height = contact_panel_height
+
+# Chat App Main Content Container
+style chat_app is clipped
+
+style chat_app: 
+    xysize(contact_panel_width + chat_box_width + contact_panel_gap, contact_panel_height)
+    # Left Padding
+    xpos chat_app_pad
+    # Top Padding 
+    ypos chat_app_pad
+
+# Chat Contact Panel Container 
+style contact_panel is clipped
+
+style contact_panel: 
+    xysize(contact_panel_width, contact_panel_height)
+
+# Chat Box Container 
+style chat_box is clipped 
+
+style chat_box: 
+    xysize(chat_box_width, chat_box_height)
+    # Left Padding 
+    xpos (contact_panel_width + contact_panel_gap)
 
 ## Contact Button Template ############################################################
 ## 
@@ -2010,14 +2756,17 @@ screen contact_button(name, avatar="#808080"):
 
     $ online = False # Implement Disabler / Enabler later
 
+    $ contact_profile_width = 60 
+    $ contact_profile_height = contact_profile_width
+    $ contact_profile_top_pad = 5
+    $ online_status_dot_width = 6 
+    $ online_status_dot_height = online_status_dot_width
+
     button: 
 
         id name
 
-        xysize(200, 110)
-        xalign 0.5 
-
-        clipping True 
+        style "contact_button"
 
         # Disable Button if disablers are on and screen is not Computer UI Menu
         if button_disabled(name):
@@ -2029,24 +2778,22 @@ screen contact_button(name, avatar="#808080"):
             action SetVariable("active_contact", name), If(_in_chat_block, false=Function(nvl_clear))
 
         add "gui/placeholders/Contact Item Background.svg": 
-            xysize(200, 110)
+            xysize(contact_button_width, contact_button_height)
 
         # Contact Button Content 
         hbox: 
-            style "chat_contact"
+            style_prefix "chat_contact"
+            style "chat_contact_profile_name"
 
             # Contact Profile
             add avatar: 
-                ypos 5
-                xysize(60, 60)
+                ypos contact_profile_top_pad
+                xysize(contact_profile_width, contact_profile_height)
 
             # Contact Name
             fixed: 
-                xysize (100, 70)
 
-                clipping True 
-
-                text name style "chat_contact_text"
+                text name
 
         if online: 
             $ online_status = "online"
@@ -2057,122 +2804,187 @@ screen contact_button(name, avatar="#808080"):
 
         # Online Status Text Container 
         fixed: 
-            style "chat_contact"
-            xysize (60, 15)
-            xalign 1.0
-            yalign 1.0
-            xfill True
-            yfill True 
-
-            clipping True
+            style "chat_online_status"
 
             add "#000": 
-                xysize (60, 15)
+                xysize (contact_status_width, contact_status_height)
 
             add "gui/placeholders/Profile App Profile Pic Placeholder.svg": # Make dot color based on 'color' with final asset
-                xysize(6, 6)
+                xysize(online_status_dot_width, online_status_dot_height)
                 yalign 0.5
-                xpos 4
+                xpos contact_status_xpad
 
             text online_status: 
-                xpos 15
-                yalign 0.5
-                size 10
-                bold True
+                style "chat_online_status_text"
                 color color
 
+define contact_button_width = 200
+define contact_button_height = 110
+define contact_status_width = 60 
+define contact_status_height = 15
+define contact_status_xpad = 4
 
-style chat_contact: 
-    xpos 15
+style chat_online_status_text is bolded 
+
+style chat_online_status_text: 
+    # Push to the right of container 
+    xalign 1.0
+    # Right Padding 
+    xoffset -(contact_status_xpad)
+    # Center vertically 
     yalign 0.5 
+    # Text size 
+    size 10 
+
+# Contact Button Container 
+style contact_button is clipped 
+
+style contact_button: 
+    xysize(contact_button_width, contact_button_height)
+    xalign 0.5 
+
+# Chat Contact Button Container 
+style chat_contact is clipped
+style chat_contact: 
+    # Left Padding 
+    xpos 15
+    # Center Vertically
+    yalign 0.5 
+    # Gap Between Contact Avatar & Name
     spacing 15
 
-    clipping True
-
+# Chat Contact Button Text 
+style chat_contact_text is bolded 
 style chat_contact_text: 
-    bold True
     xalign 0.5
     size 18
     color "#000"
     textalign 0.5
 
+# Chat Contact Contact Name Container 
+style chat_contact_fixed is clipped
+style chat_contact_fixed: 
+
+    xysize (100, 70)
+
+style chat_contact_profile_name is chat_contact
+
+style chat_online_status is chat_contact 
+
+style chat_online_status: 
+    xysize (contact_status_width, contact_status_height)
+    xalign 0.95
+    yalign 0.95
+
 ## Chat Box Template ###########################################################
 ##
 ## Screen Template for an active Chat Box inside Chat App. 
 
-screen chat_box(contact): 
+screen chat_box(contact):
 
     ## Chat Box Header 
     fixed: 
 
-        xysize(570, 40)
-        
-        clipping True
+        style "chat_box_header"
 
         add "gui/placeholders/Chat Box Header.svg": 
-            xysize(570, 40)
+            xysize(chat_box_header_width, chat_box_header_height)
 
         text contact: 
-            xalign 0.5 
-            yalign 0.5 
-            bold True 
-            size 25
+            style "chat_box_header_text"
 
     ## Main Content Area
     fixed: 
 
-        xysize(570, 410)
-        ypos 40
+        style "chat_box_content"
 
-        clipping True
+        fixed: 
+            style "chat_box_bubble_content"
 
-        # Chat Content 
-        use scrollable_content("viewport", spacing=15, scrollbars=None, yinitial=1.0, top_pad=20, bottom_pad=20, left_pad=25, right_pad=25, yadjustment=adj):
-            
-            # Chat Buffer ? 
+            # Chat Content 
+            use scrollable_content("viewport", spacing=15, scrollbars=None, yinitial=1.0, yadjustment=adj):
+                
+                # Chat Buffer ? 
 
-            # Chat History 
-            for entry in get_chat_entries(contact): 
+                # Chat History 
+                for entry in get_chat_entries(contact): 
 
-                # Timestamp marker
-                if isinstance(entry, dict): 
-                    if entry["type"] == "date": 
-                        use chat_date_stamp(entry["value"])
+                    # Timestamp marker
+                    if isinstance(entry, dict): 
+                        if entry["type"] == "date": 
+                            use chat_date_stamp(entry["value"])
+                        else: 
+                            use chat_time_stamp(entry["value"])
+
+                    # Messages
                     else: 
-                        use chat_time_stamp(entry["value"])
-
-                # Messages
-                else: 
-                
-                    use chat_bubble(entry.who, entry.what)
-
-            # Live Chat
-            if nvl_list:
-                
-                # Print Chat Date
-                if _chat_date_change: 
-                    use chat_date_stamp(abyss_date.strftime("%a %b %d"))
-
-                # Print Chat Time 
-                use chat_time_stamp(abyss_time)
-                
-                # Print Chat Bubbles
-                for entry in nvl_list: 
-                    use chat_bubble(entry[0], entry[1])
                     
-                
+                        use chat_bubble(entry.who, entry.what)
+
+                # Live Chat
+                if nvl_list:
+                    
+                    # Print Chat Date
+                    if _chat_date_change: 
+                        use chat_date_stamp(abyss_date.strftime("%a %b %d"))
+
+                    # Print Chat Time 
+                    use chat_time_stamp(abyss_time)
+                    
+                    # Print Chat Bubbles
+                    for entry in nvl_list: 
+                        use chat_bubble(entry[0], entry[1])
+                    
     # Keyboard Field
 
     fixed: 
-        xysize(500, 50)
-        xalign 0.5
-        ypos 410 + 40
+        style "chat_box_keyboard"
         clipping True
 
         
         add "gui/placeholders/Keyboard Bubble.svg":
             ypos 5
-            xysize(500, 30)
+            xysize(chat_box_key_width, chat_box_key_height)
+
+define chat_box_header_width = chat_box_width
+define chat_box_header_height = 40 
+define chat_box_content_width = chat_box_width
+define chat_box_content_height = 410
+define chat_box_content_top_pad = 40
+define chat_box_bubble_content_width = chat_box_content_width - chat_box_content_top_pad
+define chat_box_bubble_content_height = chat_box_content_height - chat_box_content_top_pad
+define chat_box_key_width = 500
+define chat_box_key_height = 40
+
+style chat_box_header is clipped
+
+style chat_box_header:
+    xysize(chat_box_header_width, chat_box_header_height)
+
+style chat_box_header_text is bolded
+style chat_box_header_text: 
+    # Center
+    xalign 0.5 
+    yalign 0.5 
+    # Text Size
+    size 25
+
+style chat_box_content is clipped
+style chat_box_content: 
+    xysize(chat_box_content_width, chat_box_content_height)
+    ypos chat_box_content_top_pad
+
+style chat_box_bubble_content: 
+    xysize(chat_box_bubble_content_width, chat_box_bubble_content_height)
+    xalign 0.5 
+    yalign 0.5 
+
+style chat_box_keyboard: 
+    xysize(chat_box_key_width, chat_box_key_height)
+    xalign 0.5
+    yanchor 1.0 
+    ypos (chat_box_height - 15)
+
 
 ## Chat Bubble screen ##########################################################
 ##
@@ -2185,28 +2997,41 @@ screen chat_bubble(who, what):
     $ bubble_text_color = "#000" if is_sent else "#C8C8C8"
     $ xalign = 1.0 if is_sent else 0
 
+
     frame: 
 
-        xsize 240
-        xalign xalign
-        padding (20, 10, 20, 10)
+        style "chat_bubble_frame"
 
-        clipping True
+        xalign xalign
 
         background Frame(bubble, 4, 4, 4, 4)
 
         # Chat Bubble Text Container
         fixed: 
-
-            xsize 200
-            yfit True
-
-            clipping True
+            style "chat_bubble_content"
 
             text what: 
-                xsize 200
-                size 16 
+                style "chat_bubble_text"
                 color bubble_text_color
+
+define chat_bubble_width = 240 
+define chat_bubble_text_height = chat_bubble_width - 40 
+
+style chat_bubble_frame is clipped 
+
+style chat_bubble_frame: 
+    xsize chat_bubble_width
+    padding (20, 10, 20, 10)
+
+style chat_bubble_content is clipped 
+
+style chat_bubble_content:
+    xsize chat_bubble_text_height
+    yfit True
+
+style chat_bubble_text: 
+    xsize chat_bubble_text_height
+    size 16 
 
 ## Chat Timestamp template for chat ############################################
 ##
@@ -2216,30 +3041,40 @@ screen timestamp_for_chat(stamp):
 
     frame: 
 
-        ysize 35 # See how it looks first ? 
-        xalign 0.5
-        yalign 0.5
-        padding (10, 10, 10, 10)
-
-        clipping True
-
-        background "#C8C8C8" 
+        style "chat_stamp_frame"
 
         # Timestamp Text Container
         fixed: 
-            ysize 15 # See how it looks first ? 
-            xfit True
-            xalign 0.5
-            yalign 0.5
             
-            clipping True 
+            style "chat_stamp_fixed"
 
             text stamp: 
-                ysize 15 # See how it looks
-                textalign 0.5
-                size 14 # See how it looks 
-                color "#000" # See how it looks
-                bold True
+                style "chat_stamp_text"
+
+style chat_stamp_frame is clipped
+
+style chat_stamp_frame: 
+    ysize 35 
+    xalign 0.5
+    yalign 0.5
+    padding (10, 10, 10, 10)
+
+    background "#C8C8C8" 
+
+style chat_stamp_fixed is clipped
+style chat_stamp_fixed:
+    ysize 15
+    xfit True
+    xalign 0.5
+    yalign 0.5
+
+style chat_stamp_text is bolded 
+
+style chat_stamp_text: 
+    ysize 15
+    textalign 0.5
+    size 14
+    color "#000"
 
 ## Chat Datestamp screen #######################################################
 ##
@@ -2271,12 +3106,6 @@ screen draft_app():
     zorder 10 
     modal True 
 
-    # App Screen Dimensions 
-    $ window_width = 700
-    $ window_height = 650
-    $ content_width = 670
-    $ content_height = 575
-
     $ app_title = "Draft"
 
     # Exit button unavailble warning. 
@@ -2284,14 +3113,10 @@ screen draft_app():
     if renpy.get_screen("computer_ui_menu") and button_disabled(app_title): 
         use exit_disabled_warning(app_title)
 
-    use app_screen(window_width, window_height, content_width, content_height, app_title, "draft_tools"): 
+    use app_screen(draft_window_width, draft_window_height, draft_scroll_width, draft_scroll_height, app_title, "draft_tools"): 
 
         frame: 
-            xysize(650, 515)
-            background None 
-            padding (10, 9, 10, 9)
-            
-            clipping True
+            style "draft_app_frame"
 
             # Fake sense that there is something to scroll up to but don't make it actually scroll 
                 # Maybe make the scroll bar look like it's already somewhat scrolled ? 
@@ -2304,6 +3129,20 @@ screen draft_app():
                             # maybe like hover on the icon will show other files ...
 
             use draft_file()
+
+define draft_window_width = 700
+define draft_window_height = 650 
+define draft_scroll_width = draft_window_width - 30
+define draft_scroll_height = draft_window_height - 75
+define draft_frame_width = draft_scroll_width - 20
+
+style draft_app_frame is clipped 
+
+style draft_app_frame: 
+    xsize draft_frame_width
+    ysize (draft_header_height + draft_content_height)
+    background None 
+    padding (10, 9, 10, 9)
 
 ## Draft File Template #########################################################
 ##
@@ -2321,60 +3160,105 @@ screen draft_file(log_name="epilogue", book_title="To Be Or Not To Be", book_abr
     #   file_name = "tbontb_epilogue_transcript"
     $ file_name = book_abrv + "_" + log_name + "_transcript"
 
+    $ paragraph_gap = 20 
+    $ content_top_pad = 15
+    $ content_bot_pad = content_top_pad
+    $ content_left_pad = 10
+    $ content_right_pad = content_left_pad
+
     # Display Fixed Chapter Title Header
     fixed: 
-        xysize(650, 35)
-        clipping True
+        style "draft_file_header"
 
         # Book Chapter Title 
         # ex. (default book_title & default chapter_title) 
         #   "To Be Or Not To Be - Epilogue"
         text (book_title + " - " + chapter_title): 
-            xalign 0.5 
-            yalign 0.5 
-            color "#000"
-            size 16
-            bold True
+            style "draft_title_text"
 
         # Auto Scroll
         hbox:
-            xalign 1.0
-            yalign 0.5 
-            spacing 10
+            style "auto_scroll_hbox"
 
             # Scroll to top 
             imagebutton: 
+
                 idle "#000"
-                xysize(15, 15)
+                style "scroll_button"
+
                 action Function(scroll_top, draft_adj)
+
                 tooltip "Scroll to top"
 
             # Scroll to bottom 
             imagebutton: 
+
                 idle "#000"
-                xysize(15, 15)
+                style "scroll_button"
+
                 action Function(scroll_bottom, draft_adj)
+
                 tooltip "Scroll to bottom"
 
     # Scrollable Content 
     fixed: 
-        xysize(650, 480)
-        ypos 35
-        clipping True 
+        style "draft_file_content" 
 
         if _book_transcript.get(log_name, []): 
 
             # Book Transcript 
             $ transcript = print_transcript(log_name)
             
-            use scrollable_content("viewport", spacing=20, top_pad=15, bottom_pad=15, left_pad=10, right_pad=10, yinitial=1.0, yadjustment=draft_adj): 
+            use scrollable_content("viewport", spacing=paragraph_gap, top_pad=content_top_pad, bottom_pad=content_bot_pad, left_pad=content_left_pad, right_pad=content_right_pad, yinitial=1.0, yadjustment=draft_adj): 
 
                 for paragraph in transcript: 
 
                     text paragraph: 
-                        color "#000"
-                        size 18
-                        xfill True 
+                        style "draft_file_paragraph"
+
+define scroll_button_width = 20
+define scroll_button_height = 20 
+define draft_header_width = draft_frame_width
+define draft_header_height = 35
+define draft_content_width = draft_frame_width
+define draft_content_height = 480
+
+style draft_file_header is clipped
+
+style draft_file_header: 
+    xysize(draft_header_width, draft_header_height)
+
+style draft_title_text is bolded
+
+style draft_title_text: 
+    # Center
+    xalign 0.5 
+    yalign 0.5 
+    color "#000"
+    size 22
+
+style auto_scroll_hbox: 
+    # Scooch to the right 
+    xalign 1.0 
+    # Center vertically 
+    yalign 0.5 
+    # Spacing between auto scroll buttons 
+    spacing 2
+
+style scroll_button: 
+    xysize(scroll_button_width, scroll_button_height)
+
+style draft_file_content is clipped
+
+style draft_file_content: 
+    xysize(draft_content_width, draft_content_height)
+    # Top Padding
+    ypos draft_header_height
+
+style draft_file_paragraph: 
+    color "#000"
+    size 18
+    xfill True 
 
 ## Draft Tools screen ##########################################################
 ## 
@@ -2383,15 +3267,11 @@ screen draft_file(log_name="epilogue", book_title="To Be Or Not To Be", book_abr
 
 screen draft_tools(): 
 
-    $ width = 700
-    $ height = 650 - 35
-
     tag tools
 
     fixed: 
-        xysize(width, height)
-        ypos 35
-
+        xysize(draft_window_width, draft_window_height - app_header_height)
+        ypos app_header_height
         clipping True
 
         # Top Toolbar
@@ -2399,15 +3279,13 @@ screen draft_tools():
             style "toolbar"
 
             add "gui/placeholders/Draft Toolbar Placeholder.svg": 
-                xysize (width, 50) # CHANGE TO 30 Later when placeholder is replaced
+                xysize (draft_toolbar_width, draft_toolbar_height)
 
-            # Toolbar content
             frame: 
                 style "toolbar_frame"
 
-                # Toolbar Icons
                 fixed: 
-                    xysize(680, 30)
+                    xysize(draft_toolbar_content_width, draft_toolbar_content_height)
                 
                     # Mode Switch Icons
                     hbox: 
@@ -2517,16 +3395,13 @@ screen draft_tools():
             style "settings_bar"
 
             add "gui/placeholders/Draft Settings Bar Placeholder.svg": 
-                xysize (width, 50)
+                xysize (draft_settings_bar_width, draft_settings_bar_height)
 
-            # Toolbar content
             frame: 
-                
                 style "settings_bar_frame"
 
-                # Toolbar Icons
                 fixed: 
-                    xysize(670, 50)
+                    xysize(draft_settings_bar_content_width, draft_settings_bar_content_height)
 
                     # Save Icons 
                     hbox: 
@@ -2576,28 +3451,41 @@ screen draft_tools():
 
                             tooltip "Settings"
 
-# Toolbar Styles 
-style toolbar: 
-    xsize 700
-    ysize 30
+# Draft Toolbar
+define draft_toolbar_width = draft_window_width
+define draft_toolbar_height = 50  # CHANGE TO 30 Later when placeholder is replaced
+define draft_toolbar_content_width = 680
+define draft_toolbar_content_height = 30
 
-    clipping True
+# Draft Settings Bar
+define draft_settings_bar_width = draft_window_width
+define draft_settings_bar_height = 50
+define draft_settings_bar_content_width = 670
+define draft_settings_bar_content_height = 50
+
+# Toolbar Styles 
+style toolbar is clipped
+
+style toolbar: 
+    xsize draft_toolbar_width
+    ysize 30 # Change to draft_toolbar_height once placeholder is gone and value is fixed in variable
 
 style settings_bar is toolbar: 
-    ysize 50 
+    ysize draft_settings_bar_height 
     yalign 1.0
+
+style toolbar_frame is clipped
 
 style toolbar_frame: 
 
-    xysize(680, 30)
+    xysize(draft_toolbar_content_width, draft_toolbar_content_height)
     padding (0, 0, 0, 0)
     xalign 0.5
     background None
 
-    clipping True
-
 style settings_bar_frame is toolbar_frame: 
-    xysize(670, 50)
+
+    xysize(draft_settings_bar_content_width, draft_settings_bar_content_height)
 
 # Toolbar Icons 
 style toolbar_icon: 
@@ -2976,95 +3864,143 @@ screen computer_ui_locked():
 
     tag cosmetic 
 
+    $ content_width = 430
+    $ content_height = 600
+    $ date_time_container_width = 160
+    $ profile_lock_container_width = 270 
+    $ profile_lock_container_height = 270 
+    $ profile_lock_inner_width = 160 
+    $ profile_lock_inner_height = 160
+    $ locked_icon_width = 30
+    $ locked_icon_height = 35
+
     fixed: 
 
-        xysize(1280, 720)
-
-        clipping True 
+        style "computer_ui_locked"
 
         add "#797979"
 
         # Screen Content
         vbox: 
 
-            xysize(430, 600)
-            xalign 0.5
-            spacing 120
-
-            
-            ypos 95
-
-            clipping True
+            style "computer_ui_locked_vbox"
+            xysize(content_width, content_height)
 
             # Date & Time
             fixed:
+                style "computer_lock_datetime_container"
 
-                xysize(430, 160)
-
-                clipping True 
+                xysize(content_width, date_time_container_width)
 
                 add "#C8C8C8": 
-                    xysize(430, 160)
+                    xysize(content_width, date_time_container_width)
 
                 vbox: 
-                    xalign 0.5
-                    yalign 0.5
-                    spacing 10
-
-                    clipping True
+                    style "computer_lock_datetime_vbox"
 
                     text abyss_date.strftime("%A, %B %d"): 
-                        color "#000"
-                        size 30
+                        style "computer_lock_date"
                         
                     text abyss_time: 
-                        color "#000"
-                        size 60 
-                        xalign 0.5
+                        style "computer_lock_time"
                         
 
             # Profile & Lock
             fixed: 
-                xysize(270, 270)
-                xalign 0.5
 
-                clipping True 
+                style "computer_ui_locked_profile_container"
 
-                # For Enquadrating 
-                # add "#fff": 
-                #    xysize(270, 270)
+                xysize(profile_lock_container_width, profile_lock_container_height)
 
                 vbox: 
 
-                    xysize(270, 270)
-                    spacing 30
+                    style "computer_ui_locked_profile_vbox"
 
-                    clipping True
+                    xysize(profile_lock_container_width, profile_lock_container_height)
 
                     # Profile
                     vbox: 
 
-                        xysize(275, 205)
-                        spacing 10
+                        style "computer_ui_locked_profile"
 
-                        clipping True
+                        xysize(profile_lock_container_width, profile_lock_inner_height)
 
                         # Profile Pic
                         add "#000":
-                            xysize(160, 160)
+                            xysize(profile_lock_inner_width, profile_lock_inner_height)
                             xalign 0.5
                             
 
                         text "[player_name]":
-                            color "#000"
-                            size 30
-                            xalign 0.5
+                            style "computer_ui_locked_name"
                             
                     # Lock
                     add "#000": 
-                        xysize(30, 35)
+                        xysize(locked_icon_width, locked_icon_height)
                         xalign 0.5
 
+# Computer UI Lock Screen
+style computer_ui_locked is clipped
+
+style computer_ui_locked: 
+    xysize(config.screen_width, config.screen_height)
+
+# Computer UI Lock Screen Main Content
+style computer_ui_locked_vbox is clipped
+ 
+style computer_ui_locked_vbox: 
+    # Center Horizontally
+    xalign 0.5
+    # Spacing between Date-Time and Profile-Lock
+    spacing 120
+    # Top Padding 
+    ypos 95
+
+# Computer UI Lock Screen Date & Time Container 
+style computer_lock_datetime_container is clipped
+
+style computer_lock_datetime_vbox: 
+    xalign 0.5 
+    yalign 0.5 
+    spacing 10 # Spacing between Date & Time 
+
+# Computer UI Lock Screen Text
+style computer_lock_text: 
+    color "#000"
+    size 30
+    xalign 0.5 
+
+# Computer UI Lock Screen Date Text
+style computer_lock_date is computer_lock_text
+
+# Computer UI Lock Screen Time Text
+style computer_lock_time is computer_lock_text
+
+style computer_lock_time: 
+    size 60
+
+# Computer UI Lock Screen Profile Container
+style computer_ui_locked_profile_container is clipped 
+
+style computer_ui_locked_profile_container: 
+    xalign 0.5 
+
+# Computer UI Lock Screen Profile Inner Container 
+style computer_ui_locked_profile_vbox is clipped
+
+style computer_ui_locked_profile_vbox: 
+    # Spacing between Profile & Lock 
+    spacing 30
+
+# Computer UI Lock Screen Profile
+style computer_ui_locked_profile is clipped
+
+style computer_ui_locked_profile: 
+    # Spacing between Profile Pic and Player Name
+    spacing 10 
+
+# Computer UI Lock Screen Lock
+style computer_ui_locked_name is computer_lock_text
 
 ################################################################################
 ## Additional screens

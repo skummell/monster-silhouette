@@ -248,7 +248,7 @@ define gui.choice_button_text_insensitive_color = '#8888887f'
 define gui.slot_button_width = 276
 define gui.slot_button_height = 206
 define gui.slot_button_borders = Borders(10, 10, 10, 10)
-define gui.slot_button_text_size = 14
+define gui.slot_button_text_size = 15
 define gui.slot_button_text_xalign = 0.5
 define gui.slot_button_text_idle_color = gui.idle_small_color
 define gui.slot_button_text_selected_idle_color = gui.selected_color
@@ -370,15 +370,15 @@ define gui.history_spacing = 0
 
 ## The position, width, and alignment of the label giving the name of the
 ## speaking character.
-define gui.history_name_xpos = 155
+define gui.history_name_xpos = 240
 define gui.history_name_ypos = 0
-define gui.history_name_width = 155
+define gui.history_name_width = 200
 define gui.history_name_xalign = 1.0
 
 ## The position, width, and alignment of the dialogue text.
-define gui.history_text_xpos = 170
+define gui.history_text_xpos = 320
 define gui.history_text_ypos = 2
-define gui.history_text_width = 740
+define gui.history_text_width = 820
 define gui.history_text_xalign = 0.0
 
 

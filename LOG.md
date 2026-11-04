@@ -706,3 +706,52 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
 - Extensive Source Code Documentation in `docs/`
     - Source Code Documentation ready to launch
     - Covers all of source code so far
+
+#### Oct 31, 2026 
+
+- Documentation First Launch (v1.0.0)
+
+### Nov 1-4, 2026 
+
+- Documentation Patch Update (v1.0.1)
+
+- Project Mid-Term Progress Report 
+
+- Cleaning up screen styles 
+    - Standardize stylization for screens
+        - Set numbers as `define` variables if they are relavant in using for multiple places
+        - Make use of `config.screen_width` when relevant
+        - Use aligns and percentages when possible 
+        - Make use of style's `is` for repeating styles like `clipping True`
+    - Additional screen styling tweaks
+        - Button sizes 
+        - Container positioning 
+        - Etc
+    - Screens touched: 
+        - All Computer UI Screens 
+        - All App Templates 
+        - Meta Screen Template
+        - All Meta Screens
+        - All App Screens
+
+- `gui.rpy` updates 
+    - Meta Screen Styling variables
+
+- `ending_gallery` screen update 
+    - activate endings ending grid layout 
+
+- `about` screen update 
+    - Added content
+    - `options.rpy` : `gui.about`
+
+- `help` screen update
+    - New help guide "MS-Controls"
+    - New screen `controls_help` !
+        - Monster Silhouette controls help guide 
+        - Added keybindings 
+        - Added how to work with hints
+
+- `profile_app` screen update 
+    - Deadline Widget Content Layout & Hook up 
+    - Wallet Tracker Content Layout & Hook up 
+    - Stat Tracker Content Layout & Hook up

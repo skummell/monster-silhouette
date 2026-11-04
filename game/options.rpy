@@ -38,11 +38,17 @@ You've already written everything up to the last chapter and the only thing miss
 Unfortunately you didn't originally have the book planned when you wrote the prequel and now you're stuck on the culprit's identity. 
 Perhaps a source inspiration will come along to help you out. 
 
-Writing / UI Design / Art / Coding by Mel (skummell).
+{size=22}{b}Writing • UI Design • Art • Coding{/b}{/size} by Mel (SkumMell)
 
-{size=30}{b}Official Sources{/b}{/size}
+{size=22}{b}Official Channels{/b}{/size}
 
-{a=https://github.com/skummell/monster-silhouette}GitHub (Source Code){/a}
+{a=https://github.com/skummell/monster-silhouette}Source Code{/a}
+
+{a=https://skummell.github.io/monster-silhouette}Source Code Documentation{/a}
+
+
+{b}Thanks for playing!{/b}
+
 """) # Changed
 
 
@@ -54,7 +60,7 @@ define config.game_menu_action = ShowHome("computer_ui_menu", _zorder=1)
 
 ## Save Delete Key Configuration ###############################################
 ##
-##
+## Delete a Save Slot select by hovering. 
 
 init python: 
     config.keymap['save_delete'] = ['K_d']
