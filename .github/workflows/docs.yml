@@ -4,10 +4,16 @@ on:
     branches:
       - master
       - main
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
 jobs:
   deploy:
     environment:
@@ -31,5 +37,5 @@ jobs:
           path: site
       - uses: actions/deploy-pages@v5.0.1
         id: deployment
-        with: 
+        with:
           error_count: 20
