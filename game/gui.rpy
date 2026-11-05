@@ -435,7 +435,7 @@ define gui.nvl_button_xalign = 0.0
 define gui.language = "unicode"
 
 ################################################################################
-## Positioning & Sizing Dimensions for Screen Style
+## Positioning & Sizing Shared Config for Screen Styles
 ################################################################################
 
 # status_bar : height, logo left padding, gap between right elements 
@@ -569,7 +569,7 @@ define stat_tracker_row_label_height = 22
 define stat_tracker_row_value_width = stat_tracker_row_lock_size * 2
 define stat_tracker_row_value_height = stat_tracker_row_lock_size
 
-# Sta Tracker Row Body 
+# Stat Tracker Row Body 
 define stat_tracker_row_body_width = stat_tracker_content_width - stat_tracker_row_icon_size - stat_tracker_row_value_width - (stat_tracker_row_icon_gap * 2)
 define stat_tracker_row_body_height = stat_tracker_row_label_height + stat_tracker_row_bar_gap + stat_tracker_row_bar_height
 
@@ -670,7 +670,22 @@ define draft_settings_bar_height = 50
 define draft_settings_bar_content_width = 670
 define draft_settings_bar_content_height = 50
 
+# notif_button : button height & width 
 
+define notif_button_width = 315
+define notif_button_height = 74
+
+# timespamp_for_chat : frame padding, content height, frame height
+
+define stamp_frame_pad = 10
+define stamp_content_height = 15
+define stamp_frame_height = stamp_content_height + (stamp_frame_pad * 2)
+
+# wardrobe_panel : panle height & width & spacing 
+
+define wardrobe_panel_width = 420 
+define wardrobe_panel_height = 320
+define wardrobe_panel_spacing = 20 
 
 ################################################################################
 ## Mobile devices

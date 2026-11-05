@@ -733,6 +733,9 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
         - Meta Screen Template
         - All Meta Screens
         - All App Screens
+        - All Overlay Screens
+        - Notif Screens 
+        - Game Mode Screens
 
 - `gui.rpy` updates 
     - Meta Screen Styling variables

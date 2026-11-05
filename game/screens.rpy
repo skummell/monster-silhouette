@@ -105,6 +105,9 @@ style zeroed_frame:
 style bolded: 
     bold True 
 
+style full_screen: 
+    xysize(config.screen_width, config.screen_height)
+
 ################################################################################
 ## In-game screens
 ################################################################################
@@ -457,12 +460,12 @@ style time_text is status_bar_text
 
 # Fill Screen Transform
 transform fill_screen: 
-    xysize (config.screen_width, config.screen_height)
+    xysize(config.screen_width, config.screen_height)
     fit "fill"
 
 # Fill Width Transform
 transform fill_width(height=38): 
-    xysize (config.screen_width, height)
+    xysize(config.screen_width, height)
     fit "fill"
 
 ## Navigation screen ###########################################################
@@ -1970,7 +1973,6 @@ screen exit_disabled_warning(app):
 
     zorder 20
 
-
     frame: 
 
         style "exit_disabled_warning_frame"
@@ -1978,16 +1980,23 @@ screen exit_disabled_warning(app):
         text "{b}Note:{/b} [app] App exit button is currently unavailable. Use ESC shortcut to close out of app.":
             style "exit_disabled_warning_text"
 
+# Exit Disabled Warning Styles
+
+# Exit Disabled Warning Frame
 style exit_disabled_warning_frame:
 
     background gui.muted_color
+    # Center Horizontally 
     xalign 0.5 
+    # Top Padding
     ypos 10
 
+# Exit Disabled Warning Text
 style exit_disabled_warning_text:
 
     size 16 
     color gui.hover_color
+    # Center Horizontally 
     xalign 0.5
     textalign 0.5
 
@@ -2008,12 +2017,18 @@ screen freeze_hint_display():
             text "{b}Hint:{/b} [_current_hint]": 
                 style "freeze_hint_display_text"
 
+# Freeze Hint Display Styles 
+
+# Freeze Hint Display Frame
 style freeze_hint_display_frame: 
 
     background gui.muted_color
+    # Left Padding
     xpos 40
-    ypos 40 
+    # Top Padding 
+    ypos status_bar_height + 2 
 
+# Freeze Hint Display Text
 style freeze_hint_display_text: 
 
     size 16
@@ -2026,6 +2041,9 @@ style freeze_hint_display_text:
 ## This is a template for Notification Buttons 
 
 screen notif_button(app_screen, app_prefix, notif_bg="gui/placeholders/light_gray_background.svg", notif_icon="gui/placeholders/grid_icon_placeholder.svg"): 
+
+    $ icon_height = 58
+    $ icon_width = 52
 
     button: 
 
@@ -2040,7 +2058,7 @@ screen notif_button(app_screen, app_prefix, notif_bg="gui/placeholders/light_gra
             action (Function(show_app, app_screen), Function(hide_app, app_screen + "_notification"))
 
         add notif_bg: 
-            xysize(315, 74)
+            xysize(notif_button_width, notif_button_height)
 
         frame: 
 
@@ -2050,48 +2068,67 @@ screen notif_button(app_screen, app_prefix, notif_bg="gui/placeholders/light_gra
                 style "notif_button_hbox"
 
                 add notif_icon: 
-                    xysize(58, 52)
+                    xysize(icon_height, icon_width)
 
                 vbox: 
 
-                    spacing 10
-                    xalign 0.5
+                    style "notif_button_vbox"
 
                     text "[app_prefix] Notification": 
                         style "notif_button_title"
                     
                     transclude 
 
+# Notif Button Styles 
+
+# Notif Button 
+style notif_button is clipped
 style notif_button: 
 
-    xysize(315, 74)
+    xysize(notif_button_width, notif_button_height)
     xcenter 0.86
     ypos 40
-    clipping True 
 
+# Notif Button Frame 
+style notif_button_frame is clipped
 style notif_button_frame: 
 
+    # Fill to Contents
     xfill True 
     yfill True 
-    background None 
+    # Remove Frame Background
+    background None
+    # Padding 
     padding(15, 10, 15, 10)
+    # Center 
     xalign 0.5
     yalign 0.5
 
-    clipping True 
-
+# Notif Button Content Container
 style notif_button_hbox: 
 
+    # Fill to Contents
     xfill True 
     yfill True 
+    # Center Horizontally 
     xalign 0.5
 
+# Notif Button Text Container
+style notif_button_vbox: 
+    # Center Horizontally 
+    xalign 0.5 
+    # Gap Between notif button text 
+    spacing 10 
+
+# Notif Button Text
 style notif_button_text: 
     color "#000"
     size 15
     textalign 0.5
+    # Center Horizontally 
     xalign 0.5
 
+# Notif Button Title Text 
 style notif_button_title is notif_button_text: 
     size 18
     bold True 
@@ -2961,27 +2998,39 @@ screen timestamp_for_chat(stamp):
             text stamp: 
                 style "chat_stamp_text"
 
-style chat_stamp_frame is clipped
+# Timestamp Styles 
 
+# Chat Stamp Frame
+style chat_stamp_frame is clipped
 style chat_stamp_frame: 
-    ysize 35 
+    # Height of stamp 
+    ysize stamp_frame_height 
+    # Center
     xalign 0.5
     yalign 0.5
-    padding (10, 10, 10, 10)
+    # Padding 
+    padding (stamp_frame_pad, stamp_frame_pad, stamp_frame_pad, stamp_frame_pad)
 
     background "#C8C8C8" 
 
+# Chat Stamp Content Container 
 style chat_stamp_fixed is clipped
 style chat_stamp_fixed:
-    ysize 15
+    # Height of Content Container
+    ysize stamp_content_height
+    # Fill Content Width
     xfit True
+    # Center 
     xalign 0.5
     yalign 0.5
 
+# Chat Stamp Text
 style chat_stamp_text is bolded 
-
 style chat_stamp_text: 
-    ysize 15
+
+    # Match to stamp content container 
+    ysize stamp_content_height
+    # Align Text
     textalign 0.5
     size 14
     color "#000"
@@ -3484,23 +3533,27 @@ screen bedroom(click_map={}):
     tag game 
 
     fixed:
-        xysize(1280, 720)
+        style "bedroom"
 
         # Walls - Backdrop
         add "images/placeholders/bedroom_walls_v1.png":
-            xysize(1280, 720)
+            xysize(config.screen_width, config.screen_height)
 
         # Bookshelf
         add "images/placeholders/bedroom_bookshelf_v1.png":
             xysize(342, 508)
+            # Horizontal Positioning
             xpos 928
+            # Vertical Positioning
             ypos 17
 
         # Wardrobe - Closet Click
         imagebutton:
             idle "images/placeholders/bedroom_wardrobe_v1.png"
             xysize(294, 470)
+            # Horizontal Positioning
             xpos 114
+            # Vertical Positioning
             ypos 62
 
             tooltip "Wardrobe"
@@ -3519,7 +3572,9 @@ screen bedroom(click_map={}):
 
         # Desk + Items
         fixed:
+            # Horizontal Positioning
             xpos 397
+            # Vertical Positioning
             ypos 117
 
             add "images/placeholders/bedroom_desk_v1.png":
@@ -3530,7 +3585,9 @@ screen bedroom(click_map={}):
                 imagebutton:
                     idle "images/placeholders/bedroom_wallet_v1.png"
                     xysize(37, 19)
+                    # Horizontal Positioning
                     xpos 67
+                    # Vertical Positioning
                     ypos 183
 
                     tooltip "Wallet"
@@ -3551,7 +3608,9 @@ screen bedroom(click_map={}):
             imagebutton:
                 idle "images/placeholders/bedroom_key_v1.png"
                 xysize(12, 14)
+                # Horizontal Positioning
                 xpos 103
+                # Vertical Positioning
                 ypos 212
 
                 tooltip "Key"
@@ -3573,7 +3632,9 @@ screen bedroom(click_map={}):
                 imagebutton:
                     idle "images/placeholders/bedroom_laptop_v1.png"
                     xysize(142, 102)
+                    # Horizontal Positioning
                     xpos 369
+                    # Vertical Positioning
                     ypos 106
 
                     tooltip "Laptop"
@@ -3593,15 +3654,20 @@ screen bedroom(click_map={}):
         # Chair
         add "images/placeholders/bedroom_chair_v1.png":
             xysize(142, 323)
+            # Horizontal Positioning
             xpos 600
+            # Vertical Positioning
             ypos 283
 
         # Bed - Bed Click
         imagebutton:
             idle "images/placeholders/bedroom_bed_v1.png"
             xysize(964, 173)
+            # Horizontal Positioning
             xpos 88
+            # Align bottom for vertical positioning
             yanchor 1.0
+            # Vertical Positioning
             ypos 740
 
             tooltip "Bed"
@@ -3618,6 +3684,10 @@ screen bedroom(click_map={}):
                 if "bed" in click_map: 
 
                     action Function(call_prep_script, click_map["bed"])
+
+# Bedroom Styles 
+
+style bedroom is full_screen
 
 # Delete later
 image wardrobe_option = Transform("gui/placeholders/Chat Bubble (Receive).svg", xsize=180, ysize=120)
@@ -3638,32 +3708,22 @@ screen wardrobe_panel(click_map={}):
     $ hover_dress_jeans = "wardrobe_option" if not heavy_pants else "wardrobe_option_selected"
 
     frame: 
-        xalign 0.5
-        yalign 0.5
-        xysize(420, 320)
-        padding(20, 20)
-
-        background None
+        style "wardrobe_panel_frame"
 
         # Background 
         add "#C8C8C8":
-            xysize(420, 320)
+            xysize(wardrobe_panel_width, wardrobe_panel_height)
             xalign 0.5 
             yalign 0.5
-
-        clipping True
 
         vbox: 
 
             hbox:
-                xysize(380, 260)
-                spacing 20
-
-                clipping True
+                style "wardrobe_panel_hbox"
 
                 ## Tops (Left Column)
                 vbox:
-                    spacing 20
+                    style "wardrobe_panel_vbox"
 
                     ## Top Option 1 - Dress Shirt (Semiformal)
                     imagebutton:
@@ -3703,7 +3763,7 @@ screen wardrobe_panel(click_map={}):
 
                 ## Bottoms (Right Column)
                 vbox:
-                    spacing 20
+                    style "wardrobe_panel_vbox"
 
                     ## Bottom Option 1 - Cargo Pants (Many Pockets)
                     imagebutton:
@@ -3741,7 +3801,7 @@ screen wardrobe_panel(click_map={}):
 
             ## Done Button
             textbutton "Dressed":
-                yalign 1.0
+                style "wardrobe_panel_dressed_button"
                 sensitive (top_selected and bottom_selected)
 
                 if button_disabled("closet_busy"): 
@@ -3751,6 +3811,33 @@ screen wardrobe_panel(click_map={}):
                     if "dressed" in click_map:
                         action (SetVariable("closet_clicked", True), Function(close_wardrobe), Function(call_prep_script, click_map["dressed"]))
 
+# Wardrobe Panel Styles 
+
+# Wardrobe Panel Container 
+style wardrobe_panel_frame is clipped
+style wardrobe_panel_frame: 
+    xysize(wardrobe_panel_width, wardrobe_panel_height)
+    # Center 
+    xalign 0.5
+    yalign 0.5
+    padding(wardrobe_panel_spacing, wardrobe_panel_spacing)
+    background None
+
+# Wardrobe Panel Content Container 
+style wardrobe_panel_hbox is clipped
+style wardrobe_panel_hbox: 
+    xysize(380, 260)
+    # Spacing between Columns
+    spacing wardrobe_panel_spacing
+
+# Wardrobe Panel Column 
+style wardrobe_panel_vbox: 
+    spacing wardrobe_panel_spacing
+
+# Wradrobe Panel Dressed Button
+style wardrobe_panel_dressed_button: 
+    # Push to bottom
+    yalign 1.0
 
 ################################################################################
 ## Cosmetic Screens
@@ -3840,15 +3927,14 @@ screen computer_ui_locked():
                         xysize(locked_icon_width, locked_icon_height)
                         xalign 0.5
 
-# Computer UI Lock Screen
-style computer_ui_locked is clipped
+# Computer UI Locked Styles
 
-style computer_ui_locked: 
-    xysize(config.screen_width, config.screen_height)
+# Computer UI Lock Screen
+style computer_ui_locked is full_screen: 
+    clipping True
 
 # Computer UI Lock Screen Main Content
 style computer_ui_locked_vbox is clipped
- 
 style computer_ui_locked_vbox: 
     # Center Horizontally
     xalign 0.5
@@ -3859,8 +3945,8 @@ style computer_ui_locked_vbox:
 
 # Computer UI Lock Screen Date & Time Container 
 style computer_lock_datetime_container is clipped
-
 style computer_lock_datetime_vbox: 
+    # Center
     xalign 0.5 
     yalign 0.5 
     spacing 10 # Spacing between Date & Time 
