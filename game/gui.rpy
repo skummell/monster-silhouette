@@ -434,6 +434,243 @@ define gui.nvl_button_xalign = 0.0
 
 define gui.language = "unicode"
 
+################################################################################
+## Positioning & Sizing Dimensions for Screen Style
+################################################################################
+
+# status_bar : height, logo left padding, gap between right elements 
+
+define status_bar_height = 38
+define status_bar_details_gap = 20
+define ui_logo_left_pad = 20
+
+# navigation_dock : spacing between icons, bottom padding 
+
+define dock_icons_spacing = 30 
+define dock_bottom_pad = 20
+
+# app_grid : gap between grid and status, top padding, spacing between grid elements
+
+define app_grid_status_gap = 112
+define app_grid_top_pad = status_bar_height + app_grid_status_gap
+define app_grid_spacing = 40
+
+# app_screen : gap between content
+
+define app_header_content_gap = 20
+
+# app_header : header height 
+
+define app_header_height = 35
+
+# app_exit : button width & height 
+
+define app_exit_width = 60
+define app_exit_height = app_header_height - 4
+
+# meta_screen : header height, exit button width & height, content bottom padding 
+
+define meta_header_height = 58
+define meta_exit_button_width = 68
+define meta_exit_button_height = meta_header_height - 6
+define meta_content_bottom_pad = 12
+
+# help : right padding for label, label width, label icon width & height 
+
+define label_right_pad = 20
+define label_width = 250
+define label_icon_width = 24 
+define label_icon_height = 24
+
+# ending_gallery : grid entry/element width & height 
+
+define ending_grid_entry_width = 590 
+define ending_grid_entry_height = 130
+
+# profile_app : sections, trackers, deadline widget, wallet tracker content, stat tracker content
+
+# Profile App Sections
+define profile_section_width = 620
+
+# Profile Info
+define profile_info_height = 280
+define profile_info_top_pad = 13
+
+# Profile content
+define profile_content_left_pad = 55
+
+# Tracker Height
+define profile_trackers_height = 200
+
+# Profile Pic
+define profile_pic_top_pad = 95
+define profile_pic_height = 100
+
+# Wallet Tracker
+define wallet_tracker_width = 260
+
+# Stat Tracker
+define stat_tracker_width = 340
+define stat_tracker_left_pad = wallet_tracker_width + 18
+
+# Deadline Widget
+define widget_width = 210
+define widget_height = 75
+
+# Deadline Widget Content 
+define widget_content_width = 190
+define widget_content_height = 55
+
+# Deadline Widget Text 
+define widget_text_width = 105
+define widget_label_height = 20
+define widget_label_top_pad = 5
+define widget_detail_height = 25
+define widget_in_size = 20
+
+# Wallet Tracker Content
+define wallet_tracker_pad = 10
+define wallet_tracker_content_width = wallet_tracker_width - wallet_tracker_pad * 2
+define wallet_tracker_content_height = profile_trackers_height - wallet_tracker_pad * 2
+
+# Wallet Tracker Content Title
+define wallet_tracker_title_height = 30
+define wallet_tracker_title_gap = 5
+
+# Wallet Tracker Map 
+define wallet_tracker_map_width = wallet_tracker_content_width
+define wallet_tracker_map_height = wallet_tracker_content_height - wallet_tracker_title_height - wallet_tracker_title_gap
+
+# Wallet Tracker Location Pin 
+define wallet_tracker_spotter_size = 25
+
+# Stat Tracker Content
+define stat_tracker_pad = 15
+define stat_tracker_content_width = stat_tracker_width - stat_tracker_pad * 2
+define stat_tracker_content_height = profile_trackers_height - stat_tracker_pad * 2
+
+# Stat Tracker Row
+define stat_tracker_row_gap = 10
+define stat_tracker_row_height = (stat_tracker_content_height - stat_tracker_row_gap) // 2
+
+# Stat Tracker Icons
+define stat_tracker_row_icon_size = 40
+define stat_tracker_row_icon_gap = 10
+define stat_tracker_row_lock_size = 20
+
+# Stat Tracker Bars
+define stat_tracker_row_bar_height = 20
+define stat_tracker_row_bar_gap = 0
+
+# Stat Tracker Label 
+define stat_tracker_row_label_height = 22
+
+# Stat Tracker Bar Values
+define stat_tracker_row_value_width = stat_tracker_row_lock_size * 2
+define stat_tracker_row_value_height = stat_tracker_row_lock_size
+
+# Sta Tracker Row Body 
+define stat_tracker_row_body_width = stat_tracker_content_width - stat_tracker_row_icon_size - stat_tracker_row_value_width - (stat_tracker_row_icon_gap * 2)
+define stat_tracker_row_body_height = stat_tracker_row_label_height + stat_tracker_row_bar_gap + stat_tracker_row_bar_height
+
+# Stat Tracker Icon Bottom Pad
+define stat_tracker_icon_bottom = (stat_tracker_row_height + stat_tracker_row_body_height) // 2
+
+# chat_app : container, contact panel container, chat box container  
+
+# Chat App Container
+define chat_app_pad = 15
+
+# Contact Panel Container 
+define contact_panel_width = 230
+define contact_panel_height = 500
+define contact_panel_gap = 20 
+
+# Chat Box Container 
+define chat_box_width = 570
+define chat_box_height = contact_panel_height
+
+# contact_button : button, online status
+
+# Button 
+define contact_button_width = 200
+define contact_button_height = 110
+
+# Status 
+define contact_status_width = 60 
+define contact_status_height = 15
+define contact_status_xpad = 4
+
+# chat_box : header, content, chat bubble, keyboard field
+
+# Chat Box Header
+define chat_box_header_width = chat_box_width
+define chat_box_header_height = 40 
+
+# Chat Box Comtent
+define chat_box_content_width = chat_box_width
+define chat_box_content_height = 410
+define chat_box_content_top_pad = 40
+
+# Chat Bubble 
+define chat_box_bubble_content_width = chat_box_content_width - chat_box_content_top_pad
+define chat_box_bubble_content_height = chat_box_content_height - chat_box_content_top_pad
+
+# Chat Box Keyboard
+define chat_box_key_width = 500
+define chat_box_key_height = 40
+
+# chat_bubble : width & text height 
+
+define chat_bubble_width = 240 
+define chat_bubble_text_height = chat_bubble_width - 40 
+
+# draft app : window, scrollable area, frame 
+
+# Draft App Window
+define draft_window_width = 700
+define draft_window_height = 650 
+
+# Scrollable Area 
+define draft_scroll_width = draft_window_width - 30
+define draft_scroll_height = draft_window_height - 75
+
+# Draft Frame
+define draft_frame_width = draft_scroll_width - 20
+
+# draft_file : auto scroll buttons, header, content 
+
+# Auto Scroll Buttons
+define scroll_button_width = 20
+define scroll_button_height = 20 
+
+# Draft File Header 
+define draft_header_width = draft_frame_width
+define draft_header_height = 35
+
+# Draft File Content 
+define draft_content_width = draft_frame_width
+define draft_content_height = 480
+
+# draft_tool : toolbar & settings bar 
+
+# Draft Toolbar
+define draft_toolbar_width = draft_window_width
+define draft_toolbar_height = 50  # CHANGE TO 30 Later when placeholder is replaced
+
+# Draft Toolbar Content 
+define draft_toolbar_content_width = 680
+define draft_toolbar_content_height = 30
+
+# Draft Settings Bar
+define draft_settings_bar_width = draft_window_width
+define draft_settings_bar_height = 50
+
+# Draft Settings Bar Content 
+define draft_settings_bar_content_width = 670
+define draft_settings_bar_content_height = 50
+
+
 
 ################################################################################
 ## Mobile devices

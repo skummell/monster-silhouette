@@ -397,18 +397,16 @@ screen status_bar():
 
                         tooltip "Return"
 
-# Positioning Dimensions for status_bar
-define status_bar_height = 38
-define status_bar_details_gap = 20
-define ui_logo_left_pad = 20
+# Status Bar Styles
 
 # Status Bar Content Frame 
-style status_bar_frame is zeroed_frame 
-style status_bar_frame is clipped
+style status_bar_frame is clipped: 
+    background None
+    padding(0, 0)
+    margin(0, 0)
 
+# Status Bar Icons & Details Container
 style status_bar_hbox is clipped
-
-# Status Bar Icons & Details Container 
 style status_bar_hbox: 
 
     # Same pad to the right as the logo has to the left
@@ -431,7 +429,6 @@ style status_bar_text_container:
 
 # Status Bar Date Text Container 
 style date_text_container is status_bar_text_container
-
 style date_text_container: 
 
     # Date Text Container Width
@@ -439,7 +436,6 @@ style date_text_container:
 
 # Status Bar Time Text Container
 style time_text_container is status_bar_text_container
-
 style time_text_container: 
 
     # Time Text Container Width 
@@ -457,7 +453,6 @@ style status_bar_text:
 style date_text is status_bar_text 
 
 # Status Bar Time Text
-style time_text is default
 style time_text is status_bar_text
 
 # Fill Screen Transform
@@ -586,9 +581,7 @@ screen navigation_dock():
 
             tooltip "Start Screen"
 
-# Positioning Dimensions for navigation_dock
-define dock_icons_spacing = 30 
-define dock_bottom_pad = 20
+# Navigation Dock Styles 
 
 # Docks at the bottom of the screen 
 style bottom_dock: 
@@ -678,10 +671,8 @@ screen app_grid():
                     
                 text tooltip style "tooltip_text"
 
-# Positioning Dimensions for app_grid
-define app_grid_status_gap = 112
-define app_grid_top_pad = status_bar_height + app_grid_status_gap
-define app_grid_spacing = 40
+
+# App Grid Styles
 
 # App Grid 
 style app_grid: 
@@ -761,14 +752,13 @@ screen app_screen(window_width, window_height, content_width, content_height, sc
             if tool_screen != None: 
                 use expression tool_screen
 
-# Positioning Dimensions for app_screen
-define app_header_content_gap = 20
+# App Screen Styles
 
 # App Screen Window
-style app_window is clipped
-style app_window is zeroed_frame
-
-style app_window: 
+style app_window is clipped: 
+    background None
+    padding(0, 0)
+    margin(0, 0)
     xalign 0.5
     yalign 0.5
 
@@ -781,8 +771,10 @@ transform app_main_content(content_width, content_height):
     xalign 0.5
     ypos app_header_height + app_header_content_gap
 
-style app_main_content is zeroed_frame
-style app_main_content is clipped
+style app_main_content is clipped:
+    background None
+    padding(0, 0)
+    margin(0, 0)
 
 ## App Header screen ###########################################################
 ##
@@ -814,12 +806,14 @@ screen app_header(window_width, screen_title):
 
                 style "app_header_title"
 
-# Positioning Dimensions for app_header
-define app_header_height = 35
+# App Header Styles
 
 # App Header Frame
 style app_header_frame is zeroed_frame 
-style app_header_frame is clipped
+style app_header_frame is clipped: 
+    background None
+    padding(0, 0)
+    margin(0, 0)
 
 # App Header Content Container
 style app_header_content is clipped
@@ -860,9 +854,7 @@ screen app_exit(id_name):
         
             action Hide()
 
-# Positioning Dimensions for app_exit
-define app_exit_width = 60
-define app_exit_height = app_header_height - 4
+# App Exit Styles
 
 # App Exit Button
 style app_exit_button: 
@@ -1115,11 +1107,7 @@ screen meta_screen(title, scroll=None, yinitial=0.0, spacing=0, **kwargs):
                 use scrollable_content(scroll, yinitial, spacing, **kwargs): 
                     transclude
 
-# Positioning Dimensions for meta_screen
-define meta_header_height = 58
-define meta_exit_button_width = 68
-define meta_exit_button_height = meta_header_height - 6
-define meta_content_bottom_pad = 12
+# Meta Screen Styles
 
 # Meta Screen Header Title 
 style meta_header_title is bolded 
@@ -1841,10 +1829,7 @@ screen controls_help():
 
         text _("Click for a hint to progress.")
 
-define label_right_pad = 20
-define label_width = 250
-define label_icon_width = 24 
-define label_icon_height = 24
+# Help Styles
 
 style help_button is gui_button
 style help_button_text is gui_button_text
@@ -1941,9 +1926,9 @@ screen ending_gallery():
                         style "ending_gallery_grid_entry"
                         add "#000": 
                             xysize(ending_grid_entry_width, ending_grid_entry_height)
-            
-define ending_grid_entry_width = 590 
-define ending_grid_entry_height = 130
+
+
+# Ending Gallery Styles 
 
 style ending_gallery is clipped
 
@@ -1955,7 +1940,6 @@ style ending_gallery_zero_vbox:
     spacing 40 
 
 style ending_gallery_zero_text is label_text
-
 style ending_gallery_zero_text:
     xalign 0.5
     color "#000"
@@ -2374,60 +2358,7 @@ screen profile_app():
                                     xalign 1.0
                                     yalign 0.5
 
-# Profile App Sections
-define profile_section_width = 620
-define profile_info_height = 280
-define profile_info_top_pad = 13
-define profile_content_left_pad = 55
-define profile_trackers_height = 200
-define profile_pic_top_pad = 95
-define profile_pic_height = 100
-
-# Trackers
-define wallet_tracker_width = 260
-define stat_tracker_width = 340
-define stat_tracker_left_pad = wallet_tracker_width + 18
-
-# Deadline Widget
-define widget_width = 210
-define widget_height = 75
-define widget_content_width = 190
-define widget_content_height = 55
-define widget_text_width = 105
-define widget_label_height = 20
-define widget_label_top_pad = 5
-define widget_detail_height = 25
-define widget_in_size = 20
-
-# Wallet Tracker Content
-define wallet_tracker_pad = 10
-define wallet_tracker_content_width = wallet_tracker_width - wallet_tracker_pad * 2
-define wallet_tracker_content_height = profile_trackers_height - wallet_tracker_pad * 2
-define wallet_tracker_title_height = 30
-define wallet_tracker_title_gap = 5
-define wallet_tracker_map_width = wallet_tracker_content_width
-define wallet_tracker_map_height = wallet_tracker_content_height - wallet_tracker_title_height - wallet_tracker_title_gap
-define wallet_tracker_spotter_size = 25
-
-# Stat Tracker Content
-define stat_tracker_pad = 15
-define stat_tracker_content_width = stat_tracker_width - stat_tracker_pad * 2
-define stat_tracker_content_height = profile_trackers_height - stat_tracker_pad * 2
-define stat_tracker_row_gap = 10
-define stat_tracker_row_height = (stat_tracker_content_height - stat_tracker_row_gap) // 2
-define stat_tracker_row_icon_size = 40
-define stat_tracker_row_bar_height = 20
-define stat_tracker_row_icon_gap = 10
-define stat_tracker_row_lock_size = 20
-define stat_tracker_row_value_width = stat_tracker_row_lock_size * 2
-define stat_tracker_row_value_height = stat_tracker_row_lock_size
-define stat_tracker_row_body_width = stat_tracker_content_width - stat_tracker_row_icon_size - stat_tracker_row_value_width - (stat_tracker_row_icon_gap * 2)
-define stat_tracker_row_label_height = 22
-define stat_tracker_row_bar_height = 20
-define stat_tracker_row_bar_gap = 0
-define stat_tracker_row_lock_size = 20
-define stat_tracker_row_body_height = stat_tracker_row_label_height + stat_tracker_row_bar_gap + stat_tracker_row_bar_height
-define stat_tracker_icon_bottom = (stat_tracker_row_height + stat_tracker_row_body_height) // 2
+# Profile App Styles 
 
 # Profile Info Section
 style profile_info is clipped
@@ -2717,12 +2648,7 @@ screen chat_app():
                 if active_contact: 
                     use chat_box(active_contact)
 
-define chat_app_pad = 15
-define contact_panel_width = 230
-define contact_panel_height = 500
-define contact_panel_gap = 20 
-define chat_box_width = 570
-define chat_box_height = contact_panel_height
+# Chat App Styles 
 
 # Chat App Main Content Container
 style chat_app is clipped
@@ -2818,11 +2744,7 @@ screen contact_button(name, avatar="#808080"):
                 style "chat_online_status_text"
                 color color
 
-define contact_button_width = 200
-define contact_button_height = 110
-define contact_status_width = 60 
-define contact_status_height = 15
-define contact_status_xpad = 4
+# Contact Button Styles
 
 style chat_online_status_text is bolded 
 
@@ -2946,18 +2868,9 @@ screen chat_box(contact):
             ypos 5
             xysize(chat_box_key_width, chat_box_key_height)
 
-define chat_box_header_width = chat_box_width
-define chat_box_header_height = 40 
-define chat_box_content_width = chat_box_width
-define chat_box_content_height = 410
-define chat_box_content_top_pad = 40
-define chat_box_bubble_content_width = chat_box_content_width - chat_box_content_top_pad
-define chat_box_bubble_content_height = chat_box_content_height - chat_box_content_top_pad
-define chat_box_key_width = 500
-define chat_box_key_height = 40
+# Chat Box Styles 
 
 style chat_box_header is clipped
-
 style chat_box_header:
     xysize(chat_box_header_width, chat_box_header_height)
 
@@ -3014,17 +2927,14 @@ screen chat_bubble(who, what):
                 style "chat_bubble_text"
                 color bubble_text_color
 
-define chat_bubble_width = 240 
-define chat_bubble_text_height = chat_bubble_width - 40 
+# Chat Bubble Styles
 
 style chat_bubble_frame is clipped 
-
 style chat_bubble_frame: 
     xsize chat_bubble_width
     padding (20, 10, 20, 10)
 
 style chat_bubble_content is clipped 
-
 style chat_bubble_content:
     xsize chat_bubble_text_height
     yfit True
@@ -3130,11 +3040,7 @@ screen draft_app():
 
             use draft_file()
 
-define draft_window_width = 700
-define draft_window_height = 650 
-define draft_scroll_width = draft_window_width - 30
-define draft_scroll_height = draft_window_height - 75
-define draft_frame_width = draft_scroll_width - 20
+# Draft App Styles
 
 style draft_app_frame is clipped 
 
@@ -3216,20 +3122,12 @@ screen draft_file(log_name="epilogue", book_title="To Be Or Not To Be", book_abr
                     text paragraph: 
                         style "draft_file_paragraph"
 
-define scroll_button_width = 20
-define scroll_button_height = 20 
-define draft_header_width = draft_frame_width
-define draft_header_height = 35
-define draft_content_width = draft_frame_width
-define draft_content_height = 480
 
 style draft_file_header is clipped
-
 style draft_file_header: 
     xysize(draft_header_width, draft_header_height)
 
 style draft_title_text is bolded
-
 style draft_title_text: 
     # Center
     xalign 0.5 
@@ -3249,7 +3147,6 @@ style scroll_button:
     xysize(scroll_button_width, scroll_button_height)
 
 style draft_file_content is clipped
-
 style draft_file_content: 
     xysize(draft_content_width, draft_content_height)
     # Top Padding
@@ -3451,21 +3348,10 @@ screen draft_tools():
 
                             tooltip "Settings"
 
-# Draft Toolbar
-define draft_toolbar_width = draft_window_width
-define draft_toolbar_height = 50  # CHANGE TO 30 Later when placeholder is replaced
-define draft_toolbar_content_width = 680
-define draft_toolbar_content_height = 30
-
-# Draft Settings Bar
-define draft_settings_bar_width = draft_window_width
-define draft_settings_bar_height = 50
-define draft_settings_bar_content_width = 670
-define draft_settings_bar_content_height = 50
+# Draft Tools Styles 
 
 # Toolbar Styles 
 style toolbar is clipped
-
 style toolbar: 
     xsize draft_toolbar_width
     ysize 30 # Change to draft_toolbar_height once placeholder is gone and value is fixed in variable
@@ -3475,7 +3361,6 @@ style settings_bar is toolbar:
     yalign 1.0
 
 style toolbar_frame is clipped
-
 style toolbar_frame: 
 
     xysize(draft_toolbar_content_width, draft_toolbar_content_height)
@@ -3483,7 +3368,8 @@ style toolbar_frame:
     xalign 0.5
     background None
 
-style settings_bar_frame is toolbar_frame: 
+style settings_bar_frame is toolbar_frame
+style settings_bar_frame: 
 
     xysize(draft_settings_bar_content_width, draft_settings_bar_content_height)
 
@@ -3494,29 +3380,36 @@ style toolbar_icon:
 
 style edit_icon is toolbar_icon
 
-style read_icon is toolbar_icon: 
+style read_icon is toolbar_icon
+style read_icon: 
     xsize 30
 
 style cp_icon is toolbar_icon
 
-style cut_icon is toolbar_icon: 
+style cut_icon is toolbar_icon
+style cut_icon: 
     xsize 25
 
-style mic_icon is toolbar_icon: 
+style mic_icon is toolbar_icon
+style mic_icon: 
     xsize 16
 
-style print_icon is toolbar_icon: 
+style print_icon is toolbar_icon
+style print_icon: 
     xsize 27
 
-style share_icon is toolbar_icon: 
+style share_icon is toolbar_icon
+style share_icon: 
     xsize 22
 
-style more_icon is toolbar_icon: 
+style more_icon is toolbar_icon
+style more_icon: 
     xsize 20
 
 style folder_icon is toolbar_icon
 
-style file_icon is toolbar_icon: 
+style file_icon is toolbar_icon
+style file_icon: 
     xsize 60
 
 # Settings Icons 
@@ -3524,15 +3417,18 @@ style settings_icon:
     xsize 20
     ysize 20
 
-style save_mode_icon is settings_icon: 
+style save_mode_icon is settings_icon
+style save_mode_icon: 
     xsize 80
 
 style save_status_icon is settings_icon
 
-style starred_icon is settings_icon: 
+style starred_icon is settings_icon
+style starred_icon: 
     xysize(22, 22)
 
-style gear_icon is settings_icon: 
+style gear_icon is settings_icon
+style gear_icon: 
     xysize(30, 30)
 
 # Toolbar Icon Tuples
@@ -3544,11 +3440,13 @@ style toolbar_icon_tuple:
 
 style mode_switch_icons is toolbar_icon_tuple
 
-style misc_icons is toolbar_icon_tuple: 
+style misc_icons is toolbar_icon_tuple
+style misc_icons: 
     # Edit Icon (18) + Spacing (10) + Read Icon (30) + Gap Between Tuple [mode_switch_icons & misc_icons] (80)
     xpos (18 + 10 + 30 + 80)
 
-style open_files_icons is toolbar_icon_tuple: 
+style open_files_icons is toolbar_icon_tuple
+style open_files_icons: 
     xalign 1.0
 
 # Setting Icons Tuples
@@ -3558,16 +3456,19 @@ style settings_icon_tuple:
     xfit True 
     yalign 0.5
 
-style save_icons is settings_icon_tuple: 
+style save_icons is settings_icon_tuple
+style save_icons: 
     ysize 20
 
-style star_icons is settings_icon_tuple: 
+style star_icons is settings_icon_tuple
+style star_icons: 
 
     ysize 22
     # Save Mode Icon (80) + Spacing (10) + Save Status Icon (20) + Gap Between Tuple [save_icons & star_icons] (40)
     xpos (80 + 10 + 20 + 40)
 
-style option_icons is settings_icon_tuple: 
+style option_icons is settings_icon_tuple
+style option_icons: 
     xalign 1.0
 
 ################################################################################
