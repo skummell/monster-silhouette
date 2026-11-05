@@ -1075,7 +1075,7 @@ screen meta_screen(title, scroll=None, yinitial=0.0, spacing=0, **kwargs):
 
             at fill_width(meta_header_height)
 
-            clipping True 
+            style "clipped"
 
             add "gui/placeholders/meta_screen_header.svg": 
                 at fill_width(meta_header_height)
@@ -1885,8 +1885,6 @@ screen ending_gallery():
                 vbox: 
                     style "ending_gallery_zero_vbox"
 
-                    clipping True
-
                     add "#000": 
                         xysize(ending_lock_icon_width, ending_lock_icon_height)
                         xalign 0.5
@@ -1936,6 +1934,7 @@ screen ending_gallery():
 style ending_gallery is clipped
 
 # Ending Gallery Zero Endings Main Content Container 
+style ending_gallery_zero_vbox is clipped
 style ending_gallery_zero_vbox: 
     xysize(655, 415)
     xalign 0.5
@@ -2288,10 +2287,7 @@ screen profile_app():
                             xysize(wallet_tracker_map_width, wallet_tracker_map_height)
 
                         vbox: 
-                            xalign 0.5
-                            yalign 0.7
-                            spacing 4
-                            clipping True
+                            style "wallet_tracker_map_spotter"
 
                             add "#C8C8C8":
                                 xysize(wallet_tracker_spotter_size, wallet_tracker_spotter_size)
@@ -2317,9 +2313,7 @@ screen profile_app():
 
                         # Icon + Body
                         hbox:
-                            yanchor 1.0
-                            ypos stat_tracker_icon_bottom
-                            spacing stat_tracker_row_icon_gap
+                            style "stat_tracker_body"
 
                             add "#5E5E5E":
                                 xysize(stat_tracker_row_icon_size, stat_tracker_row_icon_size)
@@ -2359,9 +2353,7 @@ screen profile_app():
 
                         # Icon + Body
                         hbox:
-                            yanchor 1.0
-                            ypos stat_tracker_icon_bottom
-                            spacing stat_tracker_row_icon_gap
+                            style "stat_tracker_body"
 
                             add "#5E5E5E":
                                 xysize(stat_tracker_row_icon_size, stat_tracker_row_icon_size)
@@ -2518,7 +2510,6 @@ style wallet_tracker_content:
 
 # Wallet Tracker Title
 style wallet_tracker_title is bolded
-
 style wallet_tracker_title:
     xsize(wallet_tracker_content_width)
     ysize(wallet_tracker_title_height)
@@ -2529,13 +2520,19 @@ style wallet_tracker_title:
 
 # Wallet Tracker Map
 style wallet_tracker_map is clipped
-
 style wallet_tracker_map:
     xysize(wallet_tracker_map_width, wallet_tracker_map_height)
 
+style wallet_tracker_map_spotter is clipped: 
+    # Center Horizontally
+    xalign 0.5
+    # Push to the right about half way to the corner
+    yalign 0.7
+    # Spacing between spotter and Text
+    spacing 4
+
 # Wallet Tracker Location Text
 style wallet_tracker_location_text is bolded
-
 style wallet_tracker_location_text:
     size 14
     color "#C8C8C8"
@@ -2544,14 +2541,12 @@ style wallet_tracker_location_text:
 
 # Stat Tracker
 style stat_tracker is clipped
-
 style stat_tracker: 
     xysize(stat_tracker_width, profile_trackers_height)
     xpos stat_tracker_left_pad
 
 # Stat Tracker Content
 style stat_tracker_content is clipped
-
 style stat_tracker_content:
     xysize(stat_tracker_content_width, stat_tracker_content_height)
     xalign 0.5
@@ -2560,13 +2555,19 @@ style stat_tracker_content:
 
 # Stat Tracker Row
 style stat_tracker_row is clipped
-
 style stat_tracker_row:
     xysize(stat_tracker_content_width, stat_tracker_row_height)
 
+style stat_tracker_body:
+    # Push to the right 
+    yanchor 1.0
+    # Match the bottom padding of icon 
+    ypos stat_tracker_icon_bottom
+    # Gap between rows
+    spacing stat_tracker_row_icon_gap
+
 # Stat Tracker Row Body
 style stat_tracker_row_body is clipped
-
 style stat_tracker_row_body:
     xsize(stat_tracker_row_body_width)
     yfit True
@@ -2575,7 +2576,6 @@ style stat_tracker_row_body:
 
 # Stat Tracker Row Label
 style stat_tracker_row_label is bolded
-
 style stat_tracker_row_label:
     xsize(stat_tracker_row_body_width)
     size 16
@@ -2593,7 +2593,6 @@ style stat_tracker_row_bar_locked is stat_tracker_row_bar:
 
 # Stat Tracker Row Value Container
 style stat_tracker_row_value_container is clipped
-
 style stat_tracker_row_value_container:
     xysize(stat_tracker_row_value_width, stat_tracker_row_value_height)
     xalign 1.0
@@ -2602,7 +2601,6 @@ style stat_tracker_row_value_container:
 
 # Stat Tracker Row Value
 style stat_tracker_row_value is bolded
-
 style stat_tracker_row_value:
     xalign 1.0
     yalign 0.5
