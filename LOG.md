@@ -758,3 +758,24 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
     - Deadline Widget Content Layout & Hook up 
     - Wallet Tracker Content Layout & Hook up 
     - Stat Tracker Content Layout & Hook up
+
+### Nov 5, 2026 
+
+- Usable Lounge - Looking In Background Progression 
+    - 1 Point Perspective
+    - Completed: 
+        - Counter
+        - Table & Chairs
+        - Kitchen Door
+    - In Progress: 
+        - Background Props
+
+- Tooltip Hover Debugging & Update
+    - Debugging: 
+        - Remove Tooltip from App Grid
+        - Move into its own screen 
+        - Use in `computer_ui_menu` and `app_screen` for rendering inside of game menu which has suppress overlay
+    - New screen `tooltip_hover`!
+        - Overlay Screen 
+        - Styles : 
+            - WIP

@@ -80,17 +80,6 @@ style frame:
     padding gui.frame_borders.padding
     background Frame("gui/frame.png", gui.frame_borders, tile=gui.frame_tile)
 
-style tooltip_frame: 
-    background "#5E5E5E"
-    xpadding 12 
-    ypadding 4
-
-style tooltip_text: 
-    size 14 
-    color "#C8C8C8"
-    xalign 0.5
-    textalign 0.5
-
 # Set Clipping to True
 style clipped: 
     clipping True
@@ -296,6 +285,7 @@ init python:
     config.overlay_screens.append("quick_menu")
     config.overlay_screens.append("status_bar")
     config.overlay_screens.append("freeze_hint_display")
+    config.overlay_screens.append("tooltip_hover")
 
 default quick_menu = True
 default status_bar = False
@@ -467,6 +457,53 @@ transform fill_screen:
 transform fill_width(height=38): 
     xysize(config.screen_width, height)
     fit "fill"
+
+## Tooltip Hover screen ###############################################################
+##
+## This screen is used to display tooltips when hovering over buttons and other elements 
+## that have tooltips defined.
+
+screen tooltip_hover():
+
+    zorder 200
+
+    # Tooltip
+    $ tooltip = GetTooltip()
+    
+    if tooltip: 
+
+        nearrect:
+            focus "tooltip"
+            prefer_top True
+
+            frame:
+                style "tooltip_frame"
+                    
+                text tooltip style "tooltip_text"
+
+# Tooltip Hover Styles 
+
+# Tooltip Frame
+style tooltip_frame: 
+    background "#5E5E5E"
+    # Horizontal Padding 
+    xpadding 12 
+    # Vertical Padding
+    ypadding 4
+    # Center Horizontally 
+    xalign 0.5
+    # Height 
+    ysize 45
+    # Vertical Margin
+    ymargin 10
+
+# Tooltip Text
+style tooltip_text: 
+    size 14 
+    color "#C8C8C8"
+    # Center Horizontally
+    xalign 0.5
+    textalign 0.5
 
 ## Navigation screen ###########################################################
 ##
@@ -656,25 +693,6 @@ screen app_grid():
             add "gui/placeholders/grid_icon_placeholder.svg"
             add "gui/placeholders/grid_icon_placeholder.svg"
 
-        
-    # Tooltip
-    $ tooltip = GetTooltip()
-    
-    if tooltip: 
-
-        nearrect:
-            focus "tooltip"
-            prefer_top True
-
-            frame:
-                style "tooltip_frame"
-                xalign 0.5
-                ysize 45
-                ymargin 10
-                    
-                text tooltip style "tooltip_text"
-
-
 # App Grid Styles
 
 # App Grid 
@@ -754,6 +772,8 @@ screen app_screen(window_width, window_height, content_width, content_height, sc
 
             if tool_screen != None: 
                 use expression tool_screen
+    
+    use tooltip_hover
 
 # App Screen Styles
 
@@ -948,6 +968,7 @@ screen computer_ui_menu():
     
     use computer_ui
     use status_bar
+    use tooltip_hover
 
 ## Computer UI screen (Custom Game Screen) #####################################
 ##
