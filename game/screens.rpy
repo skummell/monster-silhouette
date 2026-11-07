@@ -623,56 +623,24 @@ screen navigation_dock():
             style "navigation_dock"
 
             # History - Icon Button 
-            imagebutton:
-                idle "gui/placeholders/dock_icon_placeholder.svg"
-
-                action ShowMenu("history")
-
-                tooltip "History"
-                    
+            use dock_button("history", "History")
 
             # Save & Load - Icon Button
-            imagebutton: 
-                idle "gui/placeholders/dock_icon_placeholder.svg"
-
-                action ShowMenu("save_load")
-
-                tooltip "Save & Load"
-                
+            use dock_button("save_load", "Save & Load")
 
             # Preferences - Icon Button 
-            imagebutton: 
-                idle "gui/placeholders/dock_icon_placeholder.svg"
-
-                action ShowMenu("preferences")
-
-                tooltip "Preferences"
+            use dock_button("preferences", "Preferences")
 
             # Ending Gallery - Icon Button 
-            imagebutton: 
-                idle "gui/placeholders/dock_icon_placeholder.svg"
-
-                action ShowMenu("ending_gallery")
-
-                tooltip "Endings"
+            use dock_button("ending_gallery", "Endings")
 
             # About - Icon Button 
-            imagebutton: 
-                idle "gui/placeholders/dock_icon_placeholder.svg"
-
-                action ShowMenu("about")
-
-                tooltip "About"
+            use dock_button("about", "About")
 
             # Help - Icon Button 
             if renpy.variant("pc") or renpy.variant("web") and not renpy.variant("mobile"): 
                 ## Help isn't necessary or relevant to mobile devices. 
-                imagebutton: 
-                    idle "gui/placeholders/dock_icon_placeholder.svg"
-
-                    action ShowMenu("help")
-
-                    tooltip "Help"
+                use dock_button("help", "Help")
     
     if _in_replay: 
         
@@ -715,6 +683,19 @@ style power_off_button:
     # Push to the right corner of the screen
     xalign 0.95
 
+## Dock Button Template ########################################################
+##
+## Template for Dock Buttons (History, Save & Load, Preferences, Endings, About, Help)
+
+screen dock_button(page_name, tooltip, dock_icon="gui/placeholders/dock_icon_placeholder.svg"):
+
+    imagebutton:
+
+        idle dock_icon
+
+        action ShowMenu(page_name)
+
+        tooltip tooltip
 
 ## App Grid screen #############################################################
 ## This screen display in-game apps inside the Computer UI 
@@ -1922,7 +1903,7 @@ screen controls_help():
 
             add "#000" xysize(label_icon_width, label_icon_height) yalign 0.5 xalign 1.0
 
-        text _("Click for a hint to progress.")
+        text _("Click for a hint when available.")
 
 # Help Styles
 
@@ -2133,8 +2114,8 @@ style freeze_hint_display_text:
 
 screen notif_button(app_screen, app_prefix, notif_bg="gui/placeholders/light_gray_background.svg", notif_icon="gui/placeholders/grid_icon_placeholder.svg"): 
 
-    $ icon_height = 58
-    $ icon_width = 52
+    $ icon_width = 58
+    $ icon_height = 52
 
     button: 
 
@@ -2159,7 +2140,7 @@ screen notif_button(app_screen, app_prefix, notif_bg="gui/placeholders/light_gra
                 style "notif_button_hbox"
 
                 add notif_icon: 
-                    xysize(icon_height, icon_width)
+                    xysize(icon_width, icon_height)
 
                 vbox: 
 

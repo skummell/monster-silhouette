@@ -759,16 +759,15 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
     - Wallet Tracker Content Layout & Hook up 
     - Stat Tracker Content Layout & Hook up
 
-### Nov 5, 2026 
+### Nov 5-6, 2026 
 
 - Usable Lounge - Looking In Background Progression 
     - 1 Point Perspective
-    - Completed: 
+    - Elements: 
         - Counter
         - Table & Chairs
         - Kitchen Door
-    - In Progress: 
-        - Background Props
+        - Background Props (Tea Pot, Tea Bags, Tea Cups, Bonsai)
 
 - Tooltip Hover Debugging & Update
     - Debugging: 
@@ -798,3 +797,6 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
         - For long tooltips (Profile Previews & Wardrobe Selections)
         - Call in buttons instead of a long tooltip line right inside button 
 
+- New screen : `dock_button`
+    - Template Screen 
+    - For Navigation Dock - Meta Screen Access Buttons 
