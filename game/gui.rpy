@@ -584,7 +584,7 @@ define chat_app_pad = 15
 # Contact Panel Container 
 define contact_panel_width = 230
 define contact_panel_height = 500
-define contact_panel_gap = 20 
+define contact_panel_gap = 10 
 
 # Chat Box Container 
 define chat_box_width = 570
@@ -593,8 +593,8 @@ define chat_box_height = contact_panel_height
 # contact_button : button, online status
 
 # Button 
-define contact_button_width = 200
-define contact_button_height = 110
+define contact_button_width = 205
+define contact_button_height = 87
 
 # Status 
 define contact_status_width = 60 

@@ -1087,12 +1087,18 @@ screen scrollable_content(scroll=None, yinitial=0.0, spacing=0, scrollbars="vert
 
     elif scroll == "vpgrid":
         vpgrid:
-            xfill True
-            yfill True
+            if vp_width: 
+                xsize vp_width
+            else: 
+                xfill True
+            if vp_height: 
+                ysize vp_height
+            else: 
+                yfill True
             side_xfill True
             cols 1
-            yinitial yinitial
-            scrollbars (scrollbars if scrollbars else "vertical")
+            yinitial yinitial 
+            scrollbars scrollbars
             vscrollbar_unscrollable "hide"
             mousewheel True
             draggable True
@@ -2729,7 +2735,7 @@ screen chat_app():
                     yalign 0.5
 
                     # Contact List
-                    use scrollable_content("viewport", spacing=contact_panel_gap, scrollbars=None, vp_width=contact_panel_content_width, vp_height=contact_panel_content_height): 
+                    use scrollable_content("vpgrid", spacing=contact_panel_gap, scrollbars=None, vp_width=contact_panel_content_width, vp_height=contact_panel_content_height): 
 
                         # And (Theo) - Contact Button 
                         use contact_button("And", tooltip=tooltip_content["chat_t"])
@@ -2890,7 +2896,7 @@ style chat_contact:
 style chat_contact_text is bolded 
 style chat_contact_text: 
     xalign 0.5
-    size 18
+    size 16
     color "#000"
     textalign 0.5
 
