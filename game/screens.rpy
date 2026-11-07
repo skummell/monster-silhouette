@@ -3796,61 +3796,33 @@ screen wardrobe_panel(click_map={}):
                     use clothing_sprite("dress_shirt", "wardrobe_option", hover_dress_shirt, "wardrobe_option_selected", dress_shirt_script, tooltip_content["dress_shirt"])
 
                     ## Top Option 2 - Turtle Neck (Contour)
-                    imagebutton:
-                        idle "wardrobe_option"
-                        hover hover_turtle_neck
-                        selected_idle "wardrobe_option_selected"
+                    if "turtle_neck" in click_map:
+                        $ turtle_neck_script = click_map["turtle_neck"]
+                    else: 
+                        $ turtle_neck_script = None
 
-                        selected contour_top
-                        
-                        tooltip tooltip_content["thin_turtle_neck"]
-
-                        if button_disabled("closet_busy"): 
-                            action NullAction()
-
-                        else: 
-
-                            if "turtle_neck" in click_map: 
-
-                                action (If(semiformal_top, SetVariable("semiformal_top", False)), SetVariable("contour_top", True), SetVariable("top_selected", True), Function(call_prep_closet_script, click_map["turtle_neck"]))
+                    use clothing_sprite("thin_turtle_neck", "wardrobe_option", hover_turtle_neck, "wardrobe_option_selected", turtle_neck_script, tooltip_content["thin_turtle_neck"])
+                    
 
                 ## Bottoms (Right Column)
                 vbox:
                     style "wardrobe_panel_vbox"
 
                     ## Bottom Option 1 - Cargo Pants (Many Pockets)
-                    imagebutton:
-                        idle "wardrobe_option"
-                        hover hover_cargo_pants
-                        selected_idle "wardrobe_option_selected"
+                    if "cargo_pants" in click_map:
+                        $ cargo_pants_script = click_map["cargo_pants"]
+                    else:
+                        $ cargo_pants_script = None
 
-                        selected many_pockets
-
-                        tooltip tooltip_content["lightweight_cargo_pants"]
-                        
-                        if button_disabled("closet_busy"): 
-                            action NullAction()
-
-                        else: 
-                            if "cargo_pants" in click_map:
-                                action (If(heavy_pants, SetVariable("heavy_pants", False)), SetVariable("many_pockets", True), SetVariable("bottom_selected", True), Function(call_prep_closet_script, click_map["cargo_pants"]))
+                    use clothing_sprite("lightweight_cargo_pants", "wardrobe_option", hover_cargo_pants, "wardrobe_option_selected", cargo_pants_script, tooltip_content["lightweight_cargo_pants"])
 
                     ## Bottom Option 2 - Dress Jeans (Heavy Pants)
-                    imagebutton:
-                        idle "wardrobe_option"
-                        hover hover_dress_jeans
-                        selected_idle "wardrobe_option_selected"
+                    if "dress_jeans" in click_map:
+                        $ dress_jeans_script = click_map["dress_jeans"]
+                    else:
+                        $ dress_jeans_script = None
 
-                        selected heavy_pants
-
-                        tooltip tooltip_content["dress_jeans"]
-
-                        if button_disabled("closet_busy"): 
-                            action NullAction()
-
-                        else: 
-                            if "dress_jeans" in click_map:
-                                action (If(many_pockets, SetVariable("many_pockets", False)), SetVariable("heavy_pants", True), SetVariable("bottom_selected", True), Function(call_prep_closet_script, click_map["dress_jeans"]))
+                    use clothing_sprite("dress_jeans", "wardrobe_option", hover_dress_jeans, "wardrobe_option_selected", dress_jeans_script, tooltip_content["dress_jeans"])
 
             ## Done Button
             textbutton "Dressed":
