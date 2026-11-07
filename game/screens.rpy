@@ -3628,27 +3628,14 @@ screen bedroom(click_map={}):
             ypos 17
 
         # Wardrobe - Closet Click
-        imagebutton:
-            idle "images/placeholders/bedroom_wardrobe_v1.png"
-            xysize(294, 470)
-            # Horizontal Positioning
-            xpos 114
-            # Vertical Positioning
-            ypos 62
-
-            tooltip "Wardrobe"
-
-            if "closet" not in click_map: 
-                sensitive False
-
-            if button_disabled("prep_busy", report=True): 
-
-                action NullAction()
-            else: 
-
-                if "closet" in click_map: 
-                    
-                    action (Function(open_wardrobe, click_map), Function(call_prep_closet_script, click_map["closet"]))
+        if "closet" in click_map: 
+            $ closet_script = click_map["closet"]
+            $ closet_interact = Function(open_wardrobe, click_map)
+        else: 
+            $ closet_script = None
+            $ closet_interact = None
+        
+        use bedroom_interactable(sprite="images/placeholders/bedroom_wardrobe_v1.png", xsize=294, ysize=470, xpos=114, ypos=62, tooltip="Wardrobe", script=closet_script, interact=closet_interact, closet_prep=True)
 
         # Desk + Items
         fixed:
@@ -3662,74 +3649,31 @@ screen bedroom(click_map={}):
 
             # Wallet - Wallet Click
             if not wallet_on_person:
-                imagebutton:
-                    idle "images/placeholders/bedroom_wallet_v1.png"
-                    xysize(37, 19)
-                    # Horizontal Positioning
-                    xpos 67
-                    # Vertical Positioning
-                    ypos 183
+                if "wallet" in click_map:
+                    $ wallet_script = click_map["wallet"]
+                else: 
+                    $ wallet_script = None
 
-                    tooltip "Wallet"
-
-                    if "wallet" not in click_map: 
-                        sensitive False 
-
-                    if button_disabled("prep_busy"): 
-
-                        action NullAction()
-                    else: 
-
-                        if "wallet" in click_map:
-
-                            action Function(call_prep_script, click_map["wallet"])
+                use bedroom_interactable(sprite="images/placeholders/bedroom_wallet_v1.png", xsize=37, ysize=19, xpos=67, ypos=183, tooltip="Wallet", script=wallet_script)
 
             # Key - Key Click
-            imagebutton:
-                idle "images/placeholders/bedroom_key_v1.png"
-                xysize(12, 14)
-                # Horizontal Positioning
-                xpos 103
-                # Vertical Positioning
-                ypos 212
+            if "key" in click_map:
+                $ key_script = click_map["key"]
+            else: 
+                $ key_script = None
 
-                tooltip "Key"
-
-                if "key" not in click_map: 
-                    sensitive False 
-                
-                if button_disabled("prep_busy"): 
-
-                    action NullAction()
-                else: 
-
-                    if "key" in click_map:
-
-                        action Function(call_prep_script, click_map["key"])
+            use bedroom_interactable(sprite="images/placeholders/bedroom_key_v1.png", xsize=12, ysize=14, xpos=103, ypos=212, tooltip="Key", script=key_script)
 
             # Laptop - Laptop Click
             if not laptop_clicked:
-                imagebutton:
-                    idle "images/placeholders/bedroom_laptop_v1.png"
-                    xysize(142, 102)
-                    # Horizontal Positioning
-                    xpos 369
-                    # Vertical Positioning
-                    ypos 106
-
-                    tooltip "Laptop"
-
-                    if "laptop" not in click_map: 
-                        sensitive False 
-
-                    if button_disabled("prep_busy"): 
-
-                        action NullAction()
-                    else: 
-
-                        if "laptop" in click_map: 
-
-                            action (Function(call_prep_script, click_map["laptop"]), SetVariable("laptop_clicked", True))
+                if "laptop" in click_map:
+                    $ laptop_script = click_map["laptop"]
+                    $ laptop_interact = SetVariable("laptop_clicked", True)
+                else: 
+                    $ laptop_script = None
+                    $ laptop_interact = None
+            
+                use bedroom_interactable(sprite="images/placeholders/bedroom_laptop_v1.png", xsize=142, ysize=102, xpos=369, ypos=106, tooltip="Laptop", script=laptop_script, interact=laptop_interact)
 
         # Chair
         add "images/placeholders/bedroom_chair_v1.png":
@@ -3740,34 +3684,71 @@ screen bedroom(click_map={}):
             ypos 283
 
         # Bed - Bed Click
-        imagebutton:
-            idle "images/placeholders/bedroom_bed_v1.png"
-            xysize(964, 173)
-            # Horizontal Positioning
-            xpos 88
-            # Align bottom for vertical positioning
-            yanchor 1.0
-            # Vertical Positioning
-            ypos 740
+        if "bed" in click_map:
+            $ bed_script = click_map["bed"]
+        else:
+            $ bed_script = None
 
-            tooltip "Bed"
-
-            if "bed" not in click_map: 
-                sensitive False
-
-            if button_disabled("prep_busy"): 
-
-                action NullAction()
-
-            else: 
-
-                if "bed" in click_map: 
-
-                    action Function(call_prep_script, click_map["bed"])
+        use bedroom_interactable(sprite="images/placeholders/bedroom_bed_v1.png", xsize=964, ysize=173, xpos=88, ypos=740, yanchor=1.0, tooltip="Bed", script=bed_script)
 
 # Bedroom Styles 
 
 style bedroom is full_screen
+
+## Bedroom Interactable Template ###############################################
+##
+## A screen template for interactable objects in the bedroom scene.
+
+screen bedroom_interactable(sprite, xsize, ysize, xpos, ypos, xanchor=0.0, yanchor=0.0, tooltip=None, script=None, interact=None, closet_prep=False):
+
+    if script: 
+
+        if closet_prep: 
+            $ call_script = call_prep_closet_script
+        else:
+            $ call_script = call_prep_script
+
+        if interact: 
+
+            $ action = (Function(call_script, script), interact)
+
+        else: 
+
+            $ action = Function(call_script, script)
+
+    imagebutton: 
+
+        idle sprite 
+
+        xysize(xsize, ysize)
+
+        # Horizontal Positioning Anchor
+        xanchor xanchor
+
+        # Horizontal Positioning
+        xpos xpos
+
+        # Vertical Positioning Anchor
+        yanchor yanchor
+
+        # Vertical Positioning
+        ypos ypos
+
+        if tooltip:
+            tooltip tooltip
+
+        if script is None:
+            sensitive False 
+
+        if button_disabled("prep_busy"): 
+
+            action NullAction() 
+        
+        else: 
+
+            if script: 
+
+                action action 
 
 # Delete later
 image wardrobe_option = Transform("gui/placeholders/Chat Bubble (Receive).svg", xsize=180, ysize=120)

@@ -800,3 +800,8 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
 - New screen : `dock_button`
     - Template Screen 
     - For Navigation Dock - Meta Screen Access Buttons 
+
+- New screen : `bedroom_interactable`
+    - Template Screen 
+    - For Interactable Bedroom Sprites 
+
