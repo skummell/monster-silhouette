@@ -804,4 +804,17 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
 - New screen : `bedroom_interactable`
     - Template Screen 
     - For Interactable Bedroom Sprites 
+    - Bugs & Fixes: 
+        - Clicks not Disabled : overlapping interactions 
+            - Interact should go before script call 
 
+- New screen : `clothing_sprite`
+    - Template Screen 
+    - For Clothing Sprites inside of Wardrobe Panel 
+
+- Minor File Update: `custom_systems.rpy`
+    - New Prep Phase Variable!
+        - `clothing_sprites` - Dictionary mapping clothing sprite names to clothing sprite flags 
+    - New Prep Phase Functions
+        - `get_clothing_info(sprite_name)` - Fetch sprite_name flag and category
+        - `get_same_category_flags(sprite_name)` - Fetch the Flags for sprites of the same category as sprite_name except sprite_name flag itself

@@ -117,34 +117,36 @@ init offset = -1
 ##
 ## List of Game System Utility Functions:
 ##  Chat System Utility Functions
-##      get_chat_entries        (contact)                   - read chat entries / history linked to contact 
+##      get_chat_entries           (contact)                   - read chat entries / history linked to contact 
 ##  Draft System Utility Functions 
-##      print_transcript        (ch="epilogue")             - read book transcript for chapter ch
+##      print_transcript           (ch="epilogue")             - read book transcript for chapter ch
 ##  Scene System Utility Functions
-##      show_scene              (screen_name, **kwargs)     - show a screen on scene (master) layer
-##      show_app                (screen_name, **kwargs)     - show a app screen on scene (master layer) on top of current scene,
+##      show_scene                 (screen_name, **kwargs)     - show a screen on scene (master) layer
+##      show_app                   (screen_name, **kwargs)     - show a app screen on scene (master layer) on top of current scene,
 ##                                                            used for show_panel statement as well
-##      hide_app                (screen_name)               - hide a app screen on scene (master layer) + used in hide_panel too
-##      show_notif              (screen_name, **kwargs)     - show a notif screen on scene (master layer) on top of current scene 
-##                                                            input validation with valid_notif_screens 
-##                                                            if notif_screen is already showing hides it first 
+##      hide_app                   (screen_name)               - hide a app screen on scene (master layer) + used in hide_panel too
+##      show_notif                 (screen_name, **kwargs)     - show a notif screen on scene (master layer) on top of current scene 
+##                                                               input validation with valid_notif_screens 
+##                                                               if notif_screen is already showing hides it first 
 ##  Button Disabler System Utility Functions 
-##      button_disabled         (button=None, report=False) - returns a boolean on whether buttons are globally disabled, 
-##                                                            a specific button type is disabled or 
-##                                                            a specific button id is disabled depending on input
-##                                                            (optionally use report=True to receive console printed report 
-##                                                             on global disabler, or button id / button type requested.)
+##      button_disabled            (button=None, report=False) - returns a boolean on whether buttons are globally disabled, 
+##                                                               a specific button type is disabled or 
+##                                                               a specific button id is disabled depending on input
+##                                                               (optionally use report=True to receive console printed report 
+##                                                                on global disabler, or button id / button type requested.)
 ##  Freeze System Utility Functions 
-##      flag_check              (flag_name)                 - returns a boolean on whether the flag_name condition is True or False
-##      app_open                (app_screen)                - returns a boolean on whether the app_screen is currently open on the master layer
-##      contact_open            (contact_name)              - returns a boolean on whether the contact_name is the current active_contact or not
-##      prep_done_condition     ()                          - returns a boolean on whether the prep phase complete conditions are met or not
+##      flag_check                 (flag_name)                 - returns a boolean on whether the flag_name condition is True or False
+##      app_open                   (app_screen)                - returns a boolean on whether the app_screen is currently open on the master layer
+##      contact_open               (contact_name)              - returns a boolean on whether the contact_name is the current active_contact or not
+##      prep_done_condition        ()                          - returns a boolean on whether the prep phase complete conditions are met or not
 ##  Game Mode System Utility Functions
 ##    Prep Phase Game Mode Utility Functions
-##      open_wardrobe           (click_map)                 - shows wardrobe panel on scene (master layer) and sets Bedroom Button Disabler =True
-##      close_wardrobe          ()                          - hides wardrobe panel on scene (master layer) and sets Bedroom Button Disabler =False 
-##      call_prep_script        (label)                     - calls label script in new context and sets Bedroom Button Disabler on and off
-##      call_prep_closet_script (label)                     - calls label script in new context and sets Closet Button Disabler on and off
+##      open_wardrobe              (click_map)                 - shows wardrobe panel on scene (master layer) and sets Bedroom Button Disabler =True
+##      close_wardrobe             ()                          - hides wardrobe panel on scene (master layer) and sets Bedroom Button Disabler =False 
+##      call_prep_script           (label)                     - calls label script in new context and sets Bedroom Button Disabler on and off
+##      call_prep_closet_script    (label)                     - calls label script in new context and sets Closet Button Disabler on and off
+##      get_clothing_info          (sprite_name)               - returns category and flag as clothing info for sprite_name
+##      get_same_category_clothing (sprite_name)               - returns flags for all sprite_names in the same category as sprite_name except sprite_name itself
 ##      
 ##
 ## (Note: Debugger Functions are intended for usage in console.)
@@ -1567,6 +1569,18 @@ default laptop_clicked = False # Prevents Freeze from ending until player clicks
 ## Closet Click Flags 
 default top_selected = False    # Track if a Top has already been selected
 default bottom_selected = False # Track if a Bottom has alreday been selected
+## Clothing Selection Name to Flag Mapping 
+define clothing_sprites = {
+    "top": {
+        "dress_shirt": "semiformal_top",
+        "thin_turtle_neck": "contour_top",
+    },
+
+    "bottom": {
+        "lightweight_cargo_pants": "many_pockets",
+        "dress_jeans": "heavy_pants",
+    }
+}
 
 ## Game Mode System Statements
 python early: 
@@ -1662,3 +1676,25 @@ init python:
         renpy.call_in_new_context(label)
 
         enable_type("closet_busy")
+    
+    ## Clothing Sprite Flag & Category Fetch Functions
+    def get_clothing_info(sprite_name):
+
+        """Return (category, flag) for a sprite, or (None, None) if not found."""
+
+        for category, sprites in clothing_sprites.items():
+            
+            if sprite_name in sprites:
+                return category, sprites[sprite_name]
+
+        return None, None
+
+    ## Clothing Sprite Flags of sprites in same category as sprite_name
+    def get_same_category_flags(sprite_name):
+    
+        category, flag = get_clothing_info(sprite_name)
+
+        if category is None:
+            return []
+        
+        return [f for f in clothing_sprites[category].values() if f != flag]

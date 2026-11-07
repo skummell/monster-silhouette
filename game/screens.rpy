@@ -3710,7 +3710,7 @@ screen bedroom_interactable(sprite, xsize, ysize, xpos, ypos, xanchor=0.0, yanch
 
         if interact: 
 
-            $ action = (Function(call_script, script), interact)
+            $ action = (interact, Function(call_script, script))
 
         else: 
 
@@ -3787,21 +3787,12 @@ screen wardrobe_panel(click_map={}):
                     style "wardrobe_panel_vbox"
 
                     ## Top Option 1 - Dress Shirt (Semiformal)
-                    imagebutton:
-                        idle "wardrobe_option"
-                        hover hover_dress_shirt
-                        selected_idle "wardrobe_option_selected"
+                    if "dress_shirt" in click_map:
+                        $ dress_shirt_script = click_map["dress_shirt"]
+                    else: 
+                        $ dress_shirt_script = None
 
-                        selected semiformal_top
-
-                        tooltip tooltip_content["dress_shirt"]
-
-                        if button_disabled("closet_busy"): 
-                            action NullAction()
-
-                        else: 
-                            if "dress_shirt" in click_map:
-                                action (If(contour_top, SetVariable("contour_top", False)), SetVariable("semiformal_top", True), SetVariable("top_selected", True), Function(call_prep_closet_script, click_map["dress_shirt"]))
+                    use clothing_sprite("dress_shirt", "wardrobe_option", hover_dress_shirt, "wardrobe_option_selected", dress_shirt_script, tooltip_content["dress_shirt"])
 
                     ## Top Option 2 - Turtle Neck (Contour)
                     imagebutton:
@@ -3899,6 +3890,50 @@ style wardrobe_panel_vbox:
 style wardrobe_panel_dressed_button: 
     # Push to bottom
     yalign 1.0
+
+
+## Clothing Sprite #############################################################
+##
+## A screen that displays the wardrobe clothing sprite as a button for the player 
+## to click on in the bedroom scene.
+
+screen clothing_sprite(sprite_name, idle_sprite, hover_sprite, selected_sprite, script=None, tooltip=None):
+
+    $ category, flag = get_clothing_info(sprite_name)
+
+    if script:
+        $ other_flags = get_same_category_flags(sprite_name)
+        $ disable_flags = [SetVariable(f, False) for f in other_flags]
+
+        $ flag_selected = SetVariable(flag, True)
+
+        $ selected_category = SetVariable(category + "_selected", True)
+
+        $ call_script = Function(call_prep_closet_script, script)
+
+        $ action = (disable_flags, flag_selected, selected_category, call_script)
+
+    imagebutton: 
+        idle idle_sprite
+        hover hover_sprite
+        selected_idle selected_sprite
+
+        selected eval(flag)
+
+        if tooltip:
+            tooltip tooltip
+        
+        if script is None: 
+            sensitive False
+
+        if button_disabled("closet_busy"):
+
+            action NullAction()
+        else:
+
+            if script: 
+
+                action action
 
 ################################################################################
 ## Cosmetic Screens
