@@ -823,7 +823,8 @@ screen app_screen(window_width, window_height, content_width, content_height, sc
             if tool_screen != None: 
                 use expression tool_screen
     
-    use tooltip_hover
+    if renpy.get_screen("computer_ui_menu"): 
+        use tooltip_hover
 
 # App Screen Styles
 
@@ -3897,7 +3898,7 @@ style wardrobe_panel_dressed_button:
 ## A screen that displays the wardrobe clothing sprite as a button for the player 
 ## to click on in the bedroom scene.
 
-screen clothing_sprite(sprite_name, idle_sprite, hover_sprite, selected_sprite, script=None, tooltip=None):
+screen clothing_sprite(sprite_name, idle_sprite, hover_sprite, selected_sprite, script, tooltip=None):
 
     $ category, flag = get_clothing_info(sprite_name)
 
