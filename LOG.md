@@ -778,4 +778,23 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
     - New screen `tooltip_hover`!
         - Overlay Screen 
         - Styles : 
-            - WIP
+            - prefixes: 
+                - `tooltip` (default)
+                - `profile_preview` (Chat Contact Button profile tag lines)
+                - `wardrobe_select` (Hover on clothing sprites)
+                - `bedroom_tooltip`
+            - suffixes: 
+                - `_frame`
+                - `_text`
+        - Bugs & Fixes
+            - Tooltip Style Delay from Game to Game Menu 
+                - Extra checks 
+                    - Check for `computer_ui_menu` in style checks
+                    - Separate by `screen` check if `computer_ui_menu` and `master` otherwise
+            - Tooltip Focus picking up Game in Game Menu 
+                - Set `computer_ui_menu` to `modal True`
+    - New variable `tooltip_content`
+        - Dictionary 
+        - For long tooltips (Profile Previews & Wardrobe Selections)
+        - Call in buttons instead of a long tooltip line right inside button 
+

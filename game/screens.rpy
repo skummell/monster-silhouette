@@ -10,6 +10,22 @@ default player_endings = 0 # Track How Many Endings Have Been Reached By The Pla
 default total_endings = 0 # Number Of Endings Currently Available 
 default active_contact = None # Track which Chat Contact is Open / Active
 
+# Tooltip Content Dictionary for Long Tooltips
+define tooltip_content = { 
+    # Wardrobe Clothing Tooltips
+    "dress_shirt": "{b}Dress Shirt{/b}\n\nA slightly fancy, semi-formal dress shirt you got from Victor a few years ago. You don't know how pricy it was but it was probably pricier than 90% of your closet. Victor never gifted things at a normal price range.",
+    "thin_turtle_neck": "{b}Thin Turtle Neck{/b}\n\nA turtle neck of good quality fabric. You're quite fond of it. Traps heat when the sun is strong but is otherwise fine by itself, even in warmer weather.",
+    "lightweight_cargo_pants": "{b}Lightweight Cargo Pants{/b}\n\nYour favorite cargo pants. It's got lots of pockets. You could probably fit a surprise or two in them.",
+    "dress_jeans": "{b}Dress Jeans{/b}\n\nSlightly formal jeans you've had since college. Somehow it still looks new. A good pair with a more semi-formal top.",
+
+    # Chat Profile Preview Tooltips
+    "chat_t": "World Explorer!\nThe great Theo is here!",
+    "chat_v": "Owner of Kiri Rêve Tea Lounge.\nLocation: Lucius Ave & Blackwood Rd, Ombra Town.",
+    "chat_l": "Head Pub. Manager @ King Yellow.\nEditor of Best-Selling Horror Writer: The Abyss Stares Back.",
+    "chat_c": "Mystery Horror Writer.\nAuthor of Into The Depths, To Die To Sleep, and many more.",
+    "chat_m": "Horror Connoisseur and #1 Faithful Fan of The Abyss Stares Back's book sagas."
+}
+
 ################################################################################
 ## Styles
 ################################################################################
@@ -469,6 +485,22 @@ screen tooltip_hover():
 
     # Tooltip
     $ tooltip = GetTooltip()
+
+    # Tooltip Style
+    if not renpy.get_screen("computer_ui_menu"):
+        if renpy.get_screen("chat_app", "master") or renpy.get_screen("chat_app"):
+            $ style_prefix = "profile_preview"
+        elif renpy.get_screen("wardrobe_panel", "master"):
+            $ style_prefix = "wardrobe_select"
+        elif renpy.get_screen("bedroom", "master"):
+            $ style_prefix = "bedroom_tooltip"
+        else:
+            $ style_prefix = "tooltip"
+    else:
+        if renpy.get_screen("chat_app"):
+            $ style_prefix = "profile_preview"
+        else:
+            $ style_prefix = "tooltip"
     
     if tooltip: 
 
@@ -477,13 +509,15 @@ screen tooltip_hover():
             prefer_top True
 
             frame:
-                style "tooltip_frame"
+                style style_prefix + "_frame"
                     
-                text tooltip style "tooltip_text"
+                text tooltip style style_prefix + "_text"
 
 # Tooltip Hover Styles 
 
-# Tooltip Frame
+# Default Styles 
+
+# Tooltip Frame (Default Style)
 style tooltip_frame: 
     background "#5E5E5E"
     # Horizontal Padding 
@@ -497,13 +531,48 @@ style tooltip_frame:
     # Vertical Margin
     ymargin 10
 
-# Tooltip Text
+# Tooltip Text (Default Style)
 style tooltip_text: 
     size 14 
     color "#C8C8C8"
     # Center Horizontally
     xalign 0.5
     textalign 0.5
+
+# Profile Preview Tooltip (Contact Button Hover)
+style profile_preview_frame:
+    background "#00bfffa4"
+    xpadding 8
+    ypadding 6
+    xsize 200
+
+style profile_preview_text:
+    size 10
+    color "#000000"
+    xalign 0.0
+    textalign 0.0
+    layout "tex"
+
+# Bedroom Interactable Tooltip
+style bedroom_tooltip_frame is tooltip_frame:
+    background gui.muted_color
+
+style bedroom_tooltip_text is tooltip_text
+
+# Wardrobe Selection Tooltip
+style wardrobe_select_frame:
+    background "#5E5E5E"
+    xpadding 12
+    ypadding 4
+    xalign 0.5
+    ymargin 10
+    xsize 300
+
+style wardrobe_select_text is tooltip_text:
+    xalign 0.0
+    yalign 1.0
+    textalign 0.0
+    layout "tex"
 
 ## Navigation screen ###########################################################
 ##
@@ -963,6 +1032,8 @@ style main_menu_version:
 screen computer_ui_menu(): 
 
     tag menu
+
+    modal True
 
     key "game_menu" action [Return(), Return()]
     
@@ -2680,19 +2751,19 @@ screen chat_app():
                     use scrollable_content("viewport", spacing=contact_panel_gap, scrollbars=None, vp_width=contact_panel_content_width, vp_height=contact_panel_content_height): 
 
                         # And (Theo) - Contact Button 
-                        use contact_button("And")
+                        use contact_button("And", tooltip=tooltip_content["chat_t"])
 
                         # At You (Victor) - Contact Button 
-                        use contact_button("At You")
+                        use contact_button("At You", tooltip=tooltip_content["chat_v"])
 
                         # Golden Manager - Contact Button 
-                        use contact_button("Golden Manager")
+                        use contact_button("Golden Manager", tooltip=tooltip_content["chat_l"])
 
                         # The Abyss Stares Back (Player) - Contact Button 
-                        use contact_button("The Abyss Stares Back")
+                        use contact_button("The Abyss Stares Back", tooltip=tooltip_content["chat_c"])
 
                         # Stare Into The Abyss - Contact Button
-                        use contact_button("Stare Into The Abyss")
+                        use contact_button("Stare Into The Abyss", tooltip=tooltip_content["chat_m"])
 
             # Chat Box
             fixed: 
@@ -2734,7 +2805,7 @@ style chat_box:
 ## 
 ## A template screen for contact buttons, which will activate the chat box for contact
 
-screen contact_button(name, avatar="#808080"): 
+screen contact_button(name, avatar="#808080", tooltip=None): 
 
     $ online = False # Implement Disabler / Enabler later
 
@@ -2749,6 +2820,9 @@ screen contact_button(name, avatar="#808080"):
         id name
 
         style "contact_button"
+
+        if tooltip: 
+            tooltip tooltip
 
         # Disable Button if disablers are on and screen is not Computer UI Menu
         if button_disabled(name):
@@ -3752,7 +3826,7 @@ screen wardrobe_panel(click_map={}):
 
                         selected semiformal_top
 
-                        tooltip "A slightly fancy, semi-formal dress shirt you got from Victor a few years ago. You don't know how pricy it was but it was probably pricier than 90% of your closet. Victor never gifted things at a normal price range."
+                        tooltip tooltip_content["dress_shirt"]
 
                         if button_disabled("closet_busy"): 
                             action NullAction()
@@ -3769,7 +3843,7 @@ screen wardrobe_panel(click_map={}):
 
                         selected contour_top
                         
-                        tooltip "A turtle neck of good quality fabric. You're quite fond of it. Traps heat when the sun is strong but is otherwise fine by itself, even in warmer weather."
+                        tooltip tooltip_content["thin_turtle_neck"]
 
                         if button_disabled("closet_busy"): 
                             action NullAction()
@@ -3792,7 +3866,7 @@ screen wardrobe_panel(click_map={}):
 
                         selected many_pockets
 
-                        tooltip "Your favorite cargo pants. It's got lots of pockets. You could probably fit a surprise or two in them."
+                        tooltip tooltip_content["lightweight_cargo_pants"]
                         
                         if button_disabled("closet_busy"): 
                             action NullAction()
@@ -3809,7 +3883,7 @@ screen wardrobe_panel(click_map={}):
 
                         selected heavy_pants
 
-                        tooltip "Dress Jeans you've had since college. Somehow it still looks new. A good pair with a more semi-formal top."
+                        tooltip tooltip_content["dress_jeans"]
 
                         if button_disabled("closet_busy"): 
                             action NullAction()
