@@ -1,11 +1,11 @@
 ---
 icon: lucide/cpu
-status: new 
+status: modified 
 tags: 
     - Coding
     - ㅤLast Updated
-    - ㅤㅤOctober 
-    - ㅤㅤㅤ31
+    - ㅤㅤNovember
+    - ㅤㅤㅤ8
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -63,12 +63,16 @@ as their shared layout foundation. A few have additional customization beyond th
                 
                     -   :lucide-aperture: **Ending Gallery**
                         [][ending-gallery]{ .card-link }
+                    
+                    -   :lucide-badge-question-mark: **Controls Help**
+                        [][controls-help]{ .card-link }
 
 Below the meta screens for Monster Silhouette that have been modified beyond their layout have been organized into overviews containing information on their: 
 
 - **Screen Name**
 - **Parameters**
     - Hover over cards for details (purpose, type, valid values, other notes)
+- **Visual Layout** (for Original Screens)
 - Additional **Notes**
 
 === "Ren'Py Provided Screens"
@@ -84,7 +88,7 @@ Below the meta screens for Monster Silhouette that have been modified beyond the
     - `about` — content defined in [`options.rpy`][options] via `gui.about`
     - `history` — no content changes, layout only
     - `preferences` — no content changes, layout only
-    - `help` — no content changes, layout only
+    - `help` — layout only; gained an original MS-Controls tab (see Original Meta Screens tab)
 
 === "Unified Save & Load Screen" 
 
@@ -200,35 +204,89 @@ Below the meta screens for Monster Silhouette that have been modified beyond the
 
     ## Original Meta Screens 
 
-    Monster Silhouette currently has 1 original meta screen, which was not provided by Ren'Py but whose functionality is entirely that of a game menu. 
+    Monster Silhouette currently has 2 original screens in the meta screen ecosystem — one standalone, one nested inside a Ren'Py-provided meta screen.
 
-    ### Ending Gallery 
+    === "Ending Gallery"
 
-    An entirely original screen built for Monster Silhouette. Displays endings the player has achieved. 
+        ### Ending Gallery 
 
-    Currently shows a locked state when no endings have been reached. Expands as endings are unlocked.
+        An entirely original screen built for Monster Silhouette. Displays endings the player has achieved. 
 
-    ??? grid col single "Ending Gallery [:octicons-key-asterisk-24:][screen-overview-legend]"
+        Shows a locked placeholder state when no endings have been reached. 
+        
+        Once at least one ending is unlocked, it switches to a grid layout of ending entries — currently filled with a work in progress placeholder content 
+        until real endings are implemented.
 
-        <!-- tooltip: Ending Gallery Overview Card -->
+        ??? grid col single "Ending Gallery [:octicons-key-asterisk-24:][screen-overview-legend]"
 
-        !!! grid scrollable ""
+            <!-- tooltip: Ending Gallery Overview Card -->
 
-            Screen Name 
+            !!! grid scrollable ""
 
-            !!! cards col single ""
+                Screen Name 
 
-                -   `ending_gallery`
+                !!! cards col single ""
+
+                    -   `ending_gallery`
+                    
+                Parameters 
+
+                !!! cards col single centered-content ""
+
+                    -   N/A
                 
-            Parameters 
+                Visual Layout 
 
-            !!! cards col single centered-content ""
+                !!! cards col single centered-content ""
 
-                -   N/A
+                    -   Locked State (No Endings)
+                    -   Ending Grid (At Least One Ending)
+                    
+                Notes 
+
+                !!! cards col single ""
+
+                    -   Tracks `player_endings` and `total_endings` variables
+                    -   Locked state shown when `player_endings == 0`
+                    -   Grid layout shown when `player_endings > 0`; entries are placeholders until real ending content lands
+    
+    === "Controls Help"
+
+        ### Controls Help
+
+        Provides a reference guide for Monster Silhouette-specific controls — the key bindings and interaction cues that go beyond Ren'Py's defaults. 
+        
+        It appears as an additional tab (MS-Controls) inside the Help meta screen, alongside Ren'Py's Keyboard, Mouse, and Gamepad tabs.
+
+        ??? grid col single "Controls Help [:octicons-key-asterisk-24:][screen-overview-legend]"
+
+            <!-- tooltip: Controls Help Overview Card -->
+
+            !!! grid scrollable ""
+
+                Screen Name 
+
+                !!! cards col single ""
+
+                    -   `controls_help`
+                    
+                Parameters 
+
+                !!! cards col single centered-content ""
+
+                    -   N/A
+                    
+                Visual Layout
+
+                !!! cards centered-content ""
+
+                    - Key Binding List
+                    - Hint Icon Reference
                 
-            Notes 
+                Notes 
 
-            !!! cards col single ""
+                !!! cards col single ""
 
-                -   original screen
-                -   tracks `player_endings` and `total_endings` variables
+                    -   Rendered inside Help's tabbed navigation
+                    -   Default tab when Help opens
+                    -   Sits alongside Ren'Py's Keyboard, Mouse, and Gamepad help tabs

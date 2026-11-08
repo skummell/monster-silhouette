@@ -1,11 +1,11 @@
 ---
 icon: lucide/rocket
-status: new 
+status: modified 
 tags: 
     - Index
     - ㅤLast Updated
     - ㅤㅤNovember
-    - ㅤㅤㅤ1
+    - ㅤㅤㅤ8
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -356,7 +356,7 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
 
     ??? tip "Check out the Gameplay Mechanics pages for more details:"
 
-        !!! cards col four centered-content ""
+        !!! cards col five centered-content ""
 
             -   :lucide-book-open-text: **Story Mode**
                 [][story-mode-mechanic]{ .card-link }
@@ -369,6 +369,9 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
             
             -   :lucide-calendar: **Screen HUD & In-Game Dates** 
                 [][days-hud-mechanic]{ .card-link }
+
+            -   :lucide-scan-eye: **Hovers & Tooltips** 
+                [][hovers-tooltips-mechanic]{ .card-link }
 
     ### Gameplay Mechanics 
 
@@ -421,6 +424,16 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
 
         Each date will have their own unique fixed events apart from each other, with exception of the Prep and Wrap Phases that are fixed 
         throughout all of the dates. Though the phases themselves will also have narrative changes from one day to the other.
+    
+    === "Hovers & Tooltips"
+
+        **Hovers & Tooltips**
+        
+        Hover actions and tooltips allow players to access additional information about game elements by passively hovering over them. 
+        
+        Interactive elements across every screen can surface supplementary context without requiring a click or dedicated mode, 
+        extending Ren'Py's native tooltip support with rendering, styling and dedicated storage for long tooltip text.
+
 
 === "Documentation Categories"
 

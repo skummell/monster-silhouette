@@ -1,6 +1,6 @@
 ---
 icon: lucide/calendar
-status: new 
+# status: modified
 tags: 
     - GDD
     - ㅤLast Updated

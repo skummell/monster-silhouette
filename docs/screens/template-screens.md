@@ -1,11 +1,11 @@
 ---
 icon: lucide/layout-template
-status: new 
+status: modified 
 tags: 
     - Coding
     - ㅤLast Updated
-    - ㅤㅤOctober 
-    - ㅤㅤㅤ31
+    - ㅤㅤNovember
+    - ㅤㅤㅤ8
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -55,6 +55,9 @@ Below all the template screens for Monster Silhouette have been organized into o
                     -   :lucide-binary: **Meta Screen**
                         [][meta-screen]{ .card-link }
 
+                    -   :lucide-square-minus: **Dock Button**
+                        [][dock-button]{ .card-link }
+
             !!! grid col single no-pad no-border ""
 
                 !!! cards centered-content ""
@@ -63,7 +66,7 @@ Below all the template screens for Monster Silhouette have been organized into o
                         [][app-screen]{ .card-link }
                     
                     -   :lucide-hash: **App Header**
-                    [][app-header]{ .card-link }
+                        [][app-header]{ .card-link }
 
                     -   :lucide-x: **App Exit**
                         [][app-exit]{ .card-link }
@@ -97,15 +100,26 @@ Below all the template screens for Monster Silhouette have been organized into o
                 !!! cards col single centered-content ""
                     -   :lucide-notepad-text-dashed: **Draft File**
                         [][draft-file]{ .card-link }
+            
+            !!! grid col single no-pad no-border ""
 
-        !!! cards centered-content ""
+                !!! cards centered-content ""
 
-            -   :lucide-mouse: **Scrollable Content**
-                [][scrollable-content]{ .card-link }
-                
-            -   :lucide-monitor-dot: **Notif Button**
-                [][notif-button]{ .card-link }
+                    -   :lucide-bed: **Bedroom Interactable**
+                        [][bedroom-interactable]{ .card-link }
+                    
+                    -   :lucide-shirt: **Clothing Sprite**
+                        [][clothing-sprite]{ .card-link }
+            
+            !!! grid col single no-pad no-border ""
 
+                !!! cards col single centered-content ""
+
+                    -   :lucide-mouse: **Scrollable Content**
+                        [][scrollable-content]{ .card-link }
+                        
+                    -   :lucide-monitor-dot: **Notif Button**
+                        [][notif-button]{ .card-link }
 !!! tip 
     
     Hover over parameter cards for a brief description of: 
@@ -117,67 +131,119 @@ Below all the template screens for Monster Silhouette have been organized into o
 
 === "Meta Templates"
 
-    !!! tip "Learn more about Meta Screens in the [Meta Screens][meta-screens] page"
+    !!! tip "Learn more about Meta Screens in the [Meta Screens][meta-screens] page" 
 
     ## Meta Templates 
 
-    The Meta Screen Templates set up the basic layout for Meta Screen components.
+    The Meta Screen Templates set up the basic layout for Meta Screen components, alongside the buttons that navigate to them.
 
-    ### Meta Screen
+    === "Meta Screen"
 
-    The Meta Screen Template sets up the basic layout all Meta Screens share.
+        ### Meta Screen
 
-    ??? grid col single "Meta Screen [:octicons-key-asterisk-24:][screen-overview-legend]"
+        The Meta Screen Template sets up the basic layout all Meta Screens share.
 
-        <!-- tooltip: Meta Screen Overview Card -->
+        ??? grid col single "Meta Screen [:octicons-key-asterisk-24:][screen-overview-legend]"
 
-        !!! grid scrollable ""
+            <!-- tooltip: Meta Screen Overview Card -->
 
-            Screen Name 
+            !!! grid scrollable ""
 
-            !!! cards col single ""
+                Screen Name 
 
-                -   `meta_screen`
-            
-            Parameters 
+                !!! cards col single ""
 
-            !!! cards ""
-
-                -   `title` :octicons-north-star-24:{ .red-icon } :lucide-lock-open: 
-                    { title="Display title shown in the header bar. String." }
-                -   `scroll` :lucide-letters:
-                    { title="Scroll mode for the content area. String. Valid values: 'viewport', 'vpgrid'. Default: None (no scroll)." }
-                -   `yinitial` :lucide-lock-open: 
-                    { title="Initial vertical scroll position. Int or Float. 0.0 = top, 1.0 = bottom. Default: 0.0." }
-                -   `spacing` :lucide-lock-open: 
-                    { title="Spacing between content items in pixels. Int. Default: 0." }
+                    -   `meta_screen`
                 
-            Layout Components
+                Parameters 
 
-            !!! cards col single centered-content ""
+                !!! cards ""
 
-                -   Background
-                -   Header Bar with Title & Close Button
-                -   Main Content Area
-            
-            Notes 
+                    -   `title` :octicons-north-star-24:{ .red-icon } :lucide-lock-open: 
+                        { title="Display title shown in the header bar. String." }
+                    -   `scroll` :lucide-letters:
+                        { title="Scroll mode for the content area. String. Valid values: 'viewport', 'vpgrid'. Default: None (no scroll)." }
+                    -   `yinitial` :lucide-lock-open: 
+                        { title="Initial vertical scroll position. Int or Float. 0.0 = top, 1.0 = bottom. Default: 0.0." }
+                    -   `spacing` :lucide-lock-open: 
+                        { title="Spacing between content items in pixels. Int. Default: 0." }
+                    
+                Layout Components
 
-            !!! cards col single ""
+                !!! cards col single centered-content ""
 
-                -   Content area supports optional scrolling via `scrollable_content`
-                -   Close button returns to previous screen
-                -   All six Meta Screens are built on this template
-            
-            Used By
+                    -   Background
+                    -   Header Bar with Title & Close Button
+                    -   Main Content Area
+                
+                Notes 
 
-            !!! cards ""
+                !!! cards col single ""
 
-                -   `about`
-                -   `save_load`
-                -   `history` 
-                -   `preferences` 
-                -   `help` 
-                -   `ending_gallery`
+                    -   Content area supports optional scrolling via `scrollable_content`
+                    -   Close button returns to previous screen
+                    -   All six Meta Screens are built on this template
+                
+                Used By
+
+                !!! cards ""
+
+                    -   `about`
+                    -   `save_load`
+                    -   `history` 
+                    -   `preferences` 
+                    -   `help` 
+                    -   `ending_gallery`
+                    
+    === "Dock Button"
+
+        !!! tip "Learn more about Navigation Dock in the [Computer UI Screens][computer-ui-screens] page"
+
+        ### Dock Button
+
+        The Dock Button Template renders a single icon button for the Navigation Dock, linking to one of the Meta Screens.
+
+        ??? grid col single "Dock Button [:octicons-key-asterisk-24:][screen-overview-legend]"
+
+            <!-- tooltip: Dock Button Overview Card -->
+
+            !!! grid scrollable ""
+
+                Screen Name 
+
+                !!! cards col single ""
+
+                    -   `dock_button`
+                
+                Parameters 
+
+                !!! cards col single ""
+
+                    -   `page_name` :octicons-north-star-24:{ .red-icon } :lucide-letters:
+                        { title="Name of Meta Screen to access. String. Valid values: 'history', 'save_load', 'preferences', 'ending_gallery', 'about', 'help'." }
+                    -   `tooltip` :octicons-north-star-24:{ .red-icon } :lucide-lock-open: 
+                        { title="Tooltip for button. String." }
+                    -   `dock_icon` :lucide-lock-open: 
+                        { title="Dock Icon image. Image Path or Color. Default: Placeholder Icon." }
+                    
+                Layout Components
+
+                !!! cards col single centered-content ""
+
+                    -   Dock Icon Idle Image
+                
+                Notes 
+
+                !!! cards col single ""
+
+                    -   On click: calls `ShowMenu(page_name)` to open the target Meta Screen
+                    -   Tooltip text shown on hover
+                
+                Used By
+
+                !!! cards col single ""
+
+                    -   `navigation_dock`
 
 === "App Templates"
 
@@ -699,7 +765,153 @@ Below all the template screens for Monster Silhouette have been organized into o
             !!! cards col single ""
 
                 -   `draft_app`
+=== "Game Mode Templates"
+
+    !!! tip "Learn more about Game Mode screens in the [Game Mode Screens][game-mode-screens] page"
+
+    ## Game Mode Templates 
+
+    The Game Mode Templates set up the basic layout for the interactive elements that appear inside Game Mode Scenes.
+
+    === "Bedroom Interactable"
+
+        ### Bedroom Interactable
+
+        The Bedroom Interactable Template renders a single clickable prop inside the `bedroom` scene. 
+        Any prop that responds to clicks in the bedroom — wardrobe, wallet, key, laptop, bed — is built through this template 
+        rather than as an inline imagebutton.
+
+        ??? grid col single "Bedroom Interactable [:octicons-key-asterisk-24:][screen-overview-legend]"
+
+            <!-- tooltip: Bedroom Interactable Overview Card -->
+
+            !!! grid scrollable ""
+
+                Screen Name 
+
+                !!! cards col single ""
+
+                    -   `bedroom_interactable`
+                    
+                Parameters
+
+                !!! grid col single no-pad no-border ""
+                        
+                    !!! cards col single ""
+
+                        -   `sprite` :octicons-north-star-24:{ .red-icon } :lucide-lock-open: 
+                            { title="Sprite for Interactable. Image Path or Color." } 
+                    
+                    !!! cards ""
+                        -   `xsize` :octicons-north-star-24:{ .red-icon } :lucide-lock-open:
+                            { title="Width of Sprite. Int." } 
+                        -   `ysize` :octicons-north-star-24:{ .red-icon } :lucide-lock-open:
+                            { title="Height of Sprite. Int." } 
+                        -   `xpos` :octicons-north-star-24:{ .red-icon } :lucide-lock-open:
+                            { title="Horizontal Position. Int." } 
+                        -   `ypos` :octicons-north-star-24:{ .red-icon } :lucide-lock-open:
+                            { title="Vertical Position. Int." } 
+                        -   `xanchor` :lucide-lock-open:
+                            { title="Horizontal Positioning Anchor. Int or Float. 0.0 = left, 1.0 = right. Default: 0.0." }
+                        -   `yanchor` :lucide-lock-open:
+                            { title="Vertical Positioning Anchor. Int or Float. 0.0 = top, 1.0 = bottom. Default: 0.0." }
+
+                    !!! cards ""
+                        -   `tooltip`  :lucide-lock-open:
+                            { title="Tooltip for Interactable Sprite. String. Default: None."}
+                        -   `script` :lucide-letters:
+                            { title="Label Name for Interactable Script. String. Default: None."}
+                        -   `interact` :lucide-lock-open:
+                            { title="Additional Interaction besides Script. Action. Default: None." } 
+                        -   `closet_prep` :lucide-letters:
+                            { title="Controls whether the script call routes through call_prep_closet_script or call_prep_script. Boolean. Default: False." }
+
+                Layout Components 
+
+                !!! cards col single centered-content ""
+                        
+                    -   Sprite for Interactable Element
+                    
+                Notes 
+
+                !!! cards col single ""
+
+                    -   When disabled via Button Disabler System: No click action is set, retains hover action
+                    -   When `script=None`: Visible but has no interactability
+                    -   When `script` is set: calls the label in a new context via `call_prep_script` (or `call_prep_closet_script` when `closet_prep` is `True`)
+                    -   When `interact` is also set: runs the interact action first, then the script call
+                    
+                Used By
+                    
+                !!! cards col single ""
+
+                    -   `bedroom`
     
+    === "Clothing Sprite"
+
+        ### Clothing Sprite
+
+        The Clothing Sprite Template renders a single clothing option inside the `wardrobe_panel`. 
+        It handles the sprite's idle, hover, and selected states alongside the flag management that keeps category selection exclusive — 
+        only one top and one bottom can be chosen at a time.
+
+        ??? grid col single "Clothing Sprite [:octicons-key-asterisk-24:][screen-overview-legend]"
+
+            <!-- tooltip: Clothing Sprite Overview Card -->
+
+            !!! grid scrollable ""
+
+                Screen Name 
+
+                !!! cards col single ""
+
+                    -   `clothing_sprite`
+                    
+                Parameters    
+                        
+                !!! cards col single ""
+
+                    -   `sprite_name` :octicons-north-star-24:{ .red-icon } :lucide-letters:
+                        { title="Name of Sprite. String. Valid values: valid sprite name registered in clothing_sprites." } 
+                    -   `idle_sprite` :octicons-north-star-24:{ .red-icon } :lucide-lock-open:
+                        { title="Idle Sprite Image. Image Path or Color." } 
+                    -   `hover_sprite` :octicons-north-star-24:{ .red-icon } :lucide-lock-open:
+                        { title="Sprite Image on Hover. Image Path or Color." } 
+                    -   `selected_sprite` :octicons-north-star-24:{ .red-icon } :lucide-lock-open:
+                        { title="Sprite Image when Selected. Image Path or Color." } 
+                    -   `script` :octicons-north-star-24:{ .red-icon } :lucide-letters:
+                        { title="Label Name for Interactable Script. String."}
+                    -   `tooltip`  :lucide-lock-open:
+                        { title="Tooltip for Clothing Sprite. String. Default: None."}
+
+                Layout Components 
+
+                !!! cards col single centered-content ""
+                        
+                    -   Clothing Sprite on Idle
+                    -   Clothing Sprite on Hover
+                    -   Clothing Sprite on Selected
+                    
+                Notes 
+
+                !!! cards col single ""
+
+                    -   When disabled via Button Disabler System: No click action is set, retains hover action
+                    -   When `script=None`: Visible but has no interactability
+                    -   Fetches category and flag using `get_clothing_info()`
+                    -   Selected state determined by `eval(flag)` — reflects the sprite's flag value
+                    -   Fetches sibling flags with `get_same_category_flags()`
+                    -   When `script` is set: 
+                        - clears sibling flags
+                        - sets own flag and category's `_selected` flag 
+                        - calls label via `call_prep_closet_script`
+                    
+                Used By
+                    
+                !!! cards col single ""
+
+                    -   `wardrobe_panel`
+                    
 === "Utility Templates"
 
     ## Utility Templates 

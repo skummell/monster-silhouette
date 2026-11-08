@@ -1,11 +1,11 @@
 ---
 icon: lucide/gamepad-directional
-status: new 
+status: modified 
 tags: 
     - Coding
     - ㅤLast Updated
-    - ㅤㅤOctober 
-    - ㅤㅤㅤ31
+    - ㅤㅤNovember
+    - ㅤㅤㅤ8
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -65,6 +65,11 @@ game mode cleanly.
                     -   :lucide-variable: **Laptop Clicked**
                         [][laptop-clicked]{ .card-link }
                 
+                !!! cards col single centered-content ""
+
+                    -   :lucide-variable: **Clothing Sprites**
+                        [][clothing-sprites]{ .card-link }
+                
                 !!! cards centered-content ""
 
                     -   :lucide-variable: **Top Selected**
@@ -88,6 +93,14 @@ game mode cleanly.
 
                     -   :lucide-function-square: **Call Prep Closet Script** 
                         [][call-prep-closet-script]{ .card-link }
+
+                !!! cards col centered-content ""
+
+                    -   :lucide-function-square: **Get Clothing Info**
+                        [][get-clothing-info]{ .card-link }
+                    
+                    -   :lucide-function-square: **Get Same Category Flags** 
+                        [][get-same-category-flags]{ .card-link }
                 
                 !!! cards col single centered-content ""
 
@@ -200,182 +213,243 @@ game mode cleanly.
         - **Type**
             - Hover over cards for more details (**Init Value** if not Dictionary)
         - **Keys** (for Dictionaries)
-            - Hover over cards for **Init Value(s)**
-            - Or **Init Key(s) and Value(s)** if populated dynamically at init
+            - Hover over cards for more details (**Init Value(s)** if not nested)
+            - If nested dictionary: includes nested keys which you can hover for:
+                - **Category** or main key it's under
+                - **Init Value(s)** or **Mapping**
         - **Notes**
+         
+        === "States"
 
-        #### Ready To Leave 
+            #### Ready To Leave 
 
-        ??? grid col single "Ready To Leave [:octicons-key-asterisk-24:][components-overview-legend]"
+            ??? grid col single "Ready To Leave [:octicons-key-asterisk-24:][components-overview-legend]"
 
-            <!-- tooltip: Ready To Leave Variable Overview Card -->
+                <!-- tooltip: Ready To Leave Variable Overview Card -->
+                        
+                !!! grid scrollable ""
+
+                    Variable Name
+
+                    !!! cards col single ""
+
+                        -   `ready_to_leave`
+                        
+                    Type 
+
+                    !!! cards col single ""
+
+                    -   Boolean
+                        { title="Init Value: False." }
+
+                    Notes 
+
+                    !!! cards col single centered-content ""
+
+                        -   Tracks whether player has met exit requirements 
+                        -   Exit gate for the Prep Phase freeze 
+                        -   Set to `True` by a key click label when all required interactions are complete
+
+            #### Key Attempted 
+
+            ??? grid col single "Key Attempted [:octicons-key-asterisk-24:][components-overview-legend]"
+
+                <!-- tooltip: Key Attempted Variable Overview Card -->
+                        
+                !!! grid scrollable ""
+
+                    Variable Name
+
+                    !!! cards col single ""
+
+                        -   `key_attempted`
+                        
+                    Type 
+
+                    !!! cards col single ""
+
+                    -   Boolean
+                        { title="Init Value: False." }
+
+                    Notes 
+
+                    !!! cards col single centered-content ""
+
+                        -   Tracks whether the player has clicked the key at least once without exit meeting requirements
+                        -   Used by `prep_done_hint()` to give more specific guidance with dynamic hints
+
+            #### Closet Clicked 
+
+            ??? grid col single "Closet Clicked [:octicons-key-asterisk-24:][components-overview-legend]"
+
+                <!-- tooltip: Closet Clicked Variable Overview Card -->
+                        
+                !!! grid scrollable ""
+
+                    Variable Name
+
+                    !!! cards col single ""
+
+                        -   `closet_attempted`
+                        
+                    Type 
+
+                    !!! cards col single ""
+
+                    -   Boolean
+                        { title="Init Value: False." }
+
+                    Notes 
+
+                    !!! cards col single centered-content ""
+
+                        -   Tracks whether the player has clicked the closet and finished its interaction successfully
+                        -   Set to `True` when the player completes outfit selection in the `wardrobe_panel` screen
+                        -   Required for the key click to succeed
+
+            #### Laptop Clicked
+
+            ??? grid col single "Laptop Clicked [:octicons-key-asterisk-24:][components-overview-legend]"
+
+                <!-- tooltip: Laptop Clicked Variable Overview Card -->
+                        
+                !!! grid scrollable ""
+
+                    Variable Name
+
+                    !!! cards col single ""
+
+                        -   `laptop_attempted`
+                        
+                    Type 
+
+                    !!! cards col single ""
+
+                    -   Boolean
+                        { title="Init Value: False." }
+
+                    Notes 
+
+                    !!! cards col single centered-content ""
+
+                        -   Tracks whether the player has clicked the laptop
+                        -   Set to `True` when the player clicks the laptop and finishes its interaction script
+                        -   Required for the key click to succeed.
+
+            #### Top Selected 
+
+            ??? grid col single "Top Selected [:octicons-key-asterisk-24:][components-overview-legend]"
+
+                <!-- tooltip: Top Selected Overview Card -->
+                        
+                !!! grid scrollable ""
+
+                    Variable Name
+
+                    !!! cards col single ""
+
+                        -   `top_selected`
+                        
+                    Type 
+
+                    !!! cards col single ""
+
+                    -   Boolean
+                        { title="Init Value: False." }
+
+                    Notes 
+
+                    !!! cards col single centered-content ""
+
+                        -   Tracks whether the player has chosen a top garment for their outfit
+                        -   Set to `True` when the player selects a top in the `wardrobe_panel`
+                        -   Gates `closet_clicked`
+
+            #### Bottom Selected 
+
+            ??? grid col single "Bottom Selected [:octicons-key-asterisk-24:][components-overview-legend]"
+
+                <!-- tooltip: Bottom Selected Overview Card -->
+                        
+                !!! grid scrollable ""
+
+                    Variable Name
+
+                    !!! cards col single ""
+
+                        -   `bottom_selected`
+                        
+                    Type 
+
+                    !!! cards col single ""
+
+                    -   Boolean
+                        { title="Init Value: False." }
+
+                    Notes 
+
+                    !!! cards col single centered-content ""
+
+                        -   Tracks whether the player has chosen a bottom garment for their outfit
+                        -   Set to `True` when the player selects a bottom in the `wardrobe_panel`
+                        -   Gates `closet_clicked`
+                        
+        === "Mappings"
+
+            #### Clothing Sprites
+
+            ??? grid col single "Clothing Sprites [:octicons-key-asterisk-24:][components-overview-legend]"
+
+                <!-- tooltip: Clothing Sprites Variable Overview Card -->
+                        
+                !!! grid scrollable ""
+
+                    Variable Name
+
+                    !!! cards col single ""
+
+                        -   `clothing_sprites`
+                        
+                    Type 
+
+                    !!! cards col single centered-content ""
+
+                        -   Dictionary
+                            { title="{str: {str: str}}" }
                     
-            !!! grid scrollable ""
+                    Keys 
 
-                Variable Name
+                    !!! grid col single no-pad no-border ""
 
-                !!! cards col single ""
+                        !!! cards col centered-content ""
 
-                    -   `ready_to_leave`
+                            -   `"top"`
+                                { title="Category for upper-body clothing. Maps sprite names to their flag names." }
+
+                            -   `"bottom"`
+                                { title="Category for lower-body clothing. Maps sprite names to their flag names." }
+
+                        !!! cards col single centered-content ""
+
+                            -   `"dress_shirt"`
+                                { title="Under 'top'. Maps to flag 'semiformal_top'." }
+
+                            -   `"thin_turtle_neck"`
+                                { title="Under 'top'. Maps to flag 'contour_top'." }
+
+                            -   `"lightweight_cargo_pants"`
+                                { title="Under 'bottom'. Maps to flag 'many_pockets'." }
+
+                            -   `"dress_jeans"`
+                                { title="Under 'bottom'. Maps to flag 'heavy_pants'." }
                     
-                Type 
+                    Notes 
 
-                !!! cards col single ""
+                    !!! cards col single centered-content ""
 
-                -   Boolean
-                    { title="Init Value: False." }
-
-                Notes 
-
-                !!! cards col single centered-content ""
-
-                    -   Tracks whether player has met exit requirements 
-                    -   Exit gate for the Prep Phase freeze 
-                    -   Set to `True` by a key click label when all required interactions are complete
-
-        #### Key Attempted 
-
-        ??? grid col single "Key Attempted [:octicons-key-asterisk-24:][components-overview-legend]"
-
-            <!-- tooltip: Key Attempted Variable Overview Card -->
-                    
-            !!! grid scrollable ""
-
-                Variable Name
-
-                !!! cards col single ""
-
-                    -   `key_attempted`
-                    
-                Type 
-
-                !!! cards col single ""
-
-                -   Boolean
-                    { title="Init Value: False." }
-
-                Notes 
-
-                !!! cards col single centered-content ""
-
-                    -   Tracks whether the player has clicked the key at least once without exit meeting requirements
-                    -   Used by `prep_done_hint()` to give more specific guidance with dynamic hints
-
-        #### Closet Clicked 
-
-        ??? grid col single "Closet Clicked [:octicons-key-asterisk-24:][components-overview-legend]"
-
-            <!-- tooltip: Closet Clicked Variable Overview Card -->
-                    
-            !!! grid scrollable ""
-
-                Variable Name
-
-                !!! cards col single ""
-
-                    -   `closet_attempted`
-                    
-                Type 
-
-                !!! cards col single ""
-
-                -   Boolean
-                    { title="Init Value: False." }
-
-                Notes 
-
-                !!! cards col single centered-content ""
-
-                    -   Tracks whether the player has clicked the closet and finished its interaction successfully
-                    -   Set to `True` when the player completes outfit selection in the `wardrobe_panel` screen
-                    -   Required for the key click to succeed
-
-        #### Laptop Clicked
-
-        ??? grid col single "Laptop Clicked [:octicons-key-asterisk-24:][components-overview-legend]"
-
-            <!-- tooltip: Laptop Clicked Variable Overview Card -->
-                    
-            !!! grid scrollable ""
-
-                Variable Name
-
-                !!! cards col single ""
-
-                    -   `laptop_attempted`
-                    
-                Type 
-
-                !!! cards col single ""
-
-                -   Boolean
-                    { title="Init Value: False." }
-
-                Notes 
-
-                !!! cards col single centered-content ""
-
-                    -   Tracks whether the player has clicked the laptop
-                    -   Set to `True` when the player clicks the laptop and finishes its interaction script
-                    -   Required for the key click to succeed.
-
-        #### Top Selected 
-
-        ??? grid col single "Top Selected [:octicons-key-asterisk-24:][components-overview-legend]"
-
-            <!-- tooltip: Top Selected Overview Card -->
-                    
-            !!! grid scrollable ""
-
-                Variable Name
-
-                !!! cards col single ""
-
-                    -   `top_selected`
-                    
-                Type 
-
-                !!! cards col single ""
-
-                -   Boolean
-                    { title="Init Value: False." }
-
-                Notes 
-
-                !!! cards col single centered-content ""
-
-                    -   Tracks whether the player has chosen a top garment for their outfit
-                    -   Set to `True` when the player selects a top in the `wardrobe_panel`
-                    -   Gates `closet_clicked`
-
-        #### Bottom Selected 
-
-        ??? grid col single "Bottom Selected [:octicons-key-asterisk-24:][components-overview-legend]"
-
-            <!-- tooltip: Bottom Selected Overview Card -->
-                    
-            !!! grid scrollable ""
-
-                Variable Name
-
-                !!! cards col single ""
-
-                    -   `bottom_selected`
-                    
-                Type 
-
-                !!! cards col single ""
-
-                -   Boolean
-                    { title="Init Value: False." }
-
-                Notes 
-
-                !!! cards col single centered-content ""
-
-                    -   Tracks whether the player has chosen a bottom garment for their outfit
-                    -   Set to `True` when the player selects a bottom in the `wardrobe_panel`
-                    -   Gates `closet_clicked`
+                        -   Initialized with `define` rather than `default` — a static mapping, not gameplay state
+                        -   Read by `get_clothing_info()` and `get_same_category_flags()`
+                        -   Adding a new clothing item means adding its sprite name and flag here
 
     === "Functions"
 
@@ -534,6 +608,77 @@ game mode cleanly.
 
                     -   `wardrobe_panel` screen
                         { title="For closet selection label interactions" }
+        
+        #### Get Clothing Info :lucide-wrench:
+
+        ??? grid col single "Get Clothing Info [:octicons-key-asterisk-24:][components-overview-legend]"
+
+            <!-- tooltip: Get Clothing Info Function Overview Card -->
+            
+            !!! grid scrollable ""
+
+                Function Call
+
+                !!! cards col single ""
+
+                    -   `get_clothing_info(sprite_name)`
+                
+                Parameters 
+
+                !!! cards col single ""
+
+                    -   `sprite_name`
+                        { title="Sprite name to look up in clothing_sprites" }
+                    
+                Functionality
+
+                !!! cards col single centered-content ""
+
+                    -   Returns a `(category, flag)` tuple for the given sprite
+                    -   Returns `(None, None)` if the sprite name isn't present in `clothing_sprites`
+                    
+                Used In
+
+                !!! cards col single centered-content ""
+
+                    -   `clothing_sprite` screen
+                        { title="To fetch the category and flag for the current sprite" }
+        
+        #### Get Same Category Flags :lucide-wrench:
+
+        ??? grid col single "Get Same Category Flags [:octicons-key-asterisk-24:][components-overview-legend]"
+
+            <!-- tooltip: Get Same Category Flags Function Overview Card -->
+            
+            !!! grid scrollable ""
+
+                Function Call
+
+                !!! cards col single ""
+
+                    -   `get_same_category_flags(sprite_name)`
+                
+                Parameters 
+
+                !!! cards col single ""
+
+                    -   `sprite_name`
+                        { title="Sprite name whose category siblings to look up" }
+                    
+                Functionality
+
+                !!! cards col single centered-content ""
+
+                    -   Returns a list of flags for all sprites in the same category as `sprite_name`
+                    -   Excludes `sprite_name`'s own flag
+                    -   Returns an empty list if the sprite name isn't present in `clothing_sprites`
+                    
+                Used In
+
+                !!! cards col single centered-content ""
+
+                    -   `clothing_sprite` screen
+                        { title="To clear the flags of sibling sprites before setting the current sprite's flag — ensures only one clothing item per category is selected" }
 
     === "Statements"
 

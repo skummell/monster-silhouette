@@ -1,11 +1,11 @@
 ---
 icon: lucide/monitor
-status: new 
+status: modified
 tags: 
     - Coding
     - ㅤLast Updated
-    - ㅤㅤOctober 
-    - ㅤㅤㅤ31
+    - ㅤㅤNovember 
+    - ㅤㅤㅤ8
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -215,6 +215,8 @@ They range from the primary navigation screen to cosmetic display screens that s
 
         !!! tip "Learn more about Meta Screens trigged by dock buttons in the [Meta Screens][meta-screens] page"
 
+        !!! tip "Learn more about the Dock Button Template in [Template Screens][template-screens] page"
+
         ### Navigation Dock 
 
         The dock at the bottom of the Computer UI that houses the Meta Screen navigation buttons and the main menu return button.
@@ -247,6 +249,7 @@ They range from the primary navigation screen to cosmetic display screens that s
                     -   Only visually and functionally accessible inside `computer_ui_menu`
                     -   Grid Icon Buttons open their designated Meta Screens
                     -   Power off button returns to Main Menu
+                    -   Grid icon buttons are rendered via the `dock_button` template
             
     === "App Grid"
 

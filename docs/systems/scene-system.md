@@ -1,6 +1,6 @@
 ---
 icon: lucide/image
-status: new 
+# status: modified
 tags: 
     - Coding
     - ㅤLast Updated

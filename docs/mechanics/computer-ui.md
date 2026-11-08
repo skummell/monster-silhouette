@@ -1,6 +1,6 @@
 ---
 icon: lucide/laptop-minimal
-status: new 
+# status: modified 
 tags: 
     - GDD
     - ㅤLast Updated

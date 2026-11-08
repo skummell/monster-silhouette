@@ -45,6 +45,7 @@
   [story-mode-mechanic]: ../mechanics/story-mode.md "Gameplay Mechanics - Story Mode"
   [prep-wrap-mechanic]: ../mechanics/prep-wrap.md "Gameplay Mechanics - Prep & Wrap Modes"
   [days-hud-mechanic]: ../mechanics/days-hud.md "Gameplay Mechanics - Screen HUD & In-Game Days"
+  [hovers-tooltips-mechanic]: ../mechanics/hovers-tooltips.md "Gameplay Mechanics - Hovers & Tooltips"
 
   <!-- Game Screens Page Links -->
   [template-screens]: ../screens/template-screens.md "Game Screens - Template Screens"
@@ -88,6 +89,7 @@
 
   <!-- Template Screens - Overview Links -->
   [meta-screen]: #meta-screen "Jump to Meta Screen Template"
+  [dock-button]: #dock-button "Jump to Dock Button Template"
   [app-screen]: #app-templates "Jump to App Screen Template"
   [app-header]: #app-header "Jump to App Header Template"
   [app-exit]: #app-exit "Jump to App Exit Template" 
@@ -101,18 +103,22 @@
   [draft-file]: #draft-file "Jump to Draft File Template" 
   [scrollable-content]: #scrollable-content "Jump to Scrollable Content Template" 
   [notif-button]: #notif-button "Jump to Notif Button Template"
+  [bedroom-interactable]: #bedroom-interactable "Jump to Bedroom Interactable Template" 
+  [clothing-sprite]: #clothing-sprite "Jump to Clothing Sprite Template"
 
   <!-- Meta Screens - Overview Links -->
   [save-load]: #save-load "Jump to Save & Load Screen"
   [save-load-choice]: #save-load-choice "Jump to Save & Load Choice Screen"
   [file-slots]: #file-slots "Jump to File Slots Screen"
   [ending-gallery]: #ending-gallery "Jump to Ending Gallery Screen"
+  [controls-help]: #controls-help "Jump to Controls Help Screen"
 
   <!-- Overlay Screens - Overview Links -->
   [status-bar]: #status-bar "Jump to Status Bar Screen"
   [freeze-hint-display]: #freeze-hint-display "Jump to Freeze Hint Display Screen"
   [exit-disabled-warning]: #exit-disabled-warning "Jump to Exit Disabled Warning Screen"
-  [chat-app-notification]: #chat-app-notification "Jump to Chat App Notification"
+  [chat-app-notification]: #chat-app-notification "Jump to Chat App Notification Screen"
+  [tooltip-hover]: #tooltip-hover "Jump to Tooltip Hover Screen"
 
   <!-- Computer UI Screens - Overview Links -->
   [computer-ui]: #computer-ui "Jump to Computer UI Screen"
@@ -235,12 +241,15 @@
   [laptop-clicked]: #laptop-clicked "Jump to Laptop Clicked Variable"
   [top-selected]: #top-selected "Jump to Top Selected Variable" 
   [bottom-selected]: #bottom-selected "Jump to Bottom Selected Variable"
+  [clothing-sprites]: #clothing-sprites "Jump to Clothing Sprites Variable"
 
   <!-- Game Mode System Components - Function Overview Links -->
   [open-wardrobe]: #open-wardrobe "Jump to Open Wardrobe Function"
   [close-wardrobe]: #close-wardrobe "Jump to Close Wardrobe Function"
   [call-prep-script]: #call-prep-script "Jump to Call Prep Script Function"
   [call-prep-closet-script]: #call-prep-closet-script "Jump to Call Prep Closet Script Function"
+  [get-clothing-info]: #get-clothing-info "Jump to Get Clothing Info Function" 
+  [get-same-category-flags]: #get-same-category-flags "Jump to Get Same Category Flag Function"
 
   <!-- Game Mode System Components - Statement Overview Links -->
   [prep-phase]: #prep-phase "Jump to Prep Phase Statement"

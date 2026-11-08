@@ -1,6 +1,6 @@
 ---
 icon: lucide/mouse-pointer-2-off
-status: new 
+# status: modified
 tags: 
     - Coding
     - ㅤLast Updated

@@ -1,7 +1,7 @@
 [project]
 site_url = "https://skummell.github.io/monster-silhouette/"
 site_name = "Monster Silhouette - Source Code Docs"
-site_description = "Source Code Documentation for Monster Silhouette, Ren'py Visual Novel RPG"
+site_description = "Source Code Documentation for Monster Silhouette, Ren'py Visual Novel RPG."
 site_author = "skummell"
 
 copyright = "Copyright &copy; 2026 SkumMell"
@@ -17,6 +17,7 @@ nav = [
       "mechanics/computer-ui.md",
       "mechanics/prep-wrap.md",
       "mechanics/days-hud.md",
+      "mechanics/hovers-tooltips.md", 
   ] },
   { "Documentation" = [
     { "Settings & Options" = "settings-options.md", },
@@ -61,7 +62,7 @@ features = [
   "content.tabs.link",
   "content.tooltips",
   # "header.autohide",
-  "navigation.expand",
+  # "navigation.expand",
   "navigation.footer",
   "navigation.indexes",
   "navigation.instant",

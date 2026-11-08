@@ -1,11 +1,11 @@
 ---
 icon: lucide/blend
-status: new 
+status: modified 
 tags: 
     - Coding
     - ㅤLast Updated
-    - ㅤㅤOctober 
-    - ㅤㅤㅤ31
+    - ㅤㅤNovember
+    - ㅤㅤㅤ8
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -57,6 +57,11 @@ changes and script progression without needing to be explicitly shown each time.
                 
                     -   :lucide-message-square-dot: **Chat App Notification**
                         [][chat-app-notification]{ .card-link }
+
+                !!! cards col single centered-content ""
+                    
+                    -   :lucide-square-dashed-mouse-pointer: **Tooltip Hover** 
+                        [][tooltip-hover]{ .card-link }
 
 === "Visibility & Registration"
 
@@ -256,4 +261,49 @@ changes and script progression without needing to be explicitly shown each time.
                     -   On click: opens Chat App and hides itself
                     -   When disabled via Button Disabler System: does nothing
                     -   Shown via `show_notif` statement in script
+    
+    === "Tooltip Hover"
+
+        !!! tip "Learn more about the Hovers & Tooltips mechanic in the [Hovers & Tooltips][hovers-tooltips-mechanic] page"
+
+        ### Tooltip Hover
+
+        Renders the tooltip for whichever interactive element currently has focus. 
+
+        Style varies based on the active screen — the screen selects from four style families to match the context it's rendering in.
+
+        ??? grid col single "Tooltip Hover [:octicons-key-asterisk-24:][screen-overview-legend]"
+
+            <!-- tooltip: Tooltip Hover Overview Card -->
+
+            !!! grid scrollable ""
+
+                Screen Name 
+
+                !!! cards col single ""
+
+                    -   `tooltip_hover`
+                    
+                Parameters 
+
+                !!! cards col single centered-content ""
+
+                    -   N/A
+                    
+                Visual Layout
+
+                !!! cards centered-content ""
+
+                    -   Tooltip Frame 
+                    -   Tooltip Text
+                
+                Notes 
+
+                !!! cards col single ""
+
+                    -   Applies one of four style families based on active screen
+                    -   Uses inline `use tooltip_hover` in Computer UI Menu and app screens opened from it, where overlays are suppressed
+                    -   Content comes from `tooltip` inline `"text"` declarations or `tooltip_content` dictionary lookups
+
+
 

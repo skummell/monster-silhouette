@@ -1,6 +1,6 @@
 ---
 icon: lucide/book-open-text
-status: new 
+# status: modified 
 tags: 
     - GDD
     - ㅤLast Updated

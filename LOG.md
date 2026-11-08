@@ -759,7 +759,7 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
     - Wallet Tracker Content Layout & Hook up 
     - Stat Tracker Content Layout & Hook up
 
-### Nov 5-6, 2026 
+### Nov 5-8, 2026 
 
 - Usable Lounge - Looking In Background Progression 
     - 1 Point Perspective
@@ -818,3 +818,7 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
     - New Prep Phase Functions
         - `get_clothing_info(sprite_name)` - Fetch sprite_name flag and category
         - `get_same_category_flags(sprite_name)` - Fetch the Flags for sprites of the same category as sprite_name except sprite_name flag itself
+
+- Updated Source Code Documentation in `docs/`
+    - Added documentation covering all relevant logs and changes since last update
+

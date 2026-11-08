@@ -1,11 +1,11 @@
 ---
 icon: lucide/gamepad-2
-status: new 
+status: modified 
 tags: 
     - Coding
     - ㅤLast Updated
-    - ㅤㅤOctober 
-    - ㅤㅤㅤ31
+    - ㅤㅤNovember
+    - ㅤㅤㅤ8
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -81,6 +81,8 @@ than making choices through dialogue menus or chat.
 
     !!! tip "Learn more about the Game Mode System in the [Game Mode System][game-mode-system] page"
 
+    !!! tip "Learn more about the Game Mode Templates use in the [Template Screens][template-screens] page"
+
     ## Screens
 
     Below all the game mode screens for Monster Silhouette have been organized into overviews containing information on their: 
@@ -137,6 +139,7 @@ than making choices through dialogue menus or chat.
                     -   Wardrobe opens `wardrobe_panel` on click
                     -   Key click is the exit gate — exit is only active when required interactions have been completed
                     -   Script labels for each click are fed in via `click_map` by the `prep_phase` statement
+                    -   Interactable prop buttons are rendered via the `bedroom_interactable` template.
 
     === "Wardrobe Panel"
 
@@ -186,4 +189,5 @@ than making choices through dialogue menus or chat.
                     -   Dressed button only becomes sensitive when both a top and bottom have been selected
                     -   Opens via `open_wardrobe()` function inside `bedroom` screen 
                     -   Closes via `close_wardrobe()` function
+                    -   Sprite Buttons are rendered through the `clothing_sprite` template
 

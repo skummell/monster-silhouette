@@ -1,11 +1,11 @@
 ---
 icon: lucide/settings-2
-status: new 
+status: modified 
 tags: 
     - Coding
     - ㅤLast Updated
-    - ㅤㅤOctober 
-    - ㅤㅤㅤ31
+    - ㅤㅤNovember
+    - ㅤㅤㅤ8
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -171,7 +171,6 @@ of script runs.
 
         The choice works on two levels: in practice and within Monster Silhouette's narrative.
 
-
         Practically, blue is the dominant color of operating system interfaces across every platform players are likely to have 
         used — Windows, macOS, and most Linux desktop environments all carry the visual weight of blue somewhere in their UI. 
         Leaning into teal-blue gives the Computer UI an immediate familiarity, reading as "a computer" before the player has 
@@ -275,6 +274,100 @@ of script runs.
         The relative scale matters more than the exact numbers, which may shift as the final visual pass lands.
         What's important is that dialogue and interface sit together, that names stand out, and that titles carry the most weight.
 
+    === "Screen Styles"
+
+        !!! tip "Learn more about Ren'Py's built-in styles feature in [Ren'Py Engine Docs][renpy-doc]"
+
+        !!! tip "Code for screen styles discussed in this section can be found in [screens.rpy][screens]"
+
+        ### Screen Styles
+
+        Screen styles in Monster Silhouette give every screen in the game shared conventions for consistency — from the properties 
+        applied to elements to the dimensions that position them.
+
+        Below you'll find: standardization rules that keep screen styles organized, and tooltip styling which 
+        varies based on the active screen will be covered.
+    
+        === "Screen Style Standardization"
+
+            #### Screen Style Standardization 
+
+            Screen Style Standardization is the set of rules that keeps every screen's styles organized and consistent. 
+            Without them, each screen would re-declare the same property blocks inline and position elements using unnamed literal values — 
+            properties scattered across the file, values that have to be found by scrolling rather than by name, and no easy way to change 
+            something that appears on multiple screens without searching each one individually.
+
+            It deals with the reusable helper styles that screens inherit from, the grouping pattern that keeps each screen's styles findable, 
+            and the rule for where dimension values live between shared config and inline declarations will be covered.
+
+            === "Helper Styles"
+
+                ##### Helper Styles
+
+                Four helper styles exist in `screens.rpy` — `clipped`, `zeroed_frame`, `bolded`, and `full_screen`. 
+                Each captures a repeated property block that many screens otherwise declare on their own.
+
+                Style inheritance through Ren'Py's `style X is Y` syntax applies them. 
+                Instead of every screen that needs clipping writing `clipping True` for each element that needs to be clipped — 
+                it writes `style some_element is clipped`. 
+                The property block lives once in the helper style, and every screen that needs it points at the same definition.
+
+            === "Per-Screen Grouping"
+
+                ##### Per-Screen Grouping 
+
+                Styles for a given screen are grouped under a comment header naming that screen — `# Status Bar Styles`, `# Chat Box Styles`, 
+                `# Profile App Styles`, and so on.
+
+                Each style group sits directly after the screen it describes. A reader scrolling through `screens.rpy` sees a screen definition, 
+                then immediately sees the styles that screen uses. There's no jumping between distant parts of the file to find the style governing 
+                a property they're looking at.
+            
+            === "Dimension Scoping"
+
+                ##### Dimension Scoping 
+
+                Dimension values live in two places, split by scope. Shared values and values that compose from shared ones live in `gui.rpy` under 
+                "Positioning & Sizing Shared Config for Screen Styles." Values that exist only to make one screen's internal layout readable stay as inline 
+                `$` variables at the top of that screen.
+
+                A value like `app_grid_top_pad` doesn't live in `gui.rpy` only because it's used across multiple screens — it lives there because 
+                it's built from `status_bar_height`, which is itself shared. Changing `status_bar_height` cascades correctly through every value composed 
+                from it.
+
+                Values that only make one screen's layout readable stay inline. They're never referenced from outside their screen, so putting them in 
+                `gui.rpy` would force naming prefixes to avoid collisions with other screens' variables, and would push the reader into a separate 
+                file to understand how one screen lays out.
+
+                The rule is straightforward: if a value is used by more than one screen, or built from something that is, it lives in `gui.rpy`. 
+                Otherwise it stays inline.
+
+                Three conventions follow the same principle. `config.screen_width` is used for horizontal positioning wherever the layout should adapt 
+                to the base resolution rather than assume a fixed width. `align` and `anchor` are preferred over absolute coordinates so positioning survives 
+                window resize. Composite values compose from smaller defines, so a single change cascades through every value built from it.
+        
+        === "Dynamic Tooltip Styles"
+
+            !!! tip "Learn more about how tooltip styles are selected in the [Hovers & Tooltips][hovers-tooltips-mechanic] page"
+
+            #### Dynamic Tooltip Styles 
+
+            Tooltips in Monster Silhouette are styled based on the screen context they appear in. Four style families exist to serve the different 
+            kinds of content that hover contexts produce.
+
+            The `tooltip` family is the default. It renders a small, self-contained frame for brief labels — the kind used for interface buttons 
+            like a return-to-game control.
+
+            Three specialized families replace it in specific contexts. `profile_preview` is compact and tinted, sized for the multi-line tag lines 
+            shown above chat contacts. `wardrobe_select` is wider, sized for clothing descriptions that can run several lines. 
+            `bedroom_tooltip` uses a muted color matching the game's UI, keeping bedroom prop labels visually quiet so they don't compete with the scene.
+
+            All four follow the same naming convention: `[family]_frame` for the container and `[family]_text` for the text inside it. 
+            The `tooltip_hover` screen combines them at render time via `style_prefix + "_frame"` and `style_prefix + "_text"`. 
+            Adding a new family means defining both styles under a new prefix — no changes to the rendering screen are required.
+
+
+
 === "Dialogue & Text Layout"
 
     ## Dialogue & Text Layout 
@@ -353,13 +446,34 @@ of script runs.
         to want to look back — even hundreds of entries back — to catch details they might have missed. Setting the ceiling high enough 
         to feel effectively unbounded serves that.
 
-    === "Delete Key Binding"
+    === "Key Binding"
 
-        ### Delete Key Binding 
+        ### Key Binding
 
-        The delete key for save slots has been remapped to D. In save and load screens, pressing D while hovering over a save slot 
-        triggers a confirm message and deletes the save. This gives the player a dedicated one-key binding rather than requiring them 
-        to interact with a context menu, making save management less disruptive to the flow of playing.
+        Monster Silhouette provides several key bindings on top of Ren'Py's defaults for save management.
+
+        The delete key for removing individual save slots on hover, and the quick 
+        save & load shortcuts for saving and loading without opening the save menu.
+
+        === "Delete Key Binding"
+
+            #### Delete Key Binding 
+
+            The delete key for save slots has been remapped to `D`. In save and load screens, pressing `D` while hovering over a save slot 
+            triggers a confirm message and deletes the save. This gives the player a dedicated one-key binding rather than requiring them 
+            to interact with a context menu, making save management less disruptive to the flow of playing.
+
+        === "Quick Save & Load Key Binding"
+
+            #### Quick Save & Load Key Binding
+
+            `F5` triggers a quick save and `F6` triggers a quick load, both bound directly on the `say` screen. 
+            Because the `say` screen displays whenever dialogue is on screen, the two keys are available throughout normal gameplay without 
+            opening the save menu first.
+
+            The bindings call `QuickSave()` and `QuickLoad()` directly as key actions rather than routing through the quick save slot page — 
+            pressing `F5` saves to the current quick save slot, and `F6` loads from it. This keeps save access available in the moment rather 
+            than requiring the player to interrupt play to save.
 
     === "Cloud Sync"
 

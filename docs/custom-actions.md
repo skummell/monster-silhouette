@@ -1,7 +1,21 @@
 ---
 icon: lucide/package-plus
-status: new 
+# status: modified
+tags: 
+    - Coding
+    - ㅤLast Updated
+    - ㅤㅤOctober 
+    - ㅤㅤㅤ31
+    - ㅤㅤㅤㅤ2026
 ---
+
+??? warning "This page may not be up to date"
+
+    Check the page tags for last date it was updated on. 
+
+    If the date matches up with the last date-range entry in the [Build Log][log] you can be certain it's up to date. 
+
+    !!! warning "Zensical's tag feature is not stable and filtering will likely not work as intended"
 
 # Custom Actions
 
@@ -15,7 +29,7 @@ status: new
 ## Overview 
 
 Custom Actions in Monster Silhouette are modifications made to Ren'Py's own game menu infrastructure — specifically to 
-`00gamemenu.rpy` and `00action_menu.rpy`, two files in the Ren'Py engine's common/ folder. Where the Game Systems pages 
+`00gamemenu.rpy` and `00action_menu.rpy`, two files in the Ren'Py engine's `common/` folder. Where the Game Systems pages 
 document systems built on top of Ren'Py, this page documents changes made inside it.
 
 There is really one conceptual addition to Ren'Py's menu architecture: a third context alongside the game context and Ren'Py's 
@@ -25,7 +39,7 @@ the `_home` variable — exists to support that third context and the flow it en
 The reason for this addition is the Computer UI Menu. Ren'Py's default game menu infrastructure assumes only two states: 
 gameplay, or a game menu layered on top of gameplay. Monster Silhouette needs a state where the Computer UI Menu is showing 
 — not quite gameplay, not quite a game menu — so that Meta Screens opened from inside it have somewhere to return to. 
-Without the home context, opening Save & Load from Computer UI Menu would drop ESC back to gameplay instead of back to 
+Without the home context, opening Save & Load from Computer UI Menu would drop `ESC` back to gameplay instead of back to 
 Computer UI Menu.
 
 !!! warning "This Page Covers Engine-Level Modifications"
@@ -95,7 +109,7 @@ Computer UI Menu.
 
         The reasoning is structural. Because `_menu` stays `False` in home context, `ShowMenu()` calls made from inside home context 
         take the "not in menu" branch and create a nested menu context rather than showing the screen in the current context. 
-        That nesting is what makes ESC inside a Meta Screen return the player to Computer UI Menu rather than dropping them back to 
+        That nesting is what makes `ESC` inside a Meta Screen return the player to Computer UI Menu rather than dropping them back to 
         gameplay — the Menu context returns control to the Home context beneath it, not to the Game context beneath that.
 
         This is the core insight of the whole design. The home context is a lighter context than a menu context specifically so that 
@@ -110,7 +124,7 @@ Computer UI Menu.
     ## ShowHome Action 
 
     `ShowHome` is a custom Action class added to `00action_menu.rpy`. It is the mechanism that enters and exits the home context 
-    — the toggle that pressing ESC triggers when the player is in gameplay.
+    — the toggle that pressing `ESC` triggers when the player is in gameplay.
 
     === "Behavior"
 
@@ -192,7 +206,7 @@ Computer UI Menu.
         
         Both use `call_in_new_context` under the hood.
                 
-        `ShowHome` is wired as the ESC / `game_menu` key trigger through `config.game_menu_action`.
+        `ShowHome` is wired as the `ESC` / `game_menu` key trigger through `config.game_menu_action`.
 
 === "Home Menu Entry Point"
 
@@ -220,7 +234,7 @@ Computer UI Menu.
         4. **Show the target screen** — `renpy.show_screen(_home_screen, ...)`, standard show behavior (not `_transient`)
 
         5. **Interact** — `ui.interact()`
-            - This is the interaction loop that runs until the player clicks a button that ends the interaction or presses ESC
+            - This is the interaction loop that runs until the player clicks a button that ends the interaction or presses `ESC`
 
         6. **Clean up** — `store._home = False`
 
@@ -234,7 +248,7 @@ Computer UI Menu.
         The reason: none of that infrastructure is needed for a home context. 
         The Computer UI Menu is a regular screen; it doesn't rely on `_menu` being `True` in its design. 
         By keeping `_menu = False`, `_home_menu` preserves the ability for `ShowMenu` calls made from inside Computer UI Menu to 
-        create nested contexts — the behavior that makes ESC navigation work correctly.
+        create nested contexts — the behavior that makes `ESC` navigation work correctly.
 
 === "Supporting Infrastructure"
 
@@ -301,7 +315,7 @@ Computer UI Menu.
 
         The addition `and not store._home` prevents a screenshot from being taken when entering a menu context from within home context.
 
-        The reasoning ties back to how screenshots feed save slots. When the player is in gameplay and presses ESC, `_home_menu` takes 
+        The reasoning ties back to how screenshots feed save slots. When the player is in gameplay and presses `ESC`, `_home_menu` takes 
         a screenshot before showing Computer UI Menu — that's the correct "gameplay" preview that will appear in save slots. 
         
         Then the player opens Save & Load from Computer UI Menu, which calls: 
@@ -325,7 +339,7 @@ Computer UI Menu.
 
         - **If not set** — falls back to `renpy.call_in_new_context("_game_menu")`, Ren'Py's standard game menu entry
 
-        This branch is what makes the "press ESC to open Computer UI Menu" behavior work — the `game_menu` key press routes through 
+        This branch is what makes the "press `ESC` to open Computer UI Menu" behavior work — the `game_menu` key press routes through 
         `_invoke_game_menu`, which respects the configured action and defers to `ShowHome` rather than entering Ren'Py's default 
         game menu.
 

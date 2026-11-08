@@ -1,6 +1,6 @@
 ---
 icon: lucide/sun-moon
-status: new 
+# status: modified
 tags: 
     - GDD
     - ㅤLast Updated
