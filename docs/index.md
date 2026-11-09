@@ -5,7 +5,7 @@ tags:
     - Index
     - ㅤLast Updated
     - ㅤㅤNovember
-    - ㅤㅤㅤ8
+    - ㅤㅤㅤ9
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -13,7 +13,7 @@ tags:
 
     Check the page tags for last date it was updated on. 
 
-    If the date matches up with the last date-range entry in the [Build Log][log] you can be certain it's up to date. 
+    If a documentation update is logged in the latest two date-range entries of the [Build Log][log] you can be certain it's up to date. 
 
     !!! warning "Zensical's tag feature is not stable and filtering will likely not work as intended"
 
@@ -359,19 +359,19 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
         !!! cards col five centered-content ""
 
             -   :lucide-book-open-text: **Story Mode**
-                [][story-mode-mechanic]{ .card-link }
+                [][story-mode-mechanic-root]{ .card-link }
             
             -   :lucide-laptop-minimal: **Computer UI** 
-                [][computer-ui-mechanic]{ .card-link }
+                [][computer-ui-mechanic-root]{ .card-link }
             
             -   :lucide-sun-moon: **Prep & Wrap Modes** 
-                [][prep-wrap-mechanic]{ .card-link }
+                [][prep-wrap-mechanic-root]{ .card-link }
             
             -   :lucide-calendar: **Screen HUD & In-Game Dates** 
-                [][days-hud-mechanic]{ .card-link }
+                [][days-hud-mechanic-root]{ .card-link }
 
             -   :lucide-scan-eye: **Hovers & Tooltips** 
-                [][hovers-tooltips-mechanic]{ .card-link }
+                [][hovers-tooltips-mechanic-root]{ .card-link }
 
     ### Gameplay Mechanics 
 
@@ -448,22 +448,22 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
             !!! cards col three centered-content ""
 
                 -   :lucide-layout-template: **Template Screens**
-                    [][template-screens]{ .card-link }
+                    [][template-screens-root]{ .card-link }
 
                 -   :lucide-cpu: **Meta Screens**
-                    [][meta-screens]{ .card-link }
+                    [][meta-screens-root]{ .card-link }
 
                 -   :lucide-blend: **Overlay Screens**
-                    [][overlay-screens]{ .card-link }
+                    [][overlay-screens-root]{ .card-link }
 
                 -   :lucide-monitor: **Computer UI Screens**
-                    [][computer-ui-screens]{ .card-link }
+                    [][computer-ui-screens-root]{ .card-link }
 
                 -   :lucide-layout-grid-circles: **App Screens**
-                    [][app-screens]{ .card-link }
+                    [][app-screens-root]{ .card-link }
 
                 -   :lucide-gamepad-2: **Game Mode Screens**
-                    [][game-mode-screens]{ .card-link }
+                    [][game-mode-screens-root]{ .card-link }
 
         **Game Screens** 
 
@@ -480,22 +480,22 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
             !!! cards col three centered-content ""
 
                 -   :lucide-image: **Scene System**
-                    [][scene-system]{ .card-link }
+                    [][scene-system-root]{ .card-link }
                 
                 -   :lucide-mouse-pointer-2-off: **Button Disabler System** 
-                    [][button-disabler-system]{ .card-link }
+                    [][button-disabler-system-root]{ .card-link }
                 
                 -   :lucide-messages-circle: **Chat System** 
-                    [][chat-system]{ .card-link }
+                    [][chat-system-root]{ .card-link }
                 
                 -   :lucide-feather: **Draft System** 
-                    [][draft-system]{ .card-link }
+                    [][draft-system-root]{ .card-link }
                 
                 -   :lucide-pause: **Freeze System**
-                    [][freeze-system]{ .card-link }
+                    [][freeze-system-root]{ .card-link }
                 
                 -   :lucide-gamepad-directional: **Game Mode System** 
-                    [][game-mode-system]{ .card-link }
+                    [][game-mode-system-root]{ .card-link }
 
         **Game Systems** 
 
@@ -509,7 +509,7 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
 
     === "Settings & Options"
 
-        !!! tip "Check out the [Settings & Options][settings-options] page for more details"
+        !!! tip "Check out the [Settings & Options][settings-options-root] page for more details"
 
         **Settings & Options**
 
@@ -521,7 +521,7 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
 
     === "Custom Actions"
 
-        !!! tip "Check out the [Custom Actions][custom-actions] page for more details"
+        !!! tip "Check out the [Custom Actions][custom-actions-root] page for more details"
 
         **Custom Actions**
 

@@ -36,9 +36,9 @@
   <!-- Relative Links -->
 
   <!-- Preview Pages Links -->
-  [readme-preview]: ../preview-readme.md "(Git Repo) README Preview"
-  [license-preview]: ../preview-license.md "(Git Repo) LICENSE Preview"
-  [log-preview]: ../preview-log.md "(Git Repo) Build Log Preview"
+  [readme-preview]: preview-readme.md "(Git Repo) README Preview"
+  [license-preview]: preview-license.md "(Git Repo) LICENSE Preview"
+  [log-preview]: preview-log.md "(Git Repo) Build Log Preview"
 
   <!-- Game Mechanic Pages Links -->
   [computer-ui-mechanic]: ../mechanics/computer-ui.md "Gameplay Mechanics - Computer UI"
@@ -46,6 +46,19 @@
   [prep-wrap-mechanic]: ../mechanics/prep-wrap.md "Gameplay Mechanics - Prep & Wrap Modes"
   [days-hud-mechanic]: ../mechanics/days-hud.md "Gameplay Mechanics - Screen HUD & In-Game Days"
   [hovers-tooltips-mechanic]: ../mechanics/hovers-tooltips.md "Gameplay Mechanics - Hovers & Tooltips"
+  <!-- Root Level Links -->
+  [computer-ui-mechanic-root]: mechanics/computer-ui.md "Gameplay Mechanics - Computer UI"
+  [story-mode-mechanic-root]: mechanics/story-mode.md "Gameplay Mechanics - Story Mode"
+  [prep-wrap-mechanic-root]: mechanics/prep-wrap.md "Gameplay Mechanics - Prep & Wrap Modes"
+  [days-hud-mechanic-root]: mechanics/days-hud.md "Gameplay Mechanics - Screen HUD & In-Game Days"
+  [hovers-tooltips-mechanic-root]: mechanics/hovers-tooltips.md "Gameplay Mechanics - Hovers & Tooltips"
+
+  <!-- Additional Documentation Page Links -->
+  [settings-options]: ../settings-options.md "Documentation - Settings & Options"
+  [custom-actions]: ../custom-actions.md "Documentation - Custom Actions"
+  <!-- Root Level Links -->
+  [settings-options-root]: settings-options.md "Documentation - Settings & Options"
+  [custom-actions-root]: custom-actions.md "Documentation - Custom Actions"
 
   <!-- Game Screens Page Links -->
   [template-screens]: ../screens/template-screens.md "Game Screens - Template Screens"
@@ -54,6 +67,13 @@
   [computer-ui-screens]: ../screens/computer-ui-screens.md "Game Screens - Computer UI Screens" 
   [app-screens]: ../screens/app-screens.md "Game Screens - App Screens"
   [game-mode-screens]: ../screens/game-mode-screens "Game Screens - Game Mode Screens"
+  <!-- Root Level Links -->
+  [template-screens-root]: screens/template-screens.md "Game Screens - Template Screens"
+  [meta-screens-root]: screens/meta-screens.md "Game Screens - Meta Screens" 
+  [overlay-screens-root]: screens/overlay-screens.md "Game Screens - Overlay Screens"
+  [computer-ui-screens-root]: screens/computer-ui-screens.md "Game Screens - Computer UI Screens" 
+  [app-screens-root]: screens/app-screens.md "Game Screens - App Screens"
+  [game-mode-screens-root]: screens/game-mode-screens "Game Screens - Game Mode Screens"
 
   <!-- Game Systems Page Links -->
   [scene-system]: ../systems/scene-system.md "Game Systems - Scene System"
@@ -62,10 +82,13 @@
   [draft-system]: ../systems/draft-system.md "Game Systems - Draft System"
   [freeze-system]: ../systems/freeze-system.md "Game Systems - Freeze System" 
   [game-mode-system]: ../systems/game-mode-system.md "Game Systemes - Game Mode System"
-
-  <!-- Additional Documentation Page Links -->
-  [settings-options]: ../settings-options.md "Documentation - Settings & Options"
-  [custom-actions]: ../custom-actions.md "Documentation - Custom Actions"
+  <!-- Root Level Links -->
+  [scene-system-root]: systems/scene-system.md "Game Systems - Scene System"
+  [button-disabler-system-root]: systems/button-disabler-system.md "Game Systems - Button Disabler System" 
+  [chat-system-root]: systems/chat-system.md "Game Systems - Chat System"
+  [draft-system-root]: systems/draft-system.md "Game Systems - Draft System"
+  [freeze-system-root]: systems/freeze-system.md "Game Systems - Freeze System" 
+  [game-mode-system-root]: systems/game-mode-system.md "Game Systemes - Game Mode System"
   
   <!-- In-Page Section Links -->
 

@@ -13,7 +13,7 @@ tags:
 
     Check the page tags for last date it was updated on. 
 
-    If the date matches up with the last date-range entry in the [Build Log][log] you can be certain it's up to date. 
+    If a documentation update is logged in the latest two date-range entries of the [Build Log][log] you can be certain it's up to date. 
 
     !!! warning "Zensical's tag feature is not stable and filtering will likely not work as intended"
 

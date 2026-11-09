@@ -5,7 +5,7 @@ tags:
     - Coding
     - ㅤLast Updated
     - ㅤㅤNovember
-    - ㅤㅤㅤ8
+    - ㅤㅤㅤ9
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -13,7 +13,7 @@ tags:
 
     Check the page tags for last date it was updated on. 
 
-    If the date matches up with the last date-range entry in the [Build Log][log] you can be certain it's up to date. 
+    If a documentation update is logged in the latest two date-range entries of the [Build Log][log] you can be certain it's up to date. 
 
     !!! warning "Zensical's tag feature is not stable and filtering will likely not work as intended"
 
@@ -43,9 +43,9 @@ of script runs.
 
     ## Game Menu Replacement 
 
-    !!! tip "Learn more about the ShowHome Custom Action in the [Custom Actions][custom-actions] page"
+    !!! tip "Learn more about the ShowHome Custom Action in the [Custom Actions][custom-actions-root] page"
 
-    !!! tip "Learn more about the Computer UI Menu in the [Computer UI Screens][computer-ui-screens] page"
+    !!! tip "Learn more about the Computer UI Menu in the [Computer UI Screens][computer-ui-screens-root] page"
 
     === "Game Menu Replacement Overview"
 
@@ -348,7 +348,7 @@ of script runs.
         
         === "Dynamic Tooltip Styles"
 
-            !!! tip "Learn more about how tooltip styles are selected in the [Hovers & Tooltips][hovers-tooltips-mechanic] page"
+            !!! tip "Learn more about how tooltip styles are selected in the [Hovers & Tooltips][hovers-tooltips-mechanic-root] page"
 
             #### Dynamic Tooltip Styles 
 
@@ -419,7 +419,7 @@ of script runs.
 
     ## Save & Load Configuration 
 
-    !!! tip "Learn more about the Save & Load screen in the [Meta Screens][meta-screens] page"
+    !!! tip "Learn more about the Save & Load screen in the [Meta Screens][meta-screens-root] page"
 
     The unified Save & Load screen itself is documented on the Meta Screens page. What lives here are the 
     configuration values that shape how saves behave — how much dialogue history the game holds, what key deletes saves, 
@@ -431,7 +431,7 @@ of script runs.
 
     === "History Buffer"
 
-        !!! tip "Learn more about the Chat System in the [Chat System][chat-system] page"
+        !!! tip "Learn more about the Chat System in the [Chat System][chat-system-root] page"
 
         ### History Buffer 
 
@@ -642,7 +642,7 @@ of script runs.
                     
     === "About Text"
 
-        !!! tip "Learn more about the About screen in the [Meta Screens][meta-screens] page"
+        !!! tip "Learn more about the About screen in the [Meta Screens][meta-screens-root] page"
 
         ### About Text 
 

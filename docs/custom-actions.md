@@ -1,11 +1,11 @@
 ---
 icon: lucide/package-plus
-# status: modified
+status: modified
 tags: 
     - Coding
     - ㅤLast Updated
-    - ㅤㅤOctober 
-    - ㅤㅤㅤ31
+    - ㅤㅤNovember
+    - ㅤㅤㅤ9
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -13,7 +13,7 @@ tags:
 
     Check the page tags for last date it was updated on. 
 
-    If the date matches up with the last date-range entry in the [Build Log][log] you can be certain it's up to date. 
+    If a documentation update is logged in the latest two date-range entries of the [Build Log][log] you can be certain it's up to date. 
 
     !!! warning "Zensical's tag feature is not stable and filtering will likely not work as intended"
 
@@ -117,9 +117,9 @@ Computer UI Menu.
 
 === "ShowHome Action"
 
-    !!! tip "Learn more about the Computer UI Menu in the [Computer UI Screens][computer-ui-screens] page"
+    !!! tip "Learn more about the Computer UI Menu in the [Computer UI Screens][computer-ui-screens-root] page"
 
-    !!! tip "Learn more about full Game Menu Action routing behavior in the [Settings & Options][settings-options] page"
+    !!! tip "Learn more about full Game Menu Action routing behavior in the [Settings & Options][settings-options-root] page"
 
     ## ShowHome Action 
 
@@ -218,7 +218,7 @@ Computer UI Menu.
 
     === "What It Does"
 
-        !!! tip "Learn more about Overlay Screens in the [Overlay Screens][overlay-screens] page"
+        !!! tip "Learn more about Overlay Screens in the [Overlay Screens][overlay-screens-root] page"
 
         Its steps in order:
 
@@ -296,7 +296,7 @@ Computer UI Menu.
 
     === "The Enter Menu Modification"
 
-        !!! tip "Learn more about the Save & Load Screen in the [Meta Screens][meta-screens] page"
+        !!! tip "Learn more about the Save & Load Screen in the [Meta Screens][meta-screens-root] page"
 
         ### The Enter Menu Modification 
 
