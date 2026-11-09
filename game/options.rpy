@@ -216,6 +216,12 @@ init python:
     build.classify('**/#**', None)
     build.classify('**/thumbs.db', None)
 
+    build.classify('**.sh', None) 
+    build.classify('**.toml', None)
+    build.classify('site/**', None)
+    build.classify('docs/**', None)
+    build.classify('docs-includes/**', None)
+
     ## To archive files, classify them as 'archive'.
 
     # build.classify('game/**.png', 'archive')
@@ -224,8 +230,11 @@ init python:
     ## Files matching documentation patterns are duplicated in a mac app build,
     ## so they appear in both the app and the zip file.
 
-    build.documentation('*.html')
-    build.documentation('*.txt')
+    # build.documentation('*.html')
+    # build.documentation('*.txt')
+    build.documentation('README.md')
+    build.documentation('LOG.md')
+    build.documentation('LICENSE')
 
 
 ## A Google Play license key is required to perform in-app purchases. It can be
