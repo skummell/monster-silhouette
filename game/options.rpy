@@ -220,7 +220,7 @@ init python:
     build.classify('**.toml', None)
     build.classify('site/**', None)
     build.classify('docs/**', None)
-    build.classify('docs-includes/**', None)
+    build.classify('doc-includes/**', None)
 
     ## To archive files, classify them as 'archive'.
 
