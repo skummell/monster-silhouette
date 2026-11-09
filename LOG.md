@@ -37,6 +37,9 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
   │   ├── images/
   │   ├── script/
   │   │   └── demo/
+  │   │       ├── demo_book_drafts/
+  │   │       │   └── demo_book_draft0.rpy
+  │   │       │   └── demo_book_draft1.rpy
   │   │       ├── demo_choices/
   │   │       │   └── demo_choice1.rpy
   │   │       ├── demo_interludes/
@@ -819,6 +822,5 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
         - `get_clothing_info(sprite_name)` - Fetch sprite_name flag and category
         - `get_same_category_flags(sprite_name)` - Fetch the Flags for sprites of the same category as sprite_name except sprite_name flag itself
 
-- Updated Source Code Documentation in `docs/`
+- Source Code Documentation Update in `docs/`
     - Added documentation covering all relevant logs and changes since last update
-
