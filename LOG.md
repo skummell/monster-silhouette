@@ -824,3 +824,11 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
 
 - Source Code Documentation Update in `docs/`
     - Added documentation covering all relevant logs and changes since last update
+
+### Nov 8, 2026 
+
+- Documentation Minor Update (v1.1.0) 
+
+- Minor File Update: `options.rpy`
+    - Build configuration updated
+
