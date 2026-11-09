@@ -725,7 +725,8 @@ default disabled_button_types = {
     "app_button": False,        # App buttons
     "contact_button": False,     # Contact buttons
     "prep_busy": False,          # Bedroom Interactables
-    "closet_busy": False        # Wardrobe Interactables
+    "closet_busy": False,        # Wardrobe Interactables
+    "lounge_look_busy": False   # Lounge - Looking In Interactables 
 }
 
 # List of individual disabled buttons
@@ -753,7 +754,9 @@ init python:
 
         "prep_busy": { },
 
-        "closet_busy": { }
+        "closet_busy": { },
+
+        "lounge_look_busy": { }
     }
 
     # Mapping between App Button and Exit Button 
@@ -1431,6 +1434,9 @@ init python:
 
     # Prep Phase Condition
     freeze_conditions["prep_done"] = f'prep_done_condition()'
+
+    # Lounge Arrival Condition 
+    freeze_conditions["lounge_seated"] = f'lounge_seated_condition()'
     
     freeze_hint = {}
 
@@ -1467,6 +1473,8 @@ init python:
             return "Click on the laptop to carry it with you."
 
     freeze_hint["prep_done"] = prep_done_hint
+
+    freeze_hint["lounge_seated"] = "Click on table or chairs to sit down."
 
 # Freeze Hint Flag
 default _current_hint = None
@@ -1537,6 +1545,10 @@ init python:
     def prep_done_condition(): 
         return store.ready_to_leave
 
+    # Lounge Seated Condition Check 
+    def lounge_seated_condition(): 
+        return store.seated_in_lounge
+
 ################################################################################
 ## Game Mode System ############################################################
 ##
@@ -1582,10 +1594,13 @@ define clothing_sprites = {
     }
 }
 
+## Lounge Arrival Flags 
+default seated_in_lounge = False # Gate to leave Lounge Arrival Mode 
+
 ## Game Mode System Statements
 python early: 
 
-    ## prep_phase click_script_1 click_script_2 click_script_3 ... click_script_n
+    ## prep_phase "click_script_1" "click_script_2" "click_script_3" ... "click_script_n"
     def parse_prep_phase(lex): 
         clicks = []
 
@@ -1603,6 +1618,22 @@ python early:
         parse=parse_prep_phase,
         execute=execute_prep_phase
     )
+
+    ## lounge_arrival ""
+    def parse_lounge_arrival(lex): 
+        contact = lex.string()
+        lex.eol()
+        return contact 
+
+    def execute_lounge_arrival(x): 
+        lounge_arrival()
+
+    renpy.register_statement(
+        name="lounge_arrival", 
+        parse=parse_no,
+        execute=execute_lounge_arrival
+    )
+        
 
 ## Game Mode System Functions
 init python:
@@ -1642,6 +1673,16 @@ init python:
         freeze_until("prep_done")
 
         disable_type("prep_busy")
+
+    def lounge_arrival(): 
+
+        enable_type("lounge_look_busy")
+
+        show_scene("lounge_look")
+
+        freeze_until("lounge_seated")
+
+        disable_type("lounge_look_busy")
 
     ## Open Wardrobe Panel
     ## Toggle on Bedroom button disabler

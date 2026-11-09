@@ -681,11 +681,31 @@ define stamp_frame_pad = 10
 define stamp_content_height = 15
 define stamp_frame_height = stamp_content_height + (stamp_frame_pad * 2)
 
-# wardrobe_panel : panle height & width & spacing 
+# bedroom : width & height for containers
+
+# Bookshelf Assemble
+define bookshelf_assemble_width = 342
+define bookshelf_assemble_height = 508 
+
+# Desk Setup
+define desk_setup_width = 546 
+define desk_setup_height = 432
+
+# Chair in Bedroom 
+define bedroom_chair_width = 142
+define bedroom_chair_height = 323
+
+# wardrobe_panel : panel height & width & spacing 
 
 define wardrobe_panel_width = 420 
 define wardrobe_panel_height = 320
 define wardrobe_panel_spacing = 20 
+
+# lounge_look : width & height for containers
+
+# Counter Assemble 
+define lounge_look_counter_width = 1182
+define lounge_look_counter_height = 421
 
 ################################################################################
 ## Mobile devices

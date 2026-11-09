@@ -105,6 +105,10 @@ label start:
 
     pause
 
+    lounge_arrival ""
+
+    pause 
+
     # Day 1 (Demo) Start
 
     call demo_intro # script/demo/demo_intro.rpy

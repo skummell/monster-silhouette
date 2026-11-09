@@ -3621,12 +3621,11 @@ screen bedroom(click_map={}):
             xysize(config.screen_width, config.screen_height)
 
         # Bookshelf
-        add "images/placeholders/bedroom_bookshelf_v1.png":
-            xysize(342, 508)
-            # Horizontal Positioning
-            xpos 928
-            # Vertical Positioning
-            ypos 17
+        fixed: 
+            style "bedroom_bookshelf_assemble"
+
+            add "images/placeholders/bedroom_bookshelf_v1.png":
+                xysize(bookshelf_assemble_width, bookshelf_assemble_height)
 
         # Wardrobe - Closet Click
         if "closet" in click_map: 
@@ -3635,18 +3634,15 @@ screen bedroom(click_map={}):
         else: 
             $ closet_script = None
             $ closet_interact = None
-        
+
         use bedroom_interactable(sprite="images/placeholders/bedroom_wardrobe_v1.png", xsize=294, ysize=470, xpos=114, ypos=62, tooltip="Wardrobe", script=closet_script, interact=closet_interact, closet_prep=True)
 
         # Desk + Items
         fixed:
-            # Horizontal Positioning
-            xpos 397
-            # Vertical Positioning
-            ypos 117
+            style "bedroom_desk_setup"
 
             add "images/placeholders/bedroom_desk_v1.png":
-                xysize(546, 432)
+                xysize(desk_setup_width, desk_setup_height)
 
             # Wallet - Wallet Click
             if not wallet_on_person:
@@ -3677,12 +3673,12 @@ screen bedroom(click_map={}):
                 use bedroom_interactable(sprite="images/placeholders/bedroom_laptop_v1.png", xsize=142, ysize=102, xpos=369, ypos=106, tooltip="Laptop", script=laptop_script, interact=laptop_interact)
 
         # Chair
-        add "images/placeholders/bedroom_chair_v1.png":
-            xysize(142, 323)
-            # Horizontal Positioning
-            xpos 600
-            # Vertical Positioning
-            ypos 283
+        fixed: 
+
+            style "bedroom_chair"
+
+            add "images/placeholders/bedroom_chair_v1.png":
+                xysize(bedroom_chair_width, bedroom_chair_height)
 
         # Bed - Bed Click
         if "bed" in click_map:
@@ -3694,7 +3690,35 @@ screen bedroom(click_map={}):
 
 # Bedroom Styles 
 
+# Backdrop 
 style bedroom is full_screen
+
+# Bookshelf Assemble 
+style bedroom_bookshelf_assemble: 
+
+    xysize(bookshelf_assemble_width, bookshelf_assemble_height)
+    # Horizontal Positioning
+    xpos 928
+    # Vertical Positioning
+    ypos 17
+
+# Desk Setup 
+style bedroom_desk_setup: 
+
+    xysize(desk_setup_width, desk_setup_height)
+    # Horizontal Positioning
+    xpos 397
+    # Vertical Positioning
+    ypos 117
+
+# Chair 
+style bedroom_chair: 
+
+    xysize(bedroom_chair_width, bedroom_chair_height)
+    # Horizontal Positioning
+    xpos 600
+    # Vertical Positioning
+    ypos 283
 
 ## Bedroom Interactable Template ###############################################
 ##
@@ -3864,7 +3888,6 @@ style wardrobe_panel_dressed_button:
     # Push to bottom
     yalign 1.0
 
-
 ## Clothing Sprite #############################################################
 ##
 ## A screen that displays the wardrobe clothing sprite as a button for the player 
@@ -3907,6 +3930,108 @@ screen clothing_sprite(sprite_name, idle_sprite, hover_sprite, selected_sprite, 
             if script: 
 
                 action action
+
+## Lounge - Looking In Screen ##################################################
+## 
+## Interactable Background / Scene 
+
+screen lounge_look(): 
+
+    tag game 
+
+    fixed: 
+
+        style "lounge_look"
+
+        add "images/placeholders/lounge_looking_in_backdrop_v1.png": 
+            xysize(config.screen_width, config.screen_height)
+
+        fixed:
+
+            style "lounge_look_counter_assemble"
+
+            add "images/placeholders/lounge_looking_in_counter_bonsai_v1.png": 
+                xysize(lounge_look_counter_width, lounge_look_counter_height) 
+
+        $ table_interact = SetVariable("seated_in_lounge", True)
+
+        use lounge_click(sprite="images/placeholders/lounge_looking_in_table_chairs_v1.png", xsize=579, ysize=348, xpos=338, yalign=1.0, tooltip="Sit Down", interact=table_interact)
+        
+style lounge_look is full_screen
+
+style lounge_look_counter_assemble: 
+    xysize(lounge_look_counter_width, lounge_look_counter_height) 
+    yalign 1.0 
+    xpos 39
+
+## Clothing Sprite #############################################################
+##
+## A screen that displays the a interactable component in 
+## Lounge - Looking In Scene
+
+screen lounge_click(sprite, xsize, ysize, xpos=0, ypos=0, xalign=None, yalign=None, xanchor=0.0, yanchor=0.0, tooltip=None, interact=None, script=None): 
+
+    if interact: 
+
+        if script: 
+
+            $ action = (interact, script) 
+
+        else: 
+            $ action = interact
+
+    else: 
+
+        $ action = None 
+
+    imagebutton: 
+
+        idle sprite 
+
+        xysize(xsize, ysize)
+
+        if xalign is not None:
+
+            # Horizontal Aligment 
+            xalign xalign 
+
+        else: 
+            # Horizontal Positioning Anchor
+            xanchor xanchor
+
+            # Horizontal Positioning
+            xpos xpos
+
+        if yalign is not None: 
+
+            # Vertical Aligment 
+            yalign yalign 
+
+        else: 
+            # Vertical Positioning Anchor
+            yanchor yanchor
+
+            # Vertical Positioning
+            ypos ypos
+
+        if button_disabled("lounge_look_busy"): 
+            sensitive False
+
+        if tooltip: 
+            tooltip tooltip 
+
+        if action is None: 
+            
+            action NullAction()
+        
+        else: 
+
+            if action: 
+
+                action action 
+
+
+
 
 ################################################################################
 ## Cosmetic Screens

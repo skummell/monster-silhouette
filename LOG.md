@@ -825,10 +825,29 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
 - Source Code Documentation Update in `docs/`
     - Added documentation covering all relevant logs and changes since last update
 
-### Nov 8, 2026 
+#### Nov 8, 2026 
 
 - Documentation Minor Update (v1.1.0) 
 
 - Minor File Update: `options.rpy`
     - Build configuration updated
 
+### Nov 9, 2026 
+
+- `bedroom` screen update 
+    - Give loose images containers 
+    - Give containers styles to control size and position neatly
+        - Put widths and heights in `gui.rpy` to reuse
+
+- Interactable Lounge - Looking In Scene
+    - `lounge_look` - New screen!
+    - `lounge_click` - New screen! 
+
+- Game Mode System Update!
+    - `lounge_arrival` - New Statement!
+    - Lounge Arrival Game Mode - New Game Mode!
+        - Variables: 
+            - `seated_in_lounge` - Gates Lounge Arrival End
+
+- Button Disabler System Update!
+    - `lounge_look_busy` - New button type disabler!
