@@ -1684,7 +1684,7 @@ init python:
 
         disable_type("prep_busy")
 
-    def lounge_arrival(): 
+    def lounge_arrival(clicks): 
 
         enable_type("lounge_look_busy")
 

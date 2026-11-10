@@ -10,16 +10,16 @@ Logs are divided by date ranges, then specific dates.
 <br>
 If something is under a date range rather than a specific date it means it was worked on multiple days within that date range rather than a specific day corresponding to a single date.
 
-Refer to repo [commits](https://github.com/skummell/monster-silhouette/commits/main/) for specific dates, times and changes on finalized code edits, fixes & etc on tracked project files mentioned in the logs. 
+Refer to repo **[commits](https://github.com/skummell/monster-silhouette/commits/main/)** for specific dates, times and changes on finalized code edits, fixes & etc on tracked project files mentioned in the logs. 
 
 
 Not every commit is made as soon as every change is completed.
 <br>
 (**Note:** Repo commits only start as of Sep 21, 2026.)
 
-For an overview of the Project itself or any major latest updates on it, refer to [`README.md`](README.md) instead.
+For an overview of the Project itself or any major latest updates on it, refer to **[`README.md`](README.md)** instead.
 
-For a detailed Documentation on the project's source code, refer to [Monster Silhouette Docs](https://skummell.github.io/monster-silhouette/) instead.
+For a detailed Documentation on the project's source code, refer to **[Monster Silhouette - Source Code Docs](https://skummell.github.io/monster-silhouette/)** instead.
 
 ## Log relevant files
 
@@ -31,6 +31,7 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
 
   ```
   monster_silhouette/
+  ├── docs/
   ├── game/
   │   ├── audio/
   │   ├── gui/
@@ -82,6 +83,7 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
   ├── Characters/
   ├── Game Mechanics/
   ├── Locations/
+  ├── Releases/
   └── Script/
   ```
 
