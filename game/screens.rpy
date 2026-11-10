@@ -3933,9 +3933,9 @@ screen clothing_sprite(sprite_name, idle_sprite, hover_sprite, selected_sprite, 
 
 ## Lounge - Looking In Screen ##################################################
 ## 
-## Interactable Background / Scene 
+## Interactable Background / Scene for Lounge Arrival 
 
-screen lounge_look(): 
+screen lounge_look(click_map={}): 
 
     tag game 
 

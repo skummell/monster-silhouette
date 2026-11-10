@@ -99,7 +99,11 @@ init offset = -1
 ##  Freeze System Statements 
 ##      freeze_until     "flag_name"    - freeze script progression until flag_name condition is achieved
 ##  Game Mode System Statements
-##      prep_phase        "click_script_1" ... "click_script_n" - Activates Prep Phase Game Mode and feeds click scripts to bedroom scene
+##      prep_phase        ""            - activates Prep Phase Game Mode and feeds click scripts to bedroom scene
+##                                        should be called with a minimum number of click_scripts that fulfills prep_done
+##                                           prep_phase "click_script_1" ... "click_script_n"
+##      lounge_arrival    ""            - activates Lounge Arrival Game Mode and feeds click scripts to lounge_look scene
+##                                        supports click_scripts but does not require them 
 ##
 ##
 ## Game System Functions: 
@@ -139,6 +143,7 @@ init offset = -1
 ##      app_open                   (app_screen)                - returns a boolean on whether the app_screen is currently open on the master layer
 ##      contact_open               (contact_name)              - returns a boolean on whether the contact_name is the current active_contact or not
 ##      prep_done_condition        ()                          - returns a boolean on whether the prep phase complete conditions are met or not
+##      lounge_seated_condition    ()                          - returns a boolean on whether the lounge arrival complete conditions are met or not
 ##  Game Mode System Utility Functions
 ##    Prep Phase Game Mode Utility Functions
 ##      open_wardrobe              (click_map)                 - shows wardrobe panel on scene (master layer) and sets Bedroom Button Disabler =True
@@ -1619,14 +1624,19 @@ python early:
         execute=execute_prep_phase
     )
 
-    ## lounge_arrival ""
+    ## lounge_arrival "" 
+    ## lounge_arrival "click_script_1" "click_script_2" "click_script_3" ... "click_script_n"
     def parse_lounge_arrival(lex): 
-        contact = lex.string()
-        lex.eol()
-        return contact 
+        clicks = []
 
-    def execute_lounge_arrival(x): 
-        lounge_arrival()
+        ## Parse all clicks until end of line
+        while not lex.eol(): 
+            clicks.append(lex.string())
+
+        return clicks
+
+    def execute_lounge_arrival(info): 
+        lounge_arrival(info)
 
     renpy.register_statement(
         name="lounge_arrival", 

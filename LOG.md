@@ -851,3 +851,9 @@ For a detailed Documentation on the project's source code, refer to [Monster Sil
 
 - Button Disabler System Update!
     - `lounge_look_busy` - New button type disabler!
+
+- Freeze System Update!
+    - `lounge_seated` - New Condition & Hint!
+
+- Documentation Patch Update (v1.1.1)
+
