@@ -712,13 +712,7 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
     - Source Code Documentation ready to launch
     - Covers all of source code so far
 
-#### Oct 31, 2026 
-
-- Documentation First Launch (v1.0.0)
-
 ### Nov 1-4, 2026 
-
-- Documentation Patch Release (v1.0.1)
 
 - Project Mid-Term Progress Report 
 
@@ -763,6 +757,12 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
     - Deadline Widget Content Layout & Hook up 
     - Wallet Tracker Content Layout & Hook up 
     - Stat Tracker Content Layout & Hook up
+
+#### Nov 1, 2026 
+
+- Documentation First Launch (v1.0.0)
+
+- Documentation Patch Release (v1.0.1)
 
 ### Nov 5-8, 2026 
 
@@ -857,8 +857,6 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
 - Freeze System Update!
     - `lounge_seated` - New Condition & Hint!
 
-- Documentation Patch Release (v1.1.1)
-
 - Starting Screen Background Sketch 
 
 - Narrative Script Progression
@@ -877,5 +875,15 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
         - Table & Chairs 
     - In Progress: 
         - Door 
-        - Sprite 
+        - Props
         - Background
+
+- Organizing Concept Art to clean up for Placeholder & Final Asset Development
+
+#### Nov 9 
+
+- Documentation Patch Release (v1.1.1)
+
+#### Nov 10 
+
+- Documentation Patch Release (v1.1.2)
