@@ -718,7 +718,7 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
 
 ### Nov 1-4, 2026 
 
-- Documentation Patch Update (v1.0.1)
+- Documentation Patch Release (v1.0.1)
 
 - Project Mid-Term Progress Report 
 
@@ -829,7 +829,7 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
 
 #### Nov 8, 2026 
 
-- Documentation Minor Update (v1.1.0) 
+- Documentation Minor Release (v1.1.0) 
 
 - Minor File Update: `options.rpy`
     - Build configuration updated
@@ -857,7 +857,7 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
 - Freeze System Update!
     - `lounge_seated` - New Condition & Hint!
 
-- Documentation Patch Update (v1.1.1)
+- Documentation Patch Release (v1.1.1)
 
 - Starting Screen Background Sketch 
 
