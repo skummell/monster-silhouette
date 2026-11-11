@@ -9,6 +9,8 @@
   [renpy-latest]: https://www.renpy.org/latest.html "Ren'Py Latest Release" 
   [renpy-8.5.3]: https://www.renpy.org/release/8.5.3 "Ren'Py 8.5.3 Release"
 
+  [gpl-v3]: https://www.gnu.org/licenses/gpl-3.0.en.html "GNU General Public License"
+
   <!-- Creator's Social Media Links -->
   [skummell-github]: https://github.com/skummell "skummell's GitHub"
   [skummell-insta]: https://instagram.com/skummell "skummell's Instagram"
@@ -24,6 +26,7 @@
   [license]: https://github.com/skummell/monster-silhouette/blob/main/LICENSE "(Git Repo) GPL-3.0 License"
   [log]: https://github.com/skummell/monster-silhouette/blob/main/LOG.md "(Git Repo) Detailed Development Timeline & Progress Log"
   [commits]: https://github.com/skummell/monster-silhouette/commits/main/ "(Git Repo) Main Branch Commits"
+  [releases]: https://github.com/skummell/monster-silhouette/releases "(Git Repo) Doc & Game Releases"
 
   [systems]: https://github.com/skummell/monster-silhouette/blob/main/game/custom_systems.rpy "(Git Repo) custom_systems.rpy"
   [gui]: https://github.com/skummell/monster-silhouette/blob/main/game/gui.rpy "(Git Repo) gui.rpy"
