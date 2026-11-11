@@ -834,7 +834,7 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
 - Minor File Update: `options.rpy`
     - Build configuration updated
 
-### Nov 9, 2026 
+### Nov 9-10, 2026 
 
 - `bedroom` screen update 
     - Give loose images containers 
@@ -859,3 +859,23 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
 
 - Documentation Patch Update (v1.1.1)
 
+- Starting Screen Background Sketch 
+
+- Narrative Script Progression
+    - Script Files Updates (not included in Repo) - `script/demo/`
+        - `demo_interludes/`
+            - `demo_interlude1.rpy` - Calls Second Interlude at the end now
+            - `demo_interlude2.rpy` - New File!
+    - Dialogue Implementation in Progress
+        - Day 1 - Second Interlude
+    - New Game System Implementations Within Script !
+        - Lounge Arrival Mode Implemented
+
+- Usable Lounge - Seating Down Background Progression 
+    - 1 Point Perspective
+    - Completed: 
+        - Table & Chairs 
+    - In Progress: 
+        - Door 
+        - Sprite 
+        - Background

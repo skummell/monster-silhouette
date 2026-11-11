@@ -103,15 +103,13 @@ label start:
     # Enable All App Exit Buttons
     enable_all_type "app_exit"
 
-    pause
-
-    lounge_arrival ""
-
     pause 
 
     # Day 1 (Demo) Start
 
     call demo_intro # script/demo/demo_intro.rpy
+
+    pause 
     
     "W.I.P" #DELETE LATER
 
