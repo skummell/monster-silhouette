@@ -541,7 +541,7 @@ style tooltip_text:
 
 # Profile Preview Tooltip (Contact Button Hover)
 style profile_preview_frame:
-    background "#00bfffa4"
+    background "#00bfffc0"
     xpadding 8
     ypadding 6
     xsize 200
@@ -3817,7 +3817,10 @@ screen wardrobe_panel(click_map={}):
                     else: 
                         $ dress_shirt_script = None
 
-                    use clothing_sprite("dress_shirt", "wardrobe_option", hover_dress_shirt, "wardrobe_option_selected", dress_shirt_script, tooltip_content["dress_shirt"])
+                    use clothing_sprite(
+                        "dress_shirt", "wardrobe_option", hover_dress_shirt, "wardrobe_option_selected", 
+                        dress_shirt_script, tooltip_content["dress_shirt"]
+                    )
 
                     ## Top Option 2 - Turtle Neck (Contour)
                     if "turtle_neck" in click_map:
@@ -3825,7 +3828,10 @@ screen wardrobe_panel(click_map={}):
                     else: 
                         $ turtle_neck_script = None
 
-                    use clothing_sprite("thin_turtle_neck", "wardrobe_option", hover_turtle_neck, "wardrobe_option_selected", turtle_neck_script, tooltip_content["thin_turtle_neck"])
+                    use clothing_sprite(
+                        "thin_turtle_neck", "wardrobe_option", hover_turtle_neck, "wardrobe_option_selected", 
+                        turtle_neck_script, tooltip_content["thin_turtle_neck"]
+                    )
                     
 
                 ## Bottoms (Right Column)
@@ -3838,7 +3844,10 @@ screen wardrobe_panel(click_map={}):
                     else:
                         $ cargo_pants_script = None
 
-                    use clothing_sprite("lightweight_cargo_pants", "wardrobe_option", hover_cargo_pants, "wardrobe_option_selected", cargo_pants_script, tooltip_content["lightweight_cargo_pants"])
+                    use clothing_sprite(
+                        "lightweight_cargo_pants", "wardrobe_option", hover_cargo_pants, "wardrobe_option_selected", 
+                        cargo_pants_script, tooltip_content["lightweight_cargo_pants"]
+                    )
 
                     ## Bottom Option 2 - Dress Jeans (Heavy Pants)
                     if "dress_jeans" in click_map:
@@ -3846,7 +3855,10 @@ screen wardrobe_panel(click_map={}):
                     else:
                         $ dress_jeans_script = None
 
-                    use clothing_sprite("dress_jeans", "wardrobe_option", hover_dress_jeans, "wardrobe_option_selected", dress_jeans_script, tooltip_content["dress_jeans"])
+                    use clothing_sprite(
+                        "dress_jeans", "wardrobe_option", hover_dress_jeans, "wardrobe_option_selected", 
+                        dress_jeans_script, tooltip_content["dress_jeans"]
+                    )
 
             ## Done Button
             textbutton "Dressed":
@@ -3955,8 +3967,17 @@ screen lounge_look(click_map={}):
 
         $ table_interact = SetVariable("seated_in_lounge", True)
 
-        use lounge_click(sprite="images/placeholders/lounge_looking_in_table_chairs_v1.png", xsize=579, ysize=348, xpos=338, yalign=1.0, tooltip="Sit Down", interact=table_interact)
+        use lounge_click(
+            sprite="images/placeholders/lounge_looking_in_table_chairs_v1.png", 
+            xsize=579, ysize=348, 
+            xpos=338, yalign=1.0, 
+            tooltip="Sit Down", 
+            interact=table_interact
+        )
         
+
+# Lounge - Looking In Styles 
+
 style lounge_look is full_screen
 
 style lounge_look_counter_assemble: 
@@ -3964,10 +3985,69 @@ style lounge_look_counter_assemble:
     yalign 1.0 
     xpos 39
 
-## Clothing Sprite #############################################################
+## Lounge - Seating Down Screen ################################################
 ##
-## A screen that displays the a interactable component in 
+## Interactable Background / Scene
+
+screen lounge_sit(): 
+
+    tag game 
+
+    fixed: 
+
+        style "lounge_sit"
+
+        add "images/placeholders/lounge_seating_down_backdrop_v1.png": 
+            xysize(config.screen_width, config.screen_height)
+
+        # Wind Chime
+        fixed: 
+
+            style "lounge_sit_chime"
+
+            add "images/placeholders/lounge_seating_down_wind_chime_v1.png":
+                xysize(wind_chime_width, wind_chime_height)
+        
+        # Lounge Table 
+        fixed: 
+
+            style "lounge_sit_table_assemble"
+
+            add "images/placeholders/lounge_seating_down_table_chairs_v1.png":
+                xysize(lounge_sit_table_assemble_width, lounge_sit_table_assemble_height)
+
+
+            # Laptop Sprite 
+            $ laptop_interact = Function(show_scene, "computer_ui")
+
+            use lounge_click(
+                sprite="images/placeholders/lounge_seating_down_laptop_v1.png",
+                xsize=393, ysize=287,
+                xpos=448, ypos=101,
+                tooltip="Laptop",
+                interact=laptop_interact
+            )
+
+# Lounge - Seating Down Styles 
+        
+style lounge_sit is full_screen
+
+style lounge_sit_chime: 
+
+    xysize(wind_chime_width, wind_chime_height)
+    xpos 260 
+
+style lounge_sit_table_assemble: 
+
+    xysize(lounge_sit_table_assemble_width, lounge_sit_table_assemble_height)
+    xalign 1.0 
+    yalign 1.0 
+
+## Lounge Click #############################################################
+##
+## A screen that displays an interactable component in Lounge Scenes: 
 ## Lounge - Looking In Scene
+## Lounge - Seating Down Scene 
 
 screen lounge_click(sprite, xsize, ysize, xpos=0, ypos=0, xalign=None, yalign=None, xanchor=0.0, yanchor=0.0, tooltip=None, interact=None, script=None): 
 
@@ -4014,7 +4094,7 @@ screen lounge_click(sprite, xsize, ysize, xpos=0, ypos=0, xalign=None, yalign=No
             # Vertical Positioning
             ypos ypos
 
-        if button_disabled("lounge_look_busy"): 
+        if button_disabled("lounge_busy"): 
             sensitive False
 
         if tooltip: 

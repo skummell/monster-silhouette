@@ -530,7 +530,7 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
 
 ### Oct 14-21, 2026 
 
-- Usable Bedroom Background Progression 
+- Usable Bedroom Background Completed 
     - 1 Point Perspective
     - Elements: 
         - Desk Set Up 
@@ -766,7 +766,7 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
 
 ### Nov 5-8, 2026 
 
-- Usable Lounge - Looking In Background Progression 
+- Usable Lounge - Looking In Background Completed 
     - 1 Point Perspective
     - Elements: 
         - Counter
@@ -880,10 +880,39 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
 
 - Organizing Concept Art to clean up for Placeholder & Final Asset Development
 
-#### Nov 9 
+#### Nov 9, 2026 
 
 - Documentation Patch Release (v1.1.1)
 
-#### Nov 10 
+#### Nov 10, 2026  
 
 - Documentation Patch Release (v1.1.2)
+
+### Nov 11-12, 2026
+
+- Usable Lounge - Seating Down Background Completed 
+    - 1 Point Perspective
+    - Elements: 
+        - Table & Chairs 
+        - Door & Wind Chime 
+        - Windows 
+        - Laptop Sprite
+
+- Interactable Lounge - Seating Down Scene
+    - `lounge_sit` - New screen!
+        - Uses `lounge_click`
+
+- Button Disabler System Update!
+    - `lounge_look_busy` type disabler renamed to `lounge_busy`
+
+- Narrative Script Progression
+    - Script Files Updates (not included in Repo) - `script/demo/`
+        - `demo_interludes/`
+            - `demo_interlude2.rpy` - Early Day Branch Completed 
+        - `demo_choices/`
+            - `demo_early_day_only_choice.rpy` - New File!
+    - Dialogue Implementation in Progress
+        - Day 1 - Second Interlude
+    - New Game System Implementations Within Script !
+        - Lounge Arrival Mode Implemented & Updated 
+

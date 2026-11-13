@@ -707,6 +707,16 @@ define wardrobe_panel_spacing = 20
 define lounge_look_counter_width = 1182
 define lounge_look_counter_height = 421
 
+# lounge_sit : width & height for containers 
+
+# Wind Chime 
+define wind_chime_width = 34 
+define wind_chime_height = 132 
+
+# Table Assemble 
+define lounge_sit_table_assemble_width = 1159 
+define lounge_sit_table_assemble_height = 507
+
 ################################################################################
 ## Mobile devices
 ################################################################################

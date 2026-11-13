@@ -731,7 +731,7 @@ default disabled_button_types = {
     "contact_button": False,     # Contact buttons
     "prep_busy": False,          # Bedroom Interactables
     "closet_busy": False,        # Wardrobe Interactables
-    "lounge_look_busy": False   # Lounge - Looking In Interactables 
+    "lounge_busy": False         # Lounge - Looking In & Seating Down Interactables 
 }
 
 # List of individual disabled buttons
@@ -761,7 +761,7 @@ init python:
 
         "closet_busy": { },
 
-        "lounge_look_busy": { }
+        "lounge_busy": { }
     }
 
     # Mapping between App Button and Exit Button 
@@ -1640,7 +1640,7 @@ python early:
 
     renpy.register_statement(
         name="lounge_arrival", 
-        parse=parse_no,
+        parse=parse_lounge_arrival,
         execute=execute_lounge_arrival
     )
         
@@ -1686,13 +1686,17 @@ init python:
 
     def lounge_arrival(clicks): 
 
-        enable_type("lounge_look_busy")
+        click_map = {}
 
-        show_scene("lounge_look")
+        enable_type("lounge_busy")
+
+        show_scene("lounge_look", click_map=click_map)
 
         freeze_until("lounge_seated")
 
-        disable_type("lounge_look_busy")
+        disable_type("lounge_busy")
+
+        show_scene("lounge_sit")
 
     ## Open Wardrobe Panel
     ## Toggle on Bedroom button disabler
