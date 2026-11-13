@@ -43,8 +43,11 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
   │   │       │   └── demo_book_draft1.rpy
   │   │       ├── demo_choices/
   │   │       │   └── demo_choice1.rpy
+  │   │       │   └── demo_early_day_only_choice.rpy
   │   │       ├── demo_interludes/
   │   │       │   └── demo_interlude1.rpy
+  │   │       │   └── demo_interlude2.rpy
+  │   │       │   └── demo_interlude3.rpy
   │   │       ├── demo_prep/
   │   │       │   ├── demo_bed_click.rpy
   │   │       │   ├── demo_closet_click.rpy
@@ -908,11 +911,15 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
 - Narrative Script Progression
     - Script Files Updates (not included in Repo) - `script/demo/`
         - `demo_interludes/`
-            - `demo_interlude2.rpy` - Early Day Branch Completed 
+            - `demo_interlude2.rpy` - Updated & Completed 
+            - `demo_interlude3.rpy` - New File!
         - `demo_choices/`
             - `demo_early_day_only_choice.rpy` - New File!
-    - Dialogue Implementation in Progress
+    - Newly Completed Dialogue Implementation 
         - Day 1 - Second Interlude
+        - Day 1 - Early Day Only Choice 
+    - Dialogue Implementation in Progress
+        - Day 1 - Third Interlude
     - New Game System Implementations Within Script !
         - Lounge Arrival Mode Implemented & Updated 
 
