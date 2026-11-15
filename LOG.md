@@ -931,16 +931,25 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
 
 ### Nov 13-14, 2026 
 
-- Freeze System Update! 
-    - `open_ui` - New Condition & Hint!
+- `custom_systemr.py` Update!
+    - Freeze System Update! 
+        - `open_ui` - New Condition & Hint!
+        - `prep_done_condition()` - Function added back with `prep_phase`
+        - `lounge_seated_condition()` - Function added back with `lounge_arrival`
+        - `computer_ui_open()` - New Function!
+    - Game Mode System Update!
+        - `lounge_event` - New Statement!
+        - Loung Arrival Game Mode Updated 
+            - `click_map` support
+            - Now shows `lounge_sit` after freeze ends
+            
+        - Lounge Event Game Mode - New Game Mode!
+            - 1. Enable Lounge Clicks 
+            - 2. Open `lounge_sit` scene with optional `click_map`
+            - 3. Detect Lounge Event & perform related freezes 
+            - 4. Disable Lounge Clicks 
 
-- Game Mode System Update!
-    - `lounge_event` - New Statement!
-    - Lounge Event Game Mode - New Game Mode!
-        - 1. Enable Lounge Clicks 
-        - 2. Open `lounge_sit` scene with optional `click_map`
-        - 3. Detect Lounge Event & perform related freezes 
-        - 4. Disable Lounge Clicks 
+- `lounge_look` now accepts a `click_map`
 
 - Narrative Script Progression
     - Script Files Updates (not included in Repo) - `script/demo/`
