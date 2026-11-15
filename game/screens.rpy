@@ -3989,7 +3989,7 @@ style lounge_look_counter_assemble:
 ##
 ## Interactable Background / Scene
 
-screen lounge_sit(): 
+screen lounge_sit(click_map={}): 
 
     tag game 
 

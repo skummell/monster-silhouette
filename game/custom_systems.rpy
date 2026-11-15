@@ -213,11 +213,14 @@ python early:
     
     ## chat_start "contact"
     def parse_chat_start(lex): 
+        
         contact = lex.string()
         lex.eol()
         return contact 
 
     def execute_chat_start(contact): 
+        contact = renpy.substitute(contact) # Makes "chat_start [variable]" possible
+
         store._chat_start_index = len(_history_list)
         store._chat_contact = contact 
         store._in_chat_block = True
@@ -248,6 +251,8 @@ python early:
         return contact 
 
     def execute_chat_end(contact):
+
+        contact = renpy.substitute(contact) # Makes "chat_end [variable]" possible
 
         if contact != store._chat_contact:
             raise Exception(
@@ -1442,6 +1447,9 @@ init python:
 
     # Lounge Arrival Condition 
     freeze_conditions["lounge_seated"] = f'lounge_seated_condition()'
+
+    # Lounge Event Conditions 
+    freeze_conditions["open_ui"] = f'computer_ui_open()'
     
     freeze_hint = {}
 
@@ -1480,6 +1488,8 @@ init python:
     freeze_hint["prep_done"] = prep_done_hint
 
     freeze_hint["lounge_seated"] = "Click on table or chairs to sit down."
+
+    freeze_hint["open_ui"] = "Click on the laptop to open the Computer UI."
 
 # Freeze Hint Flag
 default _current_hint = None
@@ -1553,6 +1563,10 @@ init python:
     # Lounge Seated Condition Check 
     def lounge_seated_condition(): 
         return store.seated_in_lounge
+
+    # Returns a boolean based on whether Computer UI is open inside master layer 
+    def computer_ui_open(): 
+        return renpy.get_screen("computer_ui", layer="master") is not None 
 
 ################################################################################
 ## Game Mode System ############################################################
@@ -1643,6 +1657,26 @@ python early:
         parse=parse_lounge_arrival,
         execute=execute_lounge_arrival
     )
+
+    ## lounge_event "" 
+    ## lounge_event "click_script_1" "click_script_2" "click_script_3" ... "click_script_n"
+    def parse_lounge_event(lex): 
+        clicks = []
+
+        ## Parse all clicks until end of line
+        while not lex.eol(): 
+            clicks.append(lex.string())
+
+        return clicks
+
+    def execute_lounge_event(info): 
+        lounge_event(info)
+
+    renpy.register_statement(
+        name="lounge_event", 
+        parse=parse_lounge_event,
+        execute=execute_lounge_event
+    )
         
 
 ## Game Mode System Functions
@@ -1697,6 +1731,28 @@ init python:
         disable_type("lounge_busy")
 
         show_scene("lounge_sit")
+    
+    def lounge_event(clicks): 
+
+        click_map = {}
+
+        enable_type ("lounge_busy")
+
+        # Show Lounge - Seating Down Scene again with click_map
+        show_scene("lounge_sit", click_map=click_map)
+
+        if _in_chat_block: 
+
+            # Freeze until Computer UI is open
+            freeze_until("open_ui")
+
+            # Freeze until Chat is open
+            freeze_until("chat_app")
+
+            # Freeze until Chat Box is open
+            freeze_until(_chat_contact)
+
+        disable_type("lounge_busy")
 
     ## Open Wardrobe Panel
     ## Toggle on Bedroom button disabler

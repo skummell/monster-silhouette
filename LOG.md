@@ -10,6 +10,9 @@ Logs are divided by date ranges, then specific dates.
 <br>
 If something is under a date range rather than a specific date it means it was worked on multiple days within that date range rather than a specific day corresponding to a single date.
 
+A heading 3 (usually a date range, sometimes a specific date) is considered a log entry. 
+<br>A heading 4 underneath it is considered a log sub-entry.
+
 Refer to repo **[commits](https://github.com/skummell/monster-silhouette/commits/main/)** for specific dates, times and changes on finalized code edits, fixes & etc on tracked project files mentioned in the logs. 
 
 
@@ -42,7 +45,10 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
   │   │       │   └── demo_book_draft0.rpy
   │   │       │   └── demo_book_draft1.rpy
   │   │       ├── demo_choices/
+  │   │       │   └── demo_chat_volume_only_choice.rpy
   │   │       │   └── demo_choice1.rpy
+  │   │       │   └── demo_choice2.rpy
+  │   │       │   └── demo_choice4.rpy
   │   │       │   └── demo_early_day_only_choice.rpy
   │   │       ├── demo_interludes/
   │   │       │   └── demo_interlude1.rpy
@@ -923,3 +929,33 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
     - New Game System Implementations Within Script !
         - Lounge Arrival Mode Implemented & Updated 
 
+### Nov 13-14, 2026 
+
+- Freeze System Update! 
+    - `open_ui` - New Condition & Hint!
+
+- Game Mode System Update!
+    - `lounge_event` - New Statement!
+    - Lounge Event Game Mode - New Game Mode!
+        - 1. Enable Lounge Clicks 
+        - 2. Open `lounge_sit` scene with optional `click_map`
+        - 3. Detect Lounge Event & perform related freezes 
+        - 4. Disable Lounge Clicks 
+
+- Narrative Script Progression
+    - Script Files Updates (not included in Repo) - `script/demo/`
+        - `demo_interludes/`
+            - `demo_interlude3.rpy` - Updated & Completed 
+        - `demo_choices/`
+            - `demo_choice2.rpy` - New File!
+            - `demo_choice3.rpy` - New File!
+            - `demo_choice4.rpy` - New File!
+            - `demo_chat_volume_only_choice.rpy` - New File!
+    - Newly Completed Dialogue Implementation 
+        - Day 1 - Second Choice 
+        - Day 1 - Third Choice 
+        - Day 1 - Fourth Choice 
+        - Day 1 - Chat Volume Only Choice
+        - Day 1 - Third Interlude
+    - New Game System Implementations Within Script !
+        - Lounge Event Mode Implemented 
