@@ -5,7 +5,7 @@ tags:
     - Coding
     - ㅤLast Updated
     - ㅤㅤNovember
-    - ㅤㅤㅤ8
+    - ㅤㅤㅤ15
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -110,6 +110,11 @@ Below all the template screens for Monster Silhouette have been organized into o
                     
                     -   :lucide-shirt: **Clothing Sprite**
                         [][clothing-sprite]{ .card-link }
+                
+                !!! cards col single centered-content ""
+
+                    -   :lucide-coffee: **Lounge Click**
+                        [][lounge-click]{ .card-link }
             
             !!! grid col single no-pad no-border ""
 
@@ -911,6 +916,93 @@ Below all the template screens for Monster Silhouette have been organized into o
                 !!! cards col single ""
 
                     -   `wardrobe_panel`
+        
+    === "Lounge Click"
+
+        ### Lounge Click
+
+        The Lounge Click Template renders a single clickable prop inside one of the two lounge scenes. 
+        Any prop that responds to clicks inside the `lounge_look` and 
+        `lounge_sit` scenes — looking-in table, laptop — is built through this template rather than as an inline imagebutton.
+
+        ??? grid col single "Lounge Click [:octicons-key-asterisk-24:][screen-overview-legend]"
+
+            <!-- tooltip: Lounge Click Overview Card -->
+
+            !!! grid scrollable ""
+
+                Screen Name 
+
+                !!! cards col single ""
+
+                    -   `lounge_click`
+                    
+                Parameters
+
+                !!! grid col single no-pad no-border ""
+                        
+                    !!! cards col three ""
+
+                        -   `sprite` :octicons-north-star-24:{ .red-icon } :lucide-lock-open: 
+                            { title="Sprite for Interactable. Image Path or Color." } 
+
+                        -   `xsize` :octicons-north-star-24:{ .red-icon } :lucide-lock-open:
+                            { title="Width of Sprite. Int." } 
+                        -   `ysize` :octicons-north-star-24:{ .red-icon } :lucide-lock-open:
+                            { title="Height of Sprite. Int." } 
+
+                    !!! cards ""
+
+                        -   `xpos` :lucide-lock-open:
+                            { title="Horizontal Position. Int. Default: 0. Used when xalign is None." } 
+                        -   `ypos` :lucide-lock-open:
+                            { title="Vertical Position. Int. Default: 0. Used when yalign is None." } 
+
+                        -   `xalign` :lucide-lock-open:
+                            { title="Horizontal Alignment. Int or Float. 0.0 = left, 1.0 = right. Default: None (uses xpos instead)." }
+                        -   `yalign` :lucide-lock-open:
+                            { title="Vertical Alignment. Int or Float. 0.0 = top, 1.0 = bottom. Default: None (uses ypos instead)." }
+                            
+                        -   `xanchor` :lucide-lock-open:
+                            { title="Horizontal Positioning Anchor. Int or Float. 0.0 = left, 1.0 = right. Default: 0.0." }
+                        -   `yanchor` :lucide-lock-open:
+                            { title="Vertical Positioning Anchor. Int or Float. 0.0 = top, 1.0 = bottom. Default: 0.0." }
+
+                    !!! cards col single ""
+
+                        -   `tooltip` :lucide-lock-open:
+                            { title="Tooltip for Interactable Sprite. String. Default: None."}
+
+                    !!! cards ""
+
+                        -   `interact` :lucide-lock-open:
+                            { title="Interaction Action. Ren'Py Action. Default: None." } 
+
+                        -   `script` :lucide-lock-open:
+                            { title="Additional Script Action. Ren'Py Action. Default: None. Only combined with interact — has no effect on its own." }
+
+                Layout Components 
+
+                !!! cards col single centered-content ""
+                        
+                    -   Sprite for Interactable Element
+                    
+                Notes 
+
+                !!! cards col single ""
+
+                    -   When disabled via Button Disabler System: Visible but no interactability
+                    -   When only `interact` is set: runs the interact action
+                    -   When `script` is also set: runs as a tuple alongside `interact`
+                    -   When `interact` is not set: No click action is set, retains hover action
+                    -   Disabled behavior uses `sensitive False` rather than `NullAction()` — so insensitive lounge interactables don't display their tooltips
+                    
+                Used By
+                    
+                !!! cards col single ""
+
+                    -   `lounge_look`
+                    -   `lounge_sit`
                     
 === "Utility Templates"
 

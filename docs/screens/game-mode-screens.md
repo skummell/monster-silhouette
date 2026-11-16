@@ -5,7 +5,7 @@ tags:
     - Coding
     - ㅤLast Updated
     - ㅤㅤNovember
-    - ㅤㅤㅤ8
+    - ㅤㅤㅤ15
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -13,7 +13,7 @@ tags:
 
     Check the page tags for last date it was updated on. 
 
-    If a documentation update is logged in the latest two date-range entries of the [Build Log][log] you can be certain it's up to date. 
+    If a documentation update is logged in the latest entry of the [Build Log][log] you can be certain it's up to date. 
 
     !!! warning "Zensical's tag feature is not stable and filtering will likely not work as intended"
 
@@ -55,6 +55,14 @@ than making choices through dialogue menus or chat.
                     -   :lucide-hat-glasses: **Wardrobe Panel** 
                         [][wardrobe-panel]{ .card-link }
 
+                !!! cards centered-content ""
+
+                    -   :lucide-door-open: **Lounge Look** 
+                        [][lounge-look]{ .card-link }
+
+                    -   :lucide-armchair: **Lounge Sit** 
+                        [][lounge-sit]{ .card-link }
+
 === "Interactable Scenes"
 
     !!! tip "Learn more about the Scene System in the [Scene System][scene-system] page"
@@ -92,6 +100,7 @@ than making choices through dialogue menus or chat.
         - Hover over cards for details (purpose, type, valid values, other notes)
     - **Visual Layout**
     - Additional **Notes**
+        - Hover over cards for any additional details
 
     === "Bedroom"
 
@@ -137,9 +146,10 @@ than making choices through dialogue menus or chat.
                     -   Uses `prep_busy` button type disabler for Prep Phase bedroom interactables
                     -   Wallet and laptop sprites conditionally hidden when picked up
                     -   Wardrobe opens `wardrobe_panel` on click
-                    -   Key click is the exit gate — exit is only active when required interactions have been completed
+                    -   Key click is the exit gate 
+                        { title="exit is only active when required interactions have been completed" }
                     -   Script labels for each click are fed in via `click_map` by the `prep_phase` statement
-                    -   Interactable prop buttons are rendered via the `bedroom_interactable` template.
+                    -   Interactable prop buttons are rendered via the `bedroom_interactable` template
 
     === "Wardrobe Panel"
 
@@ -191,3 +201,98 @@ than making choices through dialogue menus or chat.
                     -   Closes via `close_wardrobe()` function
                     -   Sprite Buttons are rendered through the `clothing_sprite` template
 
+    === "Lounge Look"
+
+        ### Lounge Look
+
+        The Lounge - Looking In scene is the first of the two lounge scenes, shown during the Lounge Arrival mode. 
+
+        It presents the tea lounge from the perspective of someone entering it, with the counter, table, and seating visible in a single composition.
+        The table and chairs are currently the scene's sole interactable — clicking them seats the Player Character and ends the Lounge Arrival mode.
+
+        ??? grid col single "Lounge Look [:octicons-key-asterisk-24:][screen-overview-legend]"
+
+            <!-- tooltip: Lounge Look Overview Card -->
+
+            !!! grid scrollable ""
+
+                Screen Name 
+
+                !!! cards col single ""
+
+                    -   `lounge_look`
+                    
+                Parameters 
+
+                !!! cards col single centered-content ""
+
+                    -   `click_map` :lucide-lock-open:
+                        { title="Click type keys mapping to script label names. Dictionary. Default: empty dict" }
+                    
+                Visual Layout
+
+                !!! cards col single centered-content ""
+
+                    -   Lounge Backdrop (Looking In Perspective)
+                    -   Counter Assembly
+                    -   Table & Chairs
+                
+                Notes 
+
+                !!! cards col single ""
+
+                    -   Uses `lounge_busy` button type disabler for Lounge Arrival lounge interactables
+                    -   Table & Chairs click is the exit gate 
+                        { title="and currently the only required interaction" }
+                    -   Scene interactables rendered via the `lounge_click` template
+                    -   Script labels for each click are fed in via `click_map` by the `lounge_arrival` statement
+                        { title="No click scripts are mapped yet — click_map is accepted but currently unused"}
+
+    === "Lounge Sit"
+
+        ### Lounge Sit
+
+        The Lounge - Seating Down scene is the second of the two lounge scenes. 
+        
+        It's shown first at the end of the Lounge Arrival mode — with interactables disabled — and again later by the Lounge Event mode when narrative events require the Player Character to engage with the scene. 
+        
+        The laptop on the table is the scene's interactable; when enabled, it's intended to bring up the Computer UI directly from the seated position.
+
+        ??? grid col single "Lounge - Seating Down [:octicons-key-asterisk-24:][screen-overview-legend]"
+
+            <!-- tooltip: Lounge - Seating Down Overview Card -->
+
+            !!! grid scrollable ""
+
+                Screen Name 
+
+                !!! cards col single ""
+
+                    -   `lounge_sit`
+                    
+                Parameters 
+
+                !!! cards col single centered-content ""
+
+                    -   `click_map` :lucide-lock-open:
+                        { title="Click type keys mapping to script label names. Dictionary. Default: empty dict" }
+                    
+                Visual Layout
+
+                !!! cards col single centered-content ""
+
+                    -   Lounge Backdrop (Seating Down Perspective)
+                    -   Wind Chime
+                    -   Table & Chairs Assembly
+                    -   Laptop Sprite
+                
+                Notes 
+
+                !!! cards col single ""
+
+                    -   Uses `lounge_busy` button type disabler
+                    -   Scene interactables rendered via the `lounge_click` template
+                    -   Laptop click calls `show_scene("computer_ui")` 
+                        { title="A computer_ui variant with a return-to- lounge_sit exit is planned but not yet in place" }
+                    -   Script labels for each click are fed in via `click_map` by the `lounge_event` statement
+                        { title="No click scripts are mapped yet — click_map is accepted but currently unused"}

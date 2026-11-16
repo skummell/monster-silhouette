@@ -1,11 +1,11 @@
 ---
 icon: lucide/pause
-# status: modified
+status: modified
 tags: 
     - Coding
     - ㅤLast Updated
-    - ㅤㅤOctober 
-    - ㅤㅤㅤ31
+    - ㅤㅤNovember
+    - ㅤㅤㅤ15
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -13,7 +13,7 @@ tags:
 
     Check the page tags for last date it was updated on. 
 
-    If a documentation update is logged in the latest two date-range entries of the [Build Log][log] you can be certain it's up to date. 
+    If a documentation update is logged in the latest entry of the [Build Log][log] you can be certain it's up to date. 
 
     !!! warning "Zensical's tag feature is not stable and filtering will likely not work as intended"
 
@@ -70,8 +70,16 @@ actions like opening an app, selecting a contact, or completing the Prep Phase b
                     -   :lucide-function-square: **Contact Open** 
                         [][contact-open]{ .card-link }
 
+                    -   :lucide-function-square: **Computer UI Open** 
+                        [][computer-ui-open]{ .card-link }
+
+                !!! cards centered-content ""
+
                     -   :lucide-function-square: **Prep Done Condition** 
                         [][prep-done-condition]{ .card-link }
+
+                    -   :lucide-function-square: **Lounge Seated Condition** 
+                        [][lounge-seated-condition]{ .card-link }
                 
                 !!! cards col single centered-content ""
 
@@ -110,15 +118,19 @@ actions like opening an app, selecting a contact, or completing the Prep Phase b
             - App close conditions — one per app exit ID: `'not app_open("app_screen")'`
             - Contact open conditions — one per contact button ID: `'contact_open("contact_name")'`
             - Prep done condition — `prep_done_condition()`
+            - Lounge seated condition — `lounge_seated_condition()`
+            - Computer UI open condition — `computer_ui_open()`
 
         === "Freeze Hints Initialization"
 
             `freeze_hint` maps flag names to hint strings or callables. Populated at init:
 
-            - App open hints — `“Click on the {app_name} Icon or Notification to open {app_name} App.”`
-            - App close hints — `“Click on the {app_name} Exit button to close {app_name} App.”`
-            - Contact open hints — `“Click {contact}'s Contact to open {contact}'s Chat Box.”`
+            - App open hints — `"Click on the {app_name} Icon or Notification to open {app_name} App."`
+            - App close hints — `"Click on the {app_name} Exit button to close {app_name} App."`
+            - Contact open hints — `"Click {contact}'s Contact to open {contact}'s Chat Box."`
             - Prep done hint — a callable `prep_done_hint()` that returns different hints depending on which prep requirements remain unmet
+            - Lounge seated hint — `"Click on table or chairs to sit down."`
+            - Computer UI open hint — `"Click on the laptop to open the Computer UI."`
 
     === "Substitution Support"
 
@@ -193,7 +205,7 @@ actions like opening an app, selecting a contact, or completing the Prep Phase b
                 !!! cards col single ""
 
                     -   N/A
-                        { title="Init Key(s) & Value(s): App Open Conditions, App Close Conditions, Contact Open Conditions, Prep Phase Condition" }
+                        { title="Init Key(s) & Value(s): App Open Conditions, App Close Conditions, Contact Open Conditions, Prep Phase Condition, Lounge Arrival Condition, Lounge Event Conditions" }
 
                 Notes 
 
@@ -214,7 +226,7 @@ actions like opening an app, selecting a contact, or completing the Prep Phase b
 
                 !!! cards col single ""
 
-                    -   `freeze_hints`
+                    -   `freeze_hint`
                 
                 Type 
 
@@ -228,7 +240,7 @@ actions like opening an app, selecting a contact, or completing the Prep Phase b
                 !!! cards col single ""
 
                     -   N/A
-                        { title="Init Key(s) & Value(s): App Open Hint, App Close Hints, Contact Open Hints, Prep Phase Dynamic Hints" }
+                        { title="Init Key(s) & Value(s): App Open Hint, App Close Hints, Contact Open Hints, Prep Phase Dynamic Hints, Lounge Arrival Hint, Lounge Event Hint" }
 
                 Notes 
 
@@ -394,6 +406,40 @@ actions like opening an app, selecting a contact, or completing the Prep Phase b
                     -   Contact Open Conditions
                         { title="To check whether a specified contact is currently active" }
 
+        #### Computer UI Open :lucide-wrench:
+
+        ??? grid col single "Computer UI Open [:octicons-key-asterisk-24:][components-overview-legend]"
+
+            <!-- tooltip: Computer UI Open Overview Card -->
+            
+            !!! grid scrollable ""
+
+                Function Call
+
+                !!! cards col single ""
+
+                    -   `computer_ui_open()`
+                
+                Parameters 
+
+                !!! cards col single ""
+
+                    -   N/A
+                    
+                Functionality
+
+                !!! cards col single centered-content ""
+
+                    -   Checks whether the Computer UI screen is currently being shown
+                    -   Returns `True` if `computer_ui` is currently showing on the master layer via `renpy.get_screen()`
+                    
+                Used In
+
+                !!! cards col single centered-content ""
+
+                    -   Lounge Event Conditions
+                        { title="To check whether the Computer UI is open" }
+
         #### Prep Done Condition :lucide-wrench:
 
         ??? grid col single "Prep Done Condition [:octicons-key-asterisk-24:][components-overview-legend]"
@@ -427,6 +473,40 @@ actions like opening an app, selecting a contact, or completing the Prep Phase b
 
                     -   Prep Done Condition
                         { title="To check whether a player is ready to end Prep Phase" }
+        
+        #### Lounge Seated Condition :lucide-wrench:
+
+        ??? grid col single "Lounge Seated Condition [:octicons-key-asterisk-24:][components-overview-legend]"
+
+            <!-- tooltip: Lounge Seated Condition Overview Card -->
+            
+            !!! grid scrollable ""
+
+                Function Call
+
+                !!! cards col single ""
+
+                    -   `lounge_seated_condition()`
+                
+                Parameters 
+
+                !!! cards col single ""
+
+                    -   N/A
+                    
+                Functionality
+
+                !!! cards col single centered-content ""
+
+                    -   Checks Seated In Lounge flag
+                    -   Returns `True` if `seated_in_lounge` is `True`.
+                    
+                Used In
+
+                !!! cards col single centered-content ""
+
+                    -   Lounge Arrival Condition
+                        { title="To check whether a player is ready to end Lounge Arrival" }
 
     === "Statements"
 

@@ -5,7 +5,7 @@ tags:
     - Index
     - ㅤLast Updated
     - ㅤㅤNovember
-    - ㅤㅤㅤ10
+    - ㅤㅤㅤ15
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -276,11 +276,25 @@ including both [Monster Silhouette Project Files][project-files-heading] and [Re
 
                     ??? folder "`demo_choices/` :octicons-eye-closed-24: :octicons-compose-24:"
 
+                        :octicons-file-24: `demo_chat_volume_only_choice.rpy` :octicons-eye-closed-24: :octicons-compose-24:
+
                         :octicons-file-24: `demo_choice1.rpy` :octicons-eye-closed-24: :octicons-compose-24:
+
+                        :octicons-file-24: `demo_choice2.rpy` :octicons-eye-closed-24: :octicons-compose-24:
+
+                        :octicons-file-24: `demo_choice3.rpy` :octicons-eye-closed-24: :octicons-compose-24:
+
+                        :octicons-file-24: `demo_choice4.rpy` :octicons-eye-closed-24: :octicons-compose-24:
+
+                        :octicons-file-24: `demo_early_day_only_choice.rpy` :octicons-eye-closed-24: :octicons-compose-24:
                         
                     ??? folder "`demo_interludes/` :octicons-eye-closed-24: :octicons-compose-24:"
 
                         :octicons-file-24: `demo_interlude1.rpy` :octicons-eye-closed-24: :octicons-compose-24:
+
+                        :octicons-file-24: `demo_interlude2.rpy` :octicons-eye-closed-24: :octicons-compose-24:
+
+                        :octicons-file-24: `demo_interlude3.rpy` :octicons-eye-closed-24: :octicons-compose-24:
                         
                     ??? folder "`demo_prep/` :octicons-eye-closed-24: :octicons-compose-24:"
 
@@ -359,7 +373,7 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
 
     ??? tip "Check out the Gameplay Mechanics pages for more details:"
 
-        !!! cards col five centered-content ""
+        !!! cards col four centered-content ""
 
             -   :lucide-book-open-text: **Story Mode**
                 [][story-mode-mechanic-root]{ .card-link }
@@ -369,7 +383,12 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
             
             -   :lucide-sun-moon: **Prep & Wrap Modes** 
                 [][prep-wrap-mechanic-root]{ .card-link }
-            
+
+            -   :lucide-sofa: **Lounge Modes**
+                [][lounge-modes-mechanic-root]{ .card-link }
+        
+        !!! cards centered-content ""
+
             -   :lucide-calendar: **Screen HUD & In-Game Dates** 
                 [][days-hud-mechanic-root]{ .card-link }
 
@@ -412,6 +431,15 @@ pages on Monster Silhouette's Interactive Mechanics and several Documentation Ca
         These game modes both take place in the Bedroom of the Player Character. 
         <br>
         With the player being able to freely click around interactive parts of the Player Character's Bedroom.
+
+    === "Lounge Modes"
+
+        **Lounge Modes**
+
+        The Lounge Modes encompass the gameplay and narrative sequences that take place at Victor's Tea Lounge.
+
+        The sequence is made up of two modes — Lounge Arrival and Lounge Event — each running on one of the two interactable lounge scenes, 
+        with each mode presenting the lounge from distinct angles based on the Player Character's perspective.
 
     === "Screen HUD & In-Game Dates"
 

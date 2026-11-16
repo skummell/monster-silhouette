@@ -5,7 +5,7 @@ tags:
     - Coding
     - ㅤLast Updated
     - ㅤㅤNovember
-    - ㅤㅤㅤ8
+    - ㅤㅤㅤ15
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -13,7 +13,7 @@ tags:
 
     Check the page tags for last date it was updated on. 
 
-    If a documentation update is logged in the latest two date-range entries of the [Build Log][log] you can be certain it's up to date. 
+    If a documentation update is logged in the latest entry of the [Build Log][log] you can be certain it's up to date. 
 
     !!! warning "Zensical's tag feature is not stable and filtering will likely not work as intended"
 
@@ -23,13 +23,13 @@ tags:
 
 ## Overview 
 
-!!! warning "Currently the only implemented Game Mode is the Prep Phase"
-
 The Game Mode System is a custom game system in Monster Silhouette that switches script progression from linear narrative 
 into a distinct interactive game mode with its own rules, screens, and completion conditions. 
 
 It builds on the Scene System, Button Disabler System, and Freeze System to manage the transition in and out of a 
 game mode cleanly. 
+
+Three game modes are currently implemented: **Prep Phase**, **Lounge Arrival**, and **Lounge Event**.
 
 ??? info "Components Overview Legend"
 
@@ -55,37 +55,42 @@ game mode cleanly.
 
                     -   :lucide-variable: **Ready To Leave**
                         [][ready-to-leave]{ .card-link }
-                    
+                        
                     -   :lucide-variable: **Key Attempted**
                         [][key-attempted]{ .card-link }
-                    
+                        
                     -   :lucide-variable: **Closet Clicked**
                         [][closet-clicked]{ .card-link }
-                    
+                        
                     -   :lucide-variable: **Laptop Clicked**
                         [][laptop-clicked]{ .card-link }
-                
-                !!! cards col single centered-content ""
 
-                    -   :lucide-variable: **Clothing Sprites**
-                        [][clothing-sprites]{ .card-link }
-                
                 !!! cards centered-content ""
 
                     -   :lucide-variable: **Top Selected**
                         [][top-selected]{ .card-link }
-                    
+                        
                     -   :lucide-variable: **Bottom Selected**
                         [][bottom-selected]{ .card-link }
+                    
+                !!! cards col single centered-content ""
+
+                    -   :lucide-variable: **Seated In Lounge**
+                        [][seated-in-lounge]{ .card-link }
+                    
+                !!! cards col single centered-content ""
+
+                    -   :lucide-variable: **Clothing Sprites**
+                        [][clothing-sprites]{ .card-link }
 
                 !!! cards col  centered-content ""
 
                     -   :lucide-function-square: **Open Wardrobe** 
                         [][open-wardrobe]{ .card-link }
-                    
+                        
                     -   :lucide-function-square: **Close Wardrobe** 
                         [][close-wardrobe]{ .card-link }
-                    
+                        
                 !!! cards col  centered-content ""
 
                     -   :lucide-function-square: **Call Prep Script** 
@@ -98,14 +103,20 @@ game mode cleanly.
 
                     -   :lucide-function-square: **Get Clothing Info**
                         [][get-clothing-info]{ .card-link }
-                    
+                        
                     -   :lucide-function-square: **Get Same Category Flags** 
                         [][get-same-category-flags]{ .card-link }
-                
-                !!! cards col single centered-content ""
+
+                !!! cards col three centered-content ""
 
                     -   :lucide-square-play: **Prep Phase** 
                         [][prep-phase]{ .card-link }
+                    
+                    -   :lucide-square-play: **Lounge Arrival** 
+                        [][lounge-arrival]{ .card-link }
+                        
+                    -   :lucide-square-play: **Lounge Event** 
+                        [][lounge-event]{ .card-link }
 
 === "How It Works"
 
@@ -120,62 +131,151 @@ game mode cleanly.
     The Game Mode System has one statement for each Game Mode, which can be used to trigger the respective game modes from within script. 
 
     Together with the Button Disabler, Freeze, and Scene Systems, the components of the Game Mode System committed to each game mode
-    manage all parts of the game modes simultanously from within their dedicated statements. 
+    manage all parts of the game modes simultaneously from within their dedicated statements. 
 
     === "Game Modes"
 
-        !!! tip "Learn more about Prep Phase Mode in the [Prep & Wrap Modes][prep-wrap-mechanic] page"
-
         ### Modes
 
-        Game Modes in the Game Mode System are the distinct sets of rules and configurations that alter gameplay experince by defining 
+        Game Modes in the Game Mode System are the distinct sets of rules and configurations that alter gameplay experience by defining 
         how players interact with Monster Silhouette's world. Dictating mechanics, objectives and victory conditions.
 
-        #### Prep Phase Mode
+        === "Prep & Wrap Phases"
 
-        `prep_phase` is called in script with a list of click script label names. 
+            !!! tip "Learn more about Prep Phase & Wrap Phase Modes in the [Prep & Wrap Modes][prep-wrap-mechanic] page"
 
-        It maps each label to a click type based on naming convention, shows the bedroom scene with the resulting `click_map`, 
-        and freezes script progression via `freeze_until "prep_done"` until all required interactions are completed. 
-        Once the freeze ends, it restores the button disabler state and status bar.
+            Prep & Wrap Phase Modes take place in the Player Character's bedroom. 
+
+            === "Prep Phase"
+
+                #### Prep Phase Mode
+
+                `prep_phase` is called in script with a list of click script label names. 
+
+                It maps each label to a click type based on naming convention, shows the bedroom scene with the resulting `click_map`, 
+                and freezes script progression via `freeze_until("prep_done")` until all required interactions are completed. 
+                Once the freeze ends, it restores the button disabler state and status bar. 
+
+            === "Wrap Phase"
+
+                #### Wrap Phase Mode 
+
+                Not yet implemented in code. 
+
+        === "Lounge Modes"
+
+            !!! tip "Learn more about Lounge Arrival & Lounge Event Modes in the [Lounge Modes][lounge-modes-mechanic] page"
+
+            Lounge Modes take place in Victor's tea lounge. 
+
+            === "Lounge Arrival"
+
+                #### Lounge Arrival Mode
+
+                `lounge_arrival` is called in script and optionally accepts click script label names. 
+
+                It enables the `lounge_busy` disabler, shows the lounge's looking-in scene, and freezes script progression via 
+                `freeze_until("lounge_seated")` until the player clicks the table to sit. 
+
+                Once the freeze ends, it restores the disabler state and shows the lounge's seating-down scene as the mode's exit state.
+
+            === "Lounge Event"
+
+                #### Lounge Event Mode
+
+                `lounge_event` is called in script during narrative beats that require the seated lounge scene to become interactable. 
+
+                It enables the `lounge_busy` disabler and re-shows the lounge's seating-down scene.
+
+                If the script is currently inside a chat block, it chains three freezes: 
+
+                - `freeze_until("open_ui")` (Computer UI opened via the laptop)
+                - `freeze_until("chat_app")` (Chat App opened)
+                - `freeze_until(_chat_contact)` (the current chat contact's Chat Box opened)
+
+                Once the freeze chain ends, it restores the disabler state.
 
     === "Game Mode Scenes"
 
-        !!! tip "Learn more about the screens that make up Game Mode Scenes in the [Game Mode Screens](#screens) tab"
+        !!! tip "Learn more about the screens that make up Game Mode Scenes in the [Game Mode Screens][game-mode-screens] page"
 
         ### Scenes
 
-        Game Mode Scenes are special interactable scenes that Game Modes take place in. 
+        Game Mode Scenes are special interactable scenes that Game Modes take place in.
 
-        Prep Phase and Wrap Phase game modes take place in the Bedroom Scene.
+        Each game mode operates on one or more of these scenes: 
 
-        #### Bedroom Scene 
+        - **Bedroom** — used by the Prep Phase (and the planned Wrap Phase)
+        - **Lounge - Looking In** (`lounge_look`) — used by Lounge Arrival
+        - **Lounge - Seating Down** (`lounge_sit`) — used by Lounge Arrival (as its exit state) and Lounge Event
 
-        The `bedroom` screen receives the `click_map` and uses it to determine which interactable props are active and which labels to call 
-        when clicked. Each click calls its corresponding label in a new context via one of the prep phase utility functions, keeping the 
-        interactable scene and the narrative consequences of each click cleanly separated.
+        === "Bedroom Scene"
 
-        The wardrobe is a special case — clicking it opens `wardrobe_panel` as a modal over the bedroom. 
-        The panel handles clothing selection, and closing it returns to the bedroom with the closet click recorded as completed.
+            #### Bedroom Scene 
+
+            The `bedroom` screen receives the `click_map` and uses it to determine which interactable props are active and which labels to call 
+            when clicked. Each click calls its corresponding label in a new context via one of the prep phase utility functions, keeping the 
+            interactable scene and the narrative consequences of each click cleanly separated.
+
+            The wardrobe is a special case — clicking it opens `wardrobe_panel` as a modal over the bedroom. 
+            The panel handles clothing selection, and closing it returns to the bedroom with the closet click recorded as completed.
+
+        === "Lounge Scenes"
+
+            #### Lounge Scenes 
+
+            The two lounge scenes follow the same pattern as the Bedroom, but split the interaction flow across two screens instead of one. 
+
+            `lounge_look` is shown at the start of Lounge Arrival. Its table interactable sets `seated_in_lounge` to `True`, 
+            ending the mode's freeze. When Lounge Arrival exits, it shows `lounge_sit` as the mode's end state — with the `lounge_busy` 
+            disabler already off, so the scene's laptop interactable starts insensitive. 
+
+            Lounge Event later re-shows `lounge_sit` with the disabler enabled so that the laptop becomes a live interaction. 
+            The current implementation uses the laptop to open the Computer UI, which the mode's freeze chain then uses to advance through 
+            the Chat App to the active chat contact. 
 
     === "Gated Continuation"
 
         ### Completion Gating 
 
-        The Freeze System is used to gate completion of Game Modes through respective Freeze Conditions and Hints. 
+        The Freeze System is used to gate completion of Game Modes through respective Freeze Conditions and Hints.
 
         === "Prep Phase Gating"
 
-        The Prep Phase has two required interactions — clicking the closet and completing an outfit selection, and 
-        clicking the laptop. 
-        
-        These interactions are tracked by `closet_clicked` and `laptop_clicked`. 
-        
-        The key click is the exit gate — it checks both flags and only sets `ready_to_leave = True` if both are satisfied, 
-        which ends the `freeze_until "prep_done"` loop and returns script to normal progression.
+            The Prep Phase has two required interactions — clicking the closet and completing an outfit selection, and 
+            clicking the laptop. 
+            
+            These interactions are tracked by `closet_clicked` and `laptop_clicked`. 
+            
+            The key click is the exit gate — it checks both flags and only sets `ready_to_leave = True` if both are satisfied, 
+            which ends the `freeze_until("prep_done")` loop and returns script to normal progression.
 
-        `key_attempted` tracks whether the key has been clicked at least once without the required interactions being complete, 
-        which triggers a more specific hint from `prep_done_hint()`.
+            `key_attempted` tracks whether the key has been clicked at least once without the required interactions being complete, 
+            which triggers a more specific hint from `prep_done_hint()`.
+
+        === "Lounge Arrival Gating"
+
+            Lounge Arrival has one required interaction — clicking the table and chairs in the looking-in scene.
+
+            This interaction sets `seated_in_lounge = True`, which `lounge_seated_condition()` reads to end the `freeze_until("lounge_seated")` loop 
+            and hands off to the seating-down scene.
+
+        === "Lounge Event Gating"
+
+            Lounge Event's gating is conditional on the script's current state, triggering different events. 
+
+            Currently the only event registered is **Chat Event**.
+
+            === "Chat Event"
+
+                When the mode is called from inside a chat block, it chains three freezes in sequence:
+
+                - `freeze_until("open_ui")` — waits for the player to open the Computer UI via the laptop
+                - `freeze_until("chat_app")` — waits for the player to open the Chat App
+                - `freeze_until(_chat_contact)` — waits for the player to open the current chat contact's Chat Box
+
+            Each gate maps to a corresponding condition defined in the Freeze System. 
+            When the mode is called outside of any registered events, none of these freezes apply and the mode exits after showing the scene.
 
     === "Game Mode Screens"
 
@@ -185,13 +285,22 @@ game mode cleanly.
 
         The Game Mode System's visual output lives in screens that make up the interactiveness and innards of Game Mode Scenes.
 
-        Screens that make up Game Mode System UI functionality include: `bedroom` and `wardrobe_panel`.
+        Screens that make up Game Mode System UI functionality currently include: `bedroom`, `wardrobe_panel`, `lounge_look`, and `lounge_sit`.
 
         === "Prep Mode Screens"
 
-        The Bedroom and Wardrobe Panel screens are the visual front end for the Prep Phase. 
+            The Bedroom and Wardrobe Panel screens are the visual front end for the Prep Phase. 
 
-        They handle the Prep Scene from Visual Interface to UI Interaction. 
+            They handle the Prep Scene from Visual Interface to UI Interaction.
+
+        === "Lounge Mode Screens"
+
+            The Lounge Look and Lounge Sit screens are the visual front end for Lounge Arrival and Lounge Event, respectively.
+
+            `lounge_look` presents the arrival view with the table as its interactive spot. 
+
+            `lounge_sit` presents the seated view with the laptop as its interactive spot — shown first at the end of Lounge Arrival 
+            (with interactables disabled) and again by Lounge Event (with interactables enabled).
 
 === "Components"
 
@@ -239,8 +348,8 @@ game mode cleanly.
 
                     !!! cards col single ""
 
-                    -   Boolean
-                        { title="Init Value: False." }
+                        -   Boolean
+                            { title="Init Value: False." }
 
                     Notes 
 
@@ -290,7 +399,7 @@ game mode cleanly.
 
                     !!! cards col single ""
 
-                        -   `closet_attempted`
+                        -   `closet_clicked`
                         
                     Type 
 
@@ -319,7 +428,7 @@ game mode cleanly.
 
                     !!! cards col single ""
 
-                        -   `laptop_attempted`
+                        -   `laptop_clicked`
                         
                     Type 
 
@@ -334,7 +443,7 @@ game mode cleanly.
 
                         -   Tracks whether the player has clicked the laptop
                         -   Set to `True` when the player clicks the laptop and finishes its interaction script
-                        -   Required for the key click to succeed.
+                        -   Required for the key click to succeed
 
             #### Top Selected 
 
@@ -393,6 +502,35 @@ game mode cleanly.
                         -   Tracks whether the player has chosen a bottom garment for their outfit
                         -   Set to `True` when the player selects a bottom in the `wardrobe_panel`
                         -   Gates `closet_clicked`
+            
+            #### Seated In Lounge
+
+            ??? grid col single "Seated In Lounge [:octicons-key-asterisk-24:][components-overview-legend]"
+
+                <!-- tooltip: Seated In Lounge Variable Overview Card -->
+                        
+                !!! grid scrollable ""
+
+                    Variable Name
+
+                    !!! cards col single ""
+
+                        -   `seated_in_lounge`
+                        
+                    Type 
+
+                    !!! cards col single ""
+
+                        -   Boolean
+                            { title="Init Value: False." }
+
+                    Notes 
+
+                    !!! cards col single centered-content ""
+
+                        -   Tracks whether the player has clicked the table to sit from the Lounge - Looking In scene
+                        -   Exit gate for the Lounge Arrival freeze 
+                        -   Set to `True` when the table interactable is clicked in the `lounge_look` screen
                         
         === "Mappings"
 
@@ -535,7 +673,7 @@ game mode cleanly.
                 !!! cards col single centered-content ""
 
                     -   `wardrobe_panel` screen
-                        { title="From wardrobe_panel's Dressed button. To closed the wardrobe_panel and end the closet click interaction." }
+                        { title="From wardrobe_panel's Dressed button. To close the wardrobe_panel and end the closet click interaction." }
 
         #### Call Prep Script :lucide-wrench:
 
@@ -761,4 +899,103 @@ game mode cleanly.
                 !!! cards col single ""
 
                     -   `prep_phase(clicks)` :lucide-zodiac-libra: 
+        
+        #### Lounge Arrival
+
+        ??? grid col single "Lounge Arrival [:octicons-key-asterisk-24:][components-overview-legend]"
+
+            <!-- tooltip: Lounge Arrival Statement Overview Card -->
+            
+            !!! grid scrollable ""
+
+                Statement Usage
+
+                !!! cards col single ""
+
+                    -   `lounge_arrival ""`
+                    
+                    -   Supports click scripts: 
+                    
+                        `lounge_arrival "click_script_1" ... "click_script_n"` 
+
+                Arguments 
+
+                !!! cards col single "" 
+
+                    -   `"script_click"` 
+                        { title="Optional Click Script label names. No suffix mapping convention is defined yet — arguments are parsed but not currently mapped or used" }
+                
+                Functionality
+
+                !!! cards col single centered-content ""
+
+                    -   Enables `lounge_busy` disabler
+                    -   Shows `lounge_look` scene with any valid `click_script` that was fed into statement
+                        { title="Currently no valid click scripts exist"}
+                    -   Freezes until `lounge_seated`
+                    -   Disables `lounge_busy` disabler
+                    -   Shows `lounge_sit` scene as the mode's exit state
+                
+                Notes 
+
+                !!! cards col single centered-content ""
+
+                    -   Click script arguments are reserved for future interactable conventions
+                        { title="Currently unused — click_map is populated as an empty dict" }
+                
+                Functions Embedded
+
+                !!! cards col single ""
+
+                    -   `lounge_arrival(clicks)` :lucide-zodiac-libra:
+
+        #### Lounge Event
+
+        ??? grid col single "Lounge Event [:octicons-key-asterisk-24:][components-overview-legend]"
+
+            <!-- tooltip: Lounge Event Statement Overview Card -->
+            
+            !!! grid scrollable ""
+
+                Statement Usage
+
+                !!! cards col single ""
+
+                    -   `lounge_event ""` 
+                    
+                    -   Supports click scripts: 
+                    
+                        `lounge_event "click_script_1" ... "click_script_n"` 
+
+                Arguments 
+
+                !!! cards col single "" 
+
+                    -   `"script_click"` 
+                        { title="Optional Click Script label names. No suffix mapping convention is defined yet — arguments are parsed but not currently mapped or used" }
+                
+                Functionality
+
+                !!! cards col single centered-content ""
+
+                    -   Enables `lounge_busy` disabler
+                    -   Shows `lounge_sit` scene with any valid `click_script` that was fed into statement
+                        { title="Currently no valid click scripts exist" }
+                    -   Chat Event
+                        { title="Chains freezes for 'open_ui', 'chat_app', and the current chat contact" }
+                    -   Disables `lounge_busy` disabler once all event freezes end
+                
+                Notes 
+
+                !!! cards col single centered-content ""
+
+                    -   Chat Event freeze chain only fires when `_in_chat_block` is `True`
+                    -   Click script arguments are reserved for future interactable conventions
+                        { title="Currently unused — click_map is populated as an empty dict" }
+                
+                Functions Embedded
+
+                !!! cards col single ""
+
+                    -   `lounge_event(clicks)` :lucide-zodiac-libra:
 

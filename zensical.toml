@@ -16,6 +16,7 @@ nav = [
       "mechanics/story-mode.md",
       "mechanics/computer-ui.md",
       "mechanics/prep-wrap.md",
+      "mechanics/lounge-modes.md",
       "mechanics/days-hud.md",
       "mechanics/hovers-tooltips.md", 
   ] },

@@ -1,11 +1,11 @@
 ---
 icon: lucide/mouse-pointer-2-off
-# status: modified
+status: modified
 tags: 
     - Coding
     - ㅤLast Updated
-    - ㅤㅤOctober 
-    - ㅤㅤㅤ31
+    - ㅤㅤNovember
+    - ㅤㅤㅤ15
     - ㅤㅤㅤㅤ2026
 ---
 
@@ -13,7 +13,7 @@ tags:
 
     Check the page tags for last date it was updated on. 
 
-    If a documentation update is logged in the latest two date-range entries of the [Build Log][log] you can be certain it's up to date. 
+    If a documentation update is logged in the latest entry of the [Build Log][log] you can be certain it's up to date. 
 
     !!! warning "Zensical's tag feature is not stable and filtering will likely not work as intended"
 
@@ -270,8 +270,8 @@ only clears that level's disabler without affecting others.
 
                         !!! cards centered-content ""
 
-                            -   `global_disable` :lucide-function-square: :lucide-square-play:
-                                { title="Function: global_disable(). Statement: global_disable ''." }
+                            -   `disable_global` :lucide-function-square: :lucide-square-play:
+                                { title="Function: disable_global(). Statement: disable_global ''." }
                             
                             -    `disable_all` :lucide-function-square: :lucide-square-play:
                                 { title="Function: disable_all(). Statement: disable_all ''. Toggles ON ALL disablers."}
@@ -287,8 +287,8 @@ only clears that level's disabler without affecting others.
                     
                         !!! cards centered-content ""
 
-                            -   `global_enable` :lucide-function-square: :lucide-square-play:
-                                { title="Function: global_enable(). Statement: global_enable ''." }
+                            -   `enable_global` :lucide-function-square: :lucide-square-play:
+                                { title="Function: enable_global(). Statement: enable_global ''." }
                             
                             -   `enable_all` :lucide-function-square: :lucide-square-play:
                                 { title="Function: enable_all(). Statement: enable_all ''. Toggles OFF ALL disablers."}
@@ -299,9 +299,7 @@ only clears that level's disabler without affecting others.
 
                         -   The global disabler
                         -   When `True`, all registered buttons are disabled regardless of Type or ID disabler state
-                        -   Will also be toggled ON by: `disable_all_types` 
-                            { title="Do NOT use for Global Level toggling."}
-
+                        
                         -   Will also be toggled OFF by: `enable_type`, `enable_all_type`, and `enable_id`
                             { title="Do NOT use for Global Level toggling."}
                 
@@ -344,10 +342,16 @@ only clears that level's disabler without affecting others.
                                 { title="Init Value(s): False."}
                         
                         !!! cards centered-content ""
+
                             -   `"prep_busy"`
                                 { title="Init Value(s): False."}
 
                             -   `"closet_busy"`
+                                { title="Init Value(s): False."}
+                        
+                        !!! cards col single centered-content ""
+
+                            -   `"lounge_busy"`
                                 { title="Init Value(s): False."}
 
                     Toggle On
@@ -356,8 +360,8 @@ only clears that level's disabler without affecting others.
 
                         !!! cards col single centered-content ""
 
-                            -   `disabled_button_type` :lucide-variable:
-                                { title="disabled_button_type[button_type] = True" }
+                            -   `disabled_button_types` :lucide-variable:
+                                { title="disabled_button_types[button_type] = True" }
                             
                             -   `disable_type` :lucide-function-square: :lucide-square-play:
                                 { title="Function: disable_type(button_type). Statement: disable_type 'button_type'."}
@@ -371,8 +375,8 @@ only clears that level's disabler without affecting others.
 
                         !!! cards col single centered-content ""
 
-                            -   `disabled_button_type` :lucide-variable:
-                                { title="disabled_button_type[button_type] = False" }
+                            -   `disabled_button_types` :lucide-variable:
+                                { title="disabled_button_types[button_type] = False" }
                     
                             -   `enable_type` :lucide-function-square: :lucide-square-play:
                                 { title="Function: enable_type(button_type). Statement: enable_type 'button_type'. Toggles OFF GLOBAL disabler AND TYPE disabler."}
@@ -432,10 +436,16 @@ only clears that level's disabler without affecting others.
                                 { title="Init Value(s): empty set."}
                         
                         !!! cards centered-content ""
+
                             -   `"prep_busy"`
                                 { title="Init Value(s): empty set."}
 
                             -   `"closet_busy"`
+                                { title="Init Value(s): empty set."}
+
+                        !!! cards col single centered-content ""
+
+                            -   `"lounge_busy"`
                                 { title="Init Value(s): empty set."}
 
                     Toggle On
@@ -444,7 +454,7 @@ only clears that level's disabler without affecting others.
 
                         !!! cards col single centered-content ""
 
-                            -   `disabled_button_id` :lucide-variable:
+                            -   `disabled_button_ids` :lucide-variable:
                                 { title="disabled_button_ids[button_type].add(id)" }
                             
                             -   `disable_id` :lucide-function-square: :lucide-square-play:
@@ -456,7 +466,7 @@ only clears that level's disabler without affecting others.
 
                         !!! cards col single centered-content ""
 
-                            -   `disabled_button_id` :lucide-variable:
+                            -   `disabled_button_ids` :lucide-variable:
                                 { title="disabled_button_ids[button_type].discard(id)" }
                     
                             -   `enable_id` :lucide-function-square: :lucide-square-play:
@@ -516,10 +526,16 @@ only clears that level's disabler without affecting others.
                                 { title="Init Value(s): 'And', 'At You', 'Golden Manager', 'The Abyss Stares Back', 'Stare Into The Abyss'"}
                         
                         !!! cards centered-content ""
+
                             -   `"prep_busy"`
                                 { title="Init Value(s): empty."}
 
                             -   `"closet_busy"`
+                                { title="Init Value(s): empty."}
+                        
+                        !!! cards col single centered-content ""
+
+                            -   `"lounge_busy"`
                                 { title="Init Value(s): empty."}
 
                     Notes 
@@ -1049,7 +1065,7 @@ only clears that level's disabler without affecting others.
 
                     !!! cards col single centered-content ""
 
-                        -   Turns OFF ID disabler for `button_id` (removes `button_id` to its type's disabled set)
+                        -   Turns OFF ID disabler for `button_id` (removes `button_id` from its type's disabled set)
                         -   If corresponding `button_type` Type disabler is on and set is empty, adds all other button ids of that type to the set
                         -   Turns OFF corresponding Type disabler 
                         -   Turns OFF Global disabler 
@@ -1058,7 +1074,7 @@ only clears that level's disabler without affecting others.
 
                     !!! cards col single ""
 
-                        -   `disable_id(id)` :lucide-zodiac-libra: 
+                        -   `enable_id(id)` :lucide-zodiac-libra: 
                         
 
 

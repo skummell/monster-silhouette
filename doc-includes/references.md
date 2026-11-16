@@ -47,12 +47,14 @@
   [computer-ui-mechanic]: ../mechanics/computer-ui.md "Gameplay Mechanics - Computer UI"
   [story-mode-mechanic]: ../mechanics/story-mode.md "Gameplay Mechanics - Story Mode"
   [prep-wrap-mechanic]: ../mechanics/prep-wrap.md "Gameplay Mechanics - Prep & Wrap Modes"
+  [lounge-modes-mechanic]: ../mechanics/lounge-modes.md "Gameplay Mechanics - Lounge Modes"
   [days-hud-mechanic]: ../mechanics/days-hud.md "Gameplay Mechanics - Screen HUD & In-Game Days"
   [hovers-tooltips-mechanic]: ../mechanics/hovers-tooltips.md "Gameplay Mechanics - Hovers & Tooltips"
   <!-- Root Level Links -->
   [computer-ui-mechanic-root]: mechanics/computer-ui.md "Gameplay Mechanics - Computer UI"
   [story-mode-mechanic-root]: mechanics/story-mode.md "Gameplay Mechanics - Story Mode"
   [prep-wrap-mechanic-root]: mechanics/prep-wrap.md "Gameplay Mechanics - Prep & Wrap Modes"
+  [lounge-modes-mechanic-root]: mechanics/lounge-modes.md "Gameplay Mechanics - Lounge Modes"
   [days-hud-mechanic-root]: mechanics/days-hud.md "Gameplay Mechanics - Screen HUD & In-Game Days"
   [hovers-tooltips-mechanic-root]: mechanics/hovers-tooltips.md "Gameplay Mechanics - Hovers & Tooltips"
 
@@ -131,6 +133,7 @@
   [notif-button]: #notif-button "Jump to Notif Button Template"
   [bedroom-interactable]: #bedroom-interactable "Jump to Bedroom Interactable Template" 
   [clothing-sprite]: #clothing-sprite "Jump to Clothing Sprite Template"
+  [lounge-click]: #lounge-click "Jump to Lounge Click Template"
 
   <!-- Meta Screens - Overview Links -->
   [save-load]: #save-load "Jump to Save & Load Screen"
@@ -161,6 +164,8 @@
   <!-- Game Mode Screens - Overview Links -->
   [bedroom]: #bedroom "Jump to Bedroom Screen" 
   [wardrobe-panel]: #wardrobe-panel "Jump to Wardrobe Panel Screen"
+  [lounge-look]: #lounge-look "Jump to Lounge Look Screen" 
+  [lounge-sit]: #lounge-sit "Jump to Lounge Sit Screen" 
 
   <!-- Screens - Screen Overview Links -->
 
@@ -253,7 +258,9 @@
   [flag-check]: #flag-check "Jump to Flag Check Function"
   [app-open]: #app-open "Jump to App Open Function"
   [contact-open]: #contact-open "Jump to Contact Open Function"
+  [computer-ui-open]: #computer-ui-open "Jump to Computer UI Open Function"
   [prep-done-condition]: #prep-done-condition "Jump to Prep Done Condition Function"
+  [lounge-seated-condition]: #lounge-seated-condition "Jump to Lounge Seated Condition Function"
 
   <!-- Freeze System Components - Statement Overview Links -->
   [freeze-until]: #freeze-until "Jump to Freeze Until Statement"
@@ -268,6 +275,7 @@
   [top-selected]: #top-selected "Jump to Top Selected Variable" 
   [bottom-selected]: #bottom-selected "Jump to Bottom Selected Variable"
   [clothing-sprites]: #clothing-sprites "Jump to Clothing Sprites Variable"
+  [seated-in-lounge]: #seated-in-lounge "Jump to Seated In Lounge Variable"
 
   <!-- Game Mode System Components - Function Overview Links -->
   [open-wardrobe]: #open-wardrobe "Jump to Open Wardrobe Function"
@@ -279,3 +287,5 @@
 
   <!-- Game Mode System Components - Statement Overview Links -->
   [prep-phase]: #prep-phase "Jump to Prep Phase Statement"
+  [lounge-arrival]: #lounge-arrival "Jump to Lounge Arrival Statement" 
+  [lounge-event]: #lounge-event "Jump to Lounge Event Statement"

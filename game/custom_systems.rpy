@@ -1410,8 +1410,8 @@ init python:
 ##
 ##      chat_start "The Abyss Stares Back"
 ##
-##      freeze_until [_chat_contact] # Grabs _chat_contact of current chat block ("The Abyss Stares Back") 
-##                                   # Freezes until contact button for it is clicked 
+##      freeze_until "[_chat_contact]" # Grabs _chat_contact of current chat block ("The Abyss Stares Back") 
+##                                     # Freezes until contact button for it is clicked 
 ##
 
 ## Freeze System Variables 
@@ -1556,6 +1556,10 @@ init python:
     def contact_open(contact_name): 
         return active_contact == contact_name
 
+    # Returns a boolean based on whether Computer UI is open inside master layer 
+    def computer_ui_open(): 
+        return renpy.get_screen("computer_ui", layer="master") is not None 
+
     ## Prep Done Condition Check 
     def prep_done_condition(): 
         return store.ready_to_leave
@@ -1563,10 +1567,6 @@ init python:
     # Lounge Seated Condition Check 
     def lounge_seated_condition(): 
         return store.seated_in_lounge
-
-    # Returns a boolean based on whether Computer UI is open inside master layer 
-    def computer_ui_open(): 
-        return renpy.get_screen("computer_ui", layer="master") is not None 
 
 ################################################################################
 ## Game Mode System ############################################################
