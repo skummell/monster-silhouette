@@ -979,3 +979,7 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
     - Added documentation covering all relevant logs and changes since last update
 
 - Documentation Minor Release (v1.2.0) 
+
+#### Nov 17, 2026 
+
+- Documentation Patch Release (v1.2.1) 
