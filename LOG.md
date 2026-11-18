@@ -969,7 +969,13 @@ For a detailed Documentation on the project's source code, refer to **[Monster S
     - New Game System Implementations Within Script !
         - Lounge Event Mode Implemented 
 
-### Nov 15, 2026 
+### Nov 15-17, 2026 
+
+- Victor's Design Finalized 
+
+#### Nov 15, 2026 
 
 - Source Code Documentation Update in `docs/`
     - Added documentation covering all relevant logs and changes since last update
+
+- Documentation Minor Release (v1.2.0) 

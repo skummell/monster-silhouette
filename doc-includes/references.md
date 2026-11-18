@@ -38,6 +38,13 @@
 
   <!-- Relative Links -->
 
+  <!-- Index & Change Log Links -->
+  [index]: ../index.md "Introduction"
+  [change-log]: ../change-log.md "Documentation Change Log"
+  <!-- Root Level Links -->
+  [index-root]: index.md "Introduction"
+  [change-log-root]: change-log.md "Documentation Change Log"
+
   <!-- Preview Pages Links -->
   [readme-preview]: preview-readme.md "(Git Repo) README Preview"
   [license-preview]: preview-license.md "(Git Repo) LICENSE Preview"

@@ -1,6 +1,6 @@
 ---
 icon: lucide/settings-2
-status: modified 
+# status: modified 
 tags: 
     - Coding
     - ㅤLast Updated

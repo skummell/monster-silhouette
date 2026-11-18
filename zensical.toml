@@ -12,6 +12,7 @@ repo_name = "skummell/monster-silhouette"
 
 nav = [
   { "Introduction" = "index.md" },
+  { "Change Log" = "change-log.md" },
   { "Gameplay Mechanics" = [
       "mechanics/story-mode.md",
       "mechanics/computer-ui.md",

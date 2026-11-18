@@ -17,6 +17,10 @@
 
 /* Remove Link underlines */ 
 
+.md-typeset hr { 
+    border-bottom: 1px solid rgba(127, 127, 127, 0.2)
+}
+
 .md-typeset a {
     text-decoration: none;
 }   
@@ -359,6 +363,15 @@ details.folder p:not(.admonition-title) a .twemoji,
     justify-content: start;
 }
 
+/* Optional: Shrink-wrap grid/cards to the width of the longest card */
+.md-typeset .admonition.cards.fit-width,
+.md-typeset details.cards.fit-width,
+.md-typeset .admonition.grid.fit-width,
+.md-typeset details.grid.fit-width {
+    width: fit-content;
+    max-width: 100%; /* Safety net to prevent horizontal overflow on mobile */
+}
+
 /* Centers content in ALL cards inside cards admonition (use centered-content) */
 .md-typeset .admonition.cards.centered-content > :is(ul, ol) > li,
 .md-typeset details.cards.centered-content > :is(ul, ol) > li,
@@ -505,7 +518,7 @@ details.folder p:not(.admonition-title) a .twemoji,
     box-shadow: none;
 }
 
-/* ⬇ THE FIX: collapsible variants use Material's default details padding */
+/* Collapsible variants use Material's default details padding */
 .md-typeset details.grid,
 .md-typeset details.cards {
     padding: 0 0.8rem;
@@ -847,4 +860,90 @@ a.hover-preview,
     border-bottom: none;
     text-decoration: none;
     cursor: inherit;
+}
+
+
+
+/* Change Log Entry — container */
+
+.cl-entry {
+    display: grid;
+    grid-template-columns: max-content 1fr; 
+    column-gap: 2rem;
+    align-items: start;
+    padding: 1.5rem 0;
+}
+
+.cl-entry a { 
+    font-weight: bold;
+}
+
+.cl-entry:last-of-type {
+    border-bottom: none;
+}
+
+/* Change Log Entry — title area */
+
+.cl-entry-title {
+    min-width: 0;
+}
+
+.cl-entry-title > .cl-entry-heading {
+    font-size: 1.15em;
+    line-height: 1.3;
+    margin: 0 0 0.5rem 0;
+}
+
+.cl-entry-title > p {
+    font-size: 0.90em;
+    line-height: 1.4;
+    margin: 0 0 0.5rem 0;
+}
+
+/* Change Log Entry — Release Notes Pill */
+.cl-entry-title > p > a {
+    display: inline-block;
+    background-color: #e0f2fe; /* Light, slightly muted blue */
+    padding: 0.25rem 0.5rem;   
+    border-radius: 9999px;     /* Fully rounded corners for a pill shape */
+    font-size: 0.85em;         /* Optional: scales it slightly to look more like a badge */
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Release Notes Pill - Subtle hover effect */
+.cl-entry-title > p > a:hover {
+    background-color: #bae6fd; /* Slightly deeper muted blue on hover */
+}
+
+/* Get rid of code background */
+.cl-entry-title > p > a > code,
+.cl-entry-title > p > a:hover > code,
+.cl-entry-title > p > a > code:hover,
+.cl-entry-title code {
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    font-size: inherit;
+    color: inherit;
+}
+
+.cl-entry-title > p:last-child {
+    margin-bottom: 0;
+}
+
+/* Change Log Entry — body area */
+
+.cl-entry-body {
+    min-width: 0;
+}
+
+.cl-entry-body > *:first-child {
+    margin-top: 0;
+}
+
+.cl-entry-body h3 {
+    font-size: 1.05em;
+    margin: 1rem 0 0.5rem 0;
 }

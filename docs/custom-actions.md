@@ -1,6 +1,6 @@
 ---
 icon: lucide/package-plus
-status: modified
+# status: modified
 tags: 
     - Coding
     - ㅤLast Updated

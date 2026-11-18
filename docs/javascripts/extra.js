@@ -506,3 +506,93 @@
         window.document$.subscribe(run);
     }
 })();
+
+
+
+
+/* 
+    Change Log Entries
+
+    Authoring:
+        ## November 15, 2026 { .cl-entry }
+
+        `1.2.0 Minor Release`
+
+        `[Release Notes](url)`
+
+        Body content...
+
+    Transformation:
+        .cl-entry (section)
+          .cl-entry-title — h2 + up to 2 metadata paragraphs
+          .cl-entry-body  — remaining content until next .cl-entry
+*/
+
+(function () {
+    function setupChangeLog() {
+        const boundaryTags = new Set(['H2', 'NAV', 'DETAILS', 'HR']);
+
+        document.querySelectorAll('h2.cl-entry').forEach(heading => {
+            // Capture up to 2 metadata paragraphs
+            const metaNodes = [];
+            let peek = heading.nextElementSibling;
+            while (peek && peek.tagName === 'P' && metaNodes.length < 2) {
+                metaNodes.push(peek);
+                peek = peek.nextElementSibling;
+            }
+
+            // Build containers
+            const entry = document.createElement('section');
+            entry.className = 'cl-entry';
+
+            const title = document.createElement('div');
+            title.className = 'cl-entry-title';
+
+            const body = document.createElement('div');
+            body.className = 'cl-entry-body';
+
+            // --- NEW: Create the separator ---
+            const separator = document.createElement('hr');
+            separator.className = 'cl-separator';
+
+            // Insert the entry section before the heading
+            heading.parentNode.insertBefore(entry, heading);
+            
+            // Insert the separator right before the entry section
+            heading.parentNode.insertBefore(separator, entry);
+
+            // --- NEW: Prevent double lines if you manually typed '---' in markdown ---
+            if (separator.previousElementSibling && separator.previousElementSibling.tagName === 'HR') {
+                separator.remove();
+            }
+
+            // Move the heading and metadata into the title
+            heading.classList.replace('cl-entry', 'cl-entry-heading');
+            title.appendChild(heading);
+            metaNodes.forEach(n => title.appendChild(n));
+
+            // Collect body content until a boundary element is hit
+            const bodyNodes = [];
+            let cursor = entry.nextSibling;
+            
+            while (cursor) {
+                if (cursor.nodeType === 1 && boundaryTags.has(cursor.tagName)) {
+                    break; 
+                }
+                
+                bodyNodes.push(cursor);
+                cursor = cursor.nextSibling;
+            }
+
+            bodyNodes.forEach(n => body.appendChild(n));
+
+            entry.appendChild(title);
+            entry.appendChild(body);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', setupChangeLog);
+    if (window.document$ && window.document$.subscribe) {
+        window.document$.subscribe(setupChangeLog);
+    }
+})();
